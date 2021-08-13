@@ -1,75 +1,57 @@
-import { useState } from "react";
 import {
-  Button,
+  Card,
+  CardMedia,
   Container,
   Grid,
-  TextField,
   Typography,
 } from "@material-ui/core";
 
 import useStyles from "./styles";
+import { useAuth } from "../../../../context/AuthContext";
 
 const Hero = () => {
-  const [query, setQuery] = useState(null);
   const classes = useStyles();
+  const { getLocalPerson } = useAuth();
 
-  const inputHandler = (e) => {
-    e.preventDefault();
-
-    setQuery(e.target.value);
-  };
-
-  const submitHandler = async () => {
-    const res = await fetch(
-      `https://api.themoviedb.org/3/search/movie?&api_key=96aef73142a3bf028320faa7a7476a67&query=${query}`
-    );
-    const movieList = await res.json();
-    console.log(movieList.results[0]);
-    setQuery(null);
-  };
+  const person = getLocalPerson();
 
   return (
-    <div className={classes.container}>
-      <Container maxWidth='md'>
-        <Typography
-          variant='h2'
-          align='center'
-          color='textPrimary'
-          gutterBottom
-        >
-          Movie Data Finder
-        </Typography>
-        <Typography variant='h5' align='center' color='textSecondary' paragraph>
-          Search information about your favorites movies, actors, directors.
-          Read and write reviews about them!
-        </Typography>
-        <div className={classes.search}>
-          <Grid container spacing={2} justifyContent='center'>
-            <Grid item>
-              <form className={classes.form} noValidate autoComplete='off'>
-                <TextField
-                  className={classes.searchBar}
-                  style={{ width: 350 }}
-                  autoFocus={true}
-                  fullWidth={true}
-                  placeholder='Search movies, actors, directors..'
-                  onChange={inputHandler}
-                />
-              </form>
-            </Grid>
-            <Grid item>
-              <Button
-                variant='contained'
-                color='primary'
-                onClick={submitHandler}
-              >
-                Search
-              </Button>
-            </Grid>
-          </Grid>
-        </div>
-      </Container>
-    </div>
+    <Container maxWidth={false} className={classes.container}>
+      <Grid container className={classes.gridContainer} spacing={2}>
+        <Grid item xs={12} md={4}>
+          <Card className={classes.card} elevation={4}>
+            <CardMedia
+              className={classes.cardMedia}
+              image={`https://image.tmdb.org/t/p/w500${person.profile_path}`}
+              title={person.name}
+            />
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={8} className={classes.details}>
+          <Typography className={classes.personDetails} variant='h2'>
+            <strong>{person.name}</strong>
+          </Typography>
+          <Typography
+            className={classes.personDetails}
+            variant='body1'
+            gutterBottom
+          >
+            {person.known_for_department}
+            {person.birthday}
+          </Typography>
+          <Typography
+            className={classes.mpersonetails}
+            variant='subtitle1'
+            style={{ marginTop: "50px" }}
+          >
+            <strong>Biography</strong>
+          </Typography>
+          <Typography className={classes.personDetails} variant='body1'>
+            {person.biography}
+          </Typography>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 

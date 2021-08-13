@@ -7,10 +7,7 @@ export default makeStyles(() => ({
     marginBottom: "20px",
   },
   castGridItem: {
-    // height: "100%",
     display: "flex",
-    // flexWrap: "wrap",
-    justifyContent: "space-around",
     overflow: "hidden",
   },
   imageList: { flexWrap: "nowrap", transform: "translateZ(0)" },

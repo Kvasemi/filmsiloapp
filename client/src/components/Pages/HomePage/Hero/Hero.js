@@ -15,47 +15,43 @@ const Hero = () => {
   const { inputHandler, randMovie, submitHandler } = useAuth();
 
   return (
-    <Container
-      className={classes.container}
-      direction='column'
-      justifyContent='center'
-      alignItems='center'
-      minHeight='100vh'
-    >
+    <Container className={classes.container} direction='column'>
       <CardMedia
-        style={{
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center center",
-          backgroundSize: "cover",
-          backgroundAttachment: "fixed",
-          height: "300px",
-        }}
+        className={classes.backgroundCard}
         image={`https://image.tmdb.org/t/p/w1280${randMovie.backdrop_path}`}
       >
-        <Typography
-          className={classes.heroTextTitle}
-          variant='h2'
-          align='center'
-          color='textPrimary'
-          gutterBottom
-        >
-          Movie Data Finder
-        </Typography>
-        <Typography
-          variant='h5'
-          align='center'
-          className={classes.heroTextSlogan}
-          paragraph
-        >
-          Search information about your favorites movies, actors, directors.
-          Read and write reviews about them!
-        </Typography>
-        <div className={classes.search}>
-          <Grid container spacing={2} justifyContent='center'>
-            <Grid item>
+        <div className={classes.outerLayer}>
+          <Typography
+            className={classes.heroTextTitle}
+            variant='h2'
+            align='center'
+            color='textPrimary'
+            gutterBottom
+          >
+            Movie Data Finder
+          </Typography>
+          <Typography
+            variant='h5'
+            align='center'
+            className={classes.heroTextSlogan}
+            paragraph
+          >
+            Search information about your favorites movies, actors, directors.
+            Read and write reviews about them!
+          </Typography>
+          <Grid
+            container
+            className={classes.searchContainer}
+            spacing={2}
+            justifyContent='center'
+          >
+            <Grid item className={classes.searchBar}>
               <form className={classes.form} noValidate autoComplete='off'>
                 <TextField
-                  className={classes.searchBar}
+                  type='text'
+                  InputProps={{
+                    className: classes.input,
+                  }}
                   style={{ width: 350 }}
                   autoFocus={true}
                   fullWidth={true}
@@ -64,7 +60,7 @@ const Hero = () => {
                 />
               </form>
             </Grid>
-            <Grid item>
+            <Grid item className={classes.searchButton}>
               <Button
                 variant='contained'
                 color='primary'

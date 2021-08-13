@@ -2,7 +2,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme) => ({
   div: {},
-  // cardGrid: { padding: "20px 0", minWidth: "300" },
   card: {
     height: "100%",
     display: "flex",

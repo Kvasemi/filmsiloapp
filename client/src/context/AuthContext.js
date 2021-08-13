@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 const AuthContext = React.createContext();
 
@@ -13,11 +13,29 @@ export const AuthProvider = ({ children }) => {
   const [crewList, setCrewList] = useState([]);
   const [query, setQuery] = useState(null);
   const [randMovie, setRandMovie] = useState({});
+  const [person, setPerson] = useState({});
+  const [relatedMovieList, setRelatedMovieList] = useState([]);
 
   const inputHandler = (e) => {
     e.preventDefault();
 
     setQuery(e.target.value);
+  };
+
+  const randMoviePicker = (fetchedMovieList) => {
+    const rand = (max, min) => Math.random() * (max - min) + min;
+    return fetchedMovieList[Math.round(rand(fetchedMovieList.length - 1, 0))];
+  };
+
+  const homepageRender = () => {
+    fetch(
+      "https://api.themoviedb.org/3/movie/popular?api_key=96aef73142a3bf028320faa7a7476a67"
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setMovieList(data.results);
+        setRandMovie(randMoviePicker(data.results));
+      });
   };
 
   const submitHandler = () => {
@@ -50,6 +68,25 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  const personClickHandler = (id) => {
+    fetch(
+      `https://api.themoviedb.org/3/person/${id}?api_key=96aef73142a3bf028320faa7a7476a67`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        localStorage.setItem("person", JSON.stringify(data));
+        setPerson(data);
+      });
+    fetch(
+      `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=96aef73142a3bf028320faa7a7476a67`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        localStorage.setItem("relatedMovieList", JSON.stringify(data));
+        setRelatedMovieList(data);
+      });
+  };
+
   const getLocalMovie = () => {
     return JSON.parse(localStorage.getItem("movie", JSON.stringify(movie)));
   };
@@ -57,6 +94,16 @@ export const AuthProvider = ({ children }) => {
   const getLocalCrew = () => {
     return JSON.parse(
       localStorage.getItem("crewList", JSON.stringify(crewList))
+    );
+  };
+
+  const getLocalPerson = () => {
+    return JSON.parse(localStorage.getItem("person", JSON.stringify(person)));
+  };
+
+  const getLocalrelatedMovieList = () => {
+    return JSON.parse(
+      localStorage.getItem("relatedMovieList", JSON.stringify(relatedMovieList))
     );
   };
 
@@ -76,23 +123,15 @@ export const AuthProvider = ({ children }) => {
     setRandMovie,
     movieQueryList,
     setMovieQueryList,
+    personClickHandler,
+    person,
+    setPerson,
+    getLocalPerson,
+    relatedMovieList,
+    setRelatedMovieList,
+    getLocalrelatedMovieList,
+    homepageRender,
   };
-
-  const randMoviePicker = (fetchedMovieList) => {
-    const rand = (max, min) => Math.random() * (max - min) + min;
-    return fetchedMovieList[Math.round(rand(fetchedMovieList.length - 1, 0))];
-  };
-
-  useEffect(() => {
-    fetch(
-      "https://api.themoviedb.org/3/movie/popular?api_key=96aef73142a3bf028320faa7a7476a67"
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setMovieList(data.results);
-        setRandMovie(randMoviePicker(data.results));
-      });
-  }, []);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

@@ -26,12 +26,7 @@ const Hero = () => {
         }}
         image={`https://image.tmdb.org/t/p/w1280${movie.poster_path}`}
       >
-        <Grid
-          container
-          className={classes.gridContainer}
-          spacing={2}
-          justifyContent='center'
-        >
+        <Grid container className={classes.gridContainer} spacing={2}>
           <Grid item xs={12} md={4}>
             <Card className={classes.card} elevation={4}>
               <CardMedia
