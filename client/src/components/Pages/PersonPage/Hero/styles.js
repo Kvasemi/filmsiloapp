@@ -22,9 +22,9 @@ export default makeStyles((theme) => ({
     margin: "50px 100px 0px 50px",
   },
   biographyText: { marginBottom: "15px" },
-  biographyDetails: { maxHeight: "300px", overflow: "auto" },
   cardMedia: { paddingTop: "56.25%", height: 325 },
   details: {
     marginTop: "30px",
   },
+  showButton: { display: "block", margin: "20px 20px 20px 0px" },
 }));

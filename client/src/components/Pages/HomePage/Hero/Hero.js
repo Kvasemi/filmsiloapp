@@ -58,6 +58,7 @@ const Hero = () => {
                   fullWidth={true}
                   placeholder='Search movies, actors, directors..'
                   onChange={inputHandler}
+                  required
                 />
                 <Button
                   className={classes.searchButton}

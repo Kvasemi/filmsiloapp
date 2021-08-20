@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
   const [person, setPerson] = useState({});
   const [relatedMovieList, setRelatedMovieList] = useState([]);
   const [searchToggle, setSearchToggle] = useState(false);
+  const [showToggle, setShowToggle] = useState(false);
 
   const history = useHistory();
 
@@ -85,30 +86,37 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    fetch(
-      `https://api.themoviedb.org/3/search/movie?&api_key=96aef73142a3bf028320faa7a7476a67&query=${query}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        localStorage.setItem("movieQueryList", JSON.stringify(data.results));
+    if (!query) {
+      console.log("null was called");
+    } else {
+      const movieResponse = await fetch(
+        `https://api.themoviedb.org/3/search/movie?&api_key=96aef73142a3bf028320faa7a7476a67&query=${query}`
+      );
+      const movieData = await movieResponse.json();
+      localStorage.setItem("movieQueryList", JSON.stringify(movieData.results));
+      setMovieQueryList(movieData.results);
+      const personResponse = await fetch(
+        `https://api.themoviedb.org/3/search/person?api_key=96aef73142a3bf028320faa7a7476a67&search_type=ngram&query=${query}`
+      );
+      const personData = await personResponse.json();
+      localStorage.setItem(
+        "personQueryList",
+        JSON.stringify(personData.results)
+      );
+      setPersonQueryList(personData.results);
 
-        setMovieQueryList(data.results);
-      });
-    fetch(
-      `https://api.themoviedb.org/3/search/person?api_key=96aef73142a3bf028320faa7a7476a67&search_type=ngram&query=${query}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        localStorage.setItem("personQueryList", JSON.stringify(data.results));
+      if (movieData.results.length < 1 && personData.results.length < 1) {
+        e.target.placeholder = "NO MATCH FOUND";
+      } else {
+        history.push("/search");
+      }
 
-        setPersonQueryList(data.results);
-      });
-    setQuery(null);
-    setSearchToggle(false);
-    history.push("/search");
+      setQuery(null);
+      setSearchToggle(false);
+    }
   };
 
   const movieClickHandler = (id) => {
@@ -155,7 +163,6 @@ export const AuthProvider = ({ children }) => {
 
   const peopleToggleHandler = () => {
     setSearchToggle(true);
-    // setSearchToggle(false);
   };
 
   const getLocalMovie = () => {
@@ -225,6 +232,8 @@ export const AuthProvider = ({ children }) => {
     peopleToggleHandler,
     searchToggle,
     formatDate,
+    showToggle,
+    setShowToggle,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

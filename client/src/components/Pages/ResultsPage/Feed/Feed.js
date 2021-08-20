@@ -22,6 +22,7 @@ const Feed = () => {
     searchToggle,
     movieClickHandler,
     personClickHandler,
+    formatDate,
   } = useAuth();
 
   const movies = getLocalMovieQueryList();
@@ -47,9 +48,13 @@ const Feed = () => {
                 {movie.title}
               </Typography>
               <Typography variant='subtitle1' color='textSecondary'>
-                {movie.release_date}
+                {movie.release_date && formatDate(movie.release_date)}
               </Typography>
-              <Typography variant='subtitle1' paragraph>
+              <Typography
+                variant='subtitle1'
+                className={classes.paragraph}
+                paragraph
+              >
                 {movie.overview}
               </Typography>
             </CardContent>
@@ -108,7 +113,9 @@ const Feed = () => {
           PEOPLE
         </Button>
       </div>
-      {!searchToggle ? mappedMovieResults : mappedPeopleResults}
+      {!searchToggle && movies.length > 0
+        ? mappedMovieResults
+        : mappedPeopleResults}
     </Grid>
   );
 };

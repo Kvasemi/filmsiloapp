@@ -10,6 +10,8 @@ export default makeStyles(() => ({
     margin: "20px",
     marginTop: "0px",
     height: "250px",
+    borderRadius: "10px",
+    boxShadow: "10px 5px 5px rgba(0, 0, 0, .2)",
   },
   cardDetails: {
     flex: 1,
@@ -26,6 +28,7 @@ export default makeStyles(() => ({
     alignItems: "center",
     verticalAlign: "center",
   },
+  paragraph: { marginTop: "20px" },
   moviesButton: { marginRight: "5px" },
   peopleButton: { marginLeft: "5px" },
 }));

@@ -1,14 +1,37 @@
-import { CardMedia, Container, Typography } from "@material-ui/core";
+import { Button, CardMedia, Container, Typography } from "@material-ui/core";
 
 import useStyles from "./styles";
 import { useAuth } from "../../../../context/AuthContext";
 
 const Hero = () => {
   const classes = useStyles();
-  const { getLocalPerson } = useAuth();
+  const { getLocalPerson, setShowToggle, showToggle } = useAuth();
 
   const person = getLocalPerson();
 
+  const personBiography = (num) => {
+    if (person.biography.length > num) {
+      return (
+        <>
+          <Typography className={classes.biographyDetails} variant='body1'>
+            {!showToggle ? person.biography.slice(0, num) : person.biography}
+          </Typography>
+          <Button className={classes.showButton} onClick={readMoreHandler}>
+            {!showToggle ? "Read More..." : "Read Less..."}
+          </Button>
+        </>
+      );
+    } else
+      return (
+        <Typography className={classes.biographyDetails} variant='body1'>
+          {person.biography}
+        </Typography>
+      );
+  };
+
+  const readMoreHandler = () => {
+    setShowToggle(!showToggle);
+  };
   return (
     <Container maxWidth={false} className={classes.container}>
       <CardMedia
@@ -27,9 +50,7 @@ const Hero = () => {
         >
           <strong>Biography</strong>
         </Typography>
-        <Typography className={classes.biographyDetails} variant='body1'>
-          {person.biography}
-        </Typography>
+        {personBiography(1250)}
       </div>
     </Container>
   );
