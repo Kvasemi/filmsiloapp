@@ -15,21 +15,24 @@ import useStyles from "./styles";
 
 const Feed = () => {
   const classes = useStyles();
-  const { getLocalrelatedMovieList, movieClickHandler } = useAuth();
+  const { formatDate, getLocalrelatedMovieList, movieClickHandler } = useAuth();
 
   const relatedMovieList = getLocalrelatedMovieList();
 
   const mappedRelatedMovieList = relatedMovieList.cast.map((movie) => (
-    <Link to={`/movie/${movie.id}`} style={{ textDecoration: "none" }}>
+    <Link
+      to={`/movie/${movie.id}`}
+      className={classes.linkContainer}
+      key={movie.id}
+    >
       <Card
-        key={movie.id}
         className={classes.castCard}
         elevation={4}
         onClick={() => movieClickHandler(movie.id)}
       >
         <CardMedia
           className={classes.cardMedia}
-          image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+          image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
           title={movie.title}
         />
         <CardContent className={classes.cardContent}>
@@ -37,7 +40,103 @@ const Feed = () => {
             {movie.title}
           </Typography>
           <Typography variant='body2' gutterBottom>
-            {movie.release_date}
+            {movie.release_date && formatDate(movie.release_date)}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Link>
+  ));
+
+  const filterByDirectingWorks = relatedMovieList.crew.filter(
+    (movie) => movie.job === "Director"
+  );
+
+  const filterByWritingWorks = relatedMovieList.crew.filter(
+    (movie) => movie.job === "Screenplay" || movie.job === "Writer"
+  );
+
+  const filterByProducingWorks = relatedMovieList.crew.filter((movie) =>
+    movie.job.includes("Producer")
+  );
+
+  const mappedRelatedDirectedList = filterByDirectingWorks.map((movie) => (
+    <Link
+      to={`/movie/${movie.id}`}
+      className={classes.linkContainer}
+      key={movie.id}
+    >
+      <Card
+        className={classes.castCard}
+        elevation={4}
+        onClick={() => movieClickHandler(movie.id)}
+      >
+        <CardMedia
+          className={classes.cardMedia}
+          image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+          title={movie.title}
+        />
+        <CardContent className={classes.cardContent}>
+          <Typography variant='subtitle2' gutterBottom>
+            {movie.title}
+          </Typography>
+          <Typography variant='body2' gutterBottom>
+            {movie.release_date && formatDate(movie.release_date)}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Link>
+  ));
+
+  const mappedRelatedScreenplayList = filterByWritingWorks.map((movie) => (
+    <Link
+      to={`/movie/${movie.id}`}
+      className={classes.linkContainer}
+      key={movie.id}
+    >
+      <Card
+        className={classes.castCard}
+        elevation={4}
+        onClick={() => movieClickHandler(movie.id)}
+      >
+        <CardMedia
+          className={classes.cardMedia}
+          image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+          title={movie.title}
+        />
+        <CardContent className={classes.cardContent}>
+          <Typography variant='subtitle2' gutterBottom>
+            {movie.title}
+          </Typography>
+          <Typography variant='body2' gutterBottom>
+            {movie.release_date && formatDate(movie.release_date)}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Link>
+  ));
+
+  const mappedRelatedProducedList = filterByProducingWorks.map((movie) => (
+    <Link
+      to={`/movie/${movie.id}`}
+      className={classes.linkContainer}
+      key={movie.id}
+    >
+      <Card
+        className={classes.castCard}
+        elevation={4}
+        onClick={() => movieClickHandler(movie.id)}
+      >
+        <CardMedia
+          className={classes.cardMedia}
+          image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+          title={movie.title}
+        />
+        <CardContent className={classes.cardContent}>
+          <Typography variant='subtitle2' gutterBottom>
+            {movie.title}
+          </Typography>
+          <Typography variant='body2' gutterBottom>
+            {movie.release_date && formatDate(movie.release_date)}
           </Typography>
         </CardContent>
       </Card>
@@ -46,18 +145,56 @@ const Feed = () => {
 
   return (
     <div className={classes.rootDiv}>
-      <Typography variant='h6'>Cast and Crew</Typography>
       <Grid container spacing={4} style={{ marginBottom: "200px" }}>
-        <Grid item xs={12} md={8}>
+        <Sidebar />
+        <Grid item xs={12} md={9}>
           <Grid container className={classes.castGridContainer} spacing={2}>
             <Grid item className={classes.castGridItem}>
-              <ImageList className={classes.imageList} cols={2.5}>
-                {mappedRelatedMovieList}
-              </ImageList>
+              {relatedMovieList.cast.length > 0 && (
+                <>
+                  <Typography variant='h6' className={classes.heading}>
+                    Movies Acted in
+                  </Typography>
+
+                  <ImageList className={classes.imageList} cols={3}>
+                    {mappedRelatedMovieList}
+                  </ImageList>
+                </>
+              )}
+              {filterByDirectingWorks.length > 0 && (
+                <>
+                  <Typography variant='h6' className={classes.heading}>
+                    Movies Directed
+                  </Typography>
+
+                  <ImageList className={classes.imageList} cols={3}>
+                    {mappedRelatedDirectedList}
+                  </ImageList>
+                </>
+              )}
+              {filterByWritingWorks.length > 0 && (
+                <>
+                  <Typography variant='h6' className={classes.heading}>
+                    Movies Written
+                  </Typography>
+                  <ImageList className={classes.imageList} cols={3}>
+                    {mappedRelatedScreenplayList}
+                  </ImageList>
+                </>
+              )}
+              {filterByProducingWorks.length > 0 && (
+                <>
+                  <Typography variant='h6' className={classes.heading}>
+                    Movies Produced
+                  </Typography>
+                  <ImageList className={classes.imageList} cols={3}>
+                    {mappedRelatedProducedList}
+                  </ImageList>
+                </>
+              )}
             </Grid>
           </Grid>
         </Grid>
-        <Sidebar />
       </Grid>
     </div>
   );

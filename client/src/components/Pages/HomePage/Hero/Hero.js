@@ -51,6 +51,7 @@ const Hero = () => {
                   type='text'
                   InputProps={{
                     className: classes.input,
+                    disableUnderline: true,
                   }}
                   style={{ width: 350 }}
                   autoFocus={true}
@@ -58,16 +59,16 @@ const Hero = () => {
                   placeholder='Search movies, actors, directors..'
                   onChange={inputHandler}
                 />
+                <Button
+                  className={classes.searchButton}
+                  type='submit'
+                  variant='contained'
+                  color='primary'
+                  onClick={(e) => submitHandler(e)}
+                >
+                  Search
+                </Button>
               </form>
-            </Grid>
-            <Grid item className={classes.searchButton}>
-              <Button
-                variant='contained'
-                color='primary'
-                onClick={submitHandler}
-              >
-                Search
-              </Button>
             </Grid>
           </Grid>
         </div>

@@ -6,19 +6,25 @@ export default makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     margin: "0",
     width: "100vw",
-  },
-  gridContainer: {
-    background: "rgba(200,200,200,0.4)",
-  },
-  card: {
-    height: "100%",
-    width: "300px",
     display: "flex",
-    flexDirection: "column",
-    margin: "30px",
   },
+  image: {
+    top: "50%",
+    flexShrink: "0",
+    marginTop: "50px",
+    marginLeft: "100px",
+    width: "300px",
+    height: "450px",
+    borderRadius: "10px",
+    boxShadow: "10px 5px 5px rgba(0, 0, 0, .2)",
+  },
+  textDiv: {
+    margin: "50px 100px 0px 50px",
+  },
+  biographyText: { marginBottom: "15px" },
+  biographyDetails: { maxHeight: "300px", overflow: "auto" },
   cardMedia: { paddingTop: "56.25%", height: 325 },
   details: {
-    marginTop: "80px",
+    marginTop: "30px",
   },
 }));

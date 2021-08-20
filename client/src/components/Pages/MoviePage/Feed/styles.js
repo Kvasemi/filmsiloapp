@@ -3,23 +3,27 @@ import { makeStyles } from "@material-ui/core/styles";
 export default makeStyles(() => ({
   rootDiv: { margin: "50px" },
   castGridContainer: {
-    height: "100%",
+    height: "350px",
     marginBottom: "20px",
   },
   castGridItem: {
     display: "flex",
     overflow: "hidden",
   },
-  imageList: { flexWrap: "nowrap", transform: "translateZ(0)" },
+  imageList: {
+    flexWrap: "nowrap",
+    transform: "translateZ(0)",
+  },
   castCard: {
     margin: "10px 10px",
-    minWidth: "125px",
-    minHeight: "290px",
+    minWidth: "150px",
+    maxHeight: "500px",
   },
   cardMedia: {
+    margin: "auto",
     padding: 57.5,
-    height: 60,
-    width: 10,
+    height: 230,
+    width: 145,
   },
-  cardContent: { flexGrow: "1", height: 60 },
+  cardContent: { flexGrow: "1", height: 90 },
 }));

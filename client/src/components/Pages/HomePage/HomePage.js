@@ -7,10 +7,10 @@ import Footer from "../../Modules/Footer/Footer";
 import { useAuth } from "../../../context/AuthContext";
 
 const HomePage = () => {
-  const { homepageRender } = useAuth();
+  const { popularMovies } = useAuth();
 
   useEffect(() => {
-    homepageRender();
+    popularMovies();
   }, []);
 
   return (

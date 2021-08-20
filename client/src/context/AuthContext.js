@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const AuthContext = React.createContext();
 
@@ -8,6 +9,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [movieQueryList, setMovieQueryList] = useState([]);
+  const [personQueryList, setPersonQueryList] = useState([]);
   const [movieList, setMovieList] = useState([]);
   const [movie, setMovie] = useState({});
   const [crewList, setCrewList] = useState([]);
@@ -15,6 +17,9 @@ export const AuthProvider = ({ children }) => {
   const [randMovie, setRandMovie] = useState({});
   const [person, setPerson] = useState({});
   const [relatedMovieList, setRelatedMovieList] = useState([]);
+  const [searchToggle, setSearchToggle] = useState(false);
+
+  const history = useHistory();
 
   const inputHandler = (e) => {
     e.preventDefault();
@@ -27,7 +32,35 @@ export const AuthProvider = ({ children }) => {
     return fetchedMovieList[Math.round(rand(fetchedMovieList.length - 1, 0))];
   };
 
-  const homepageRender = () => {
+  const getDay = () => {
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, "0");
+    let mm = String(today.getMonth() + 1).padStart(2, "0");
+    let yyyy = today.getFullYear();
+
+    today = yyyy + "-" + mm + "-" + dd;
+    return today;
+  };
+
+  const addDays = (date, days) => {
+    let today = new Date(date);
+    today.setDate(today.getDate() + days);
+    let dd = String(today.getDate()).padStart(2, "0");
+    let mm = String(today.getMonth() + 1).padStart(2, "0");
+    let yyyy = today.getFullYear();
+    let newDate = yyyy + "-" + mm + "-" + dd;
+    return newDate;
+  };
+
+  const numOfDays = 15;
+
+  const formatDate = (date) => {
+    const newArray = date.split("-");
+    const newDate = `${newArray[1]}/${newArray[2]}/${newArray[0]}`;
+    return newDate;
+  };
+
+  const popularMovies = () => {
     fetch(
       "https://api.themoviedb.org/3/movie/popular?api_key=96aef73142a3bf028320faa7a7476a67"
     )
@@ -38,15 +71,44 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  const submitHandler = () => {
+  const upcomingMovies = () => {
+    fetch(
+      `https://api.themoviedb.org/3/discover/movie?api_key=96aef73142a3bf028320faa7a7476a67&page=1&language=en-US&release_date.gte=${getDay()}&release_date.lte=${addDays(
+        getDay(),
+        numOfDays
+      )}&with_release_type=2|3&include_video=false&region=US`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setMovieList(data.results);
+        setRandMovie(randMoviePicker(data.results));
+      });
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
     fetch(
       `https://api.themoviedb.org/3/search/movie?&api_key=96aef73142a3bf028320faa7a7476a67&query=${query}`
     )
       .then((res) => res.json())
       .then((data) => {
-        setMovieQueryList(data);
-        setQuery(null);
+        localStorage.setItem("movieQueryList", JSON.stringify(data.results));
+
+        setMovieQueryList(data.results);
       });
+    fetch(
+      `https://api.themoviedb.org/3/search/person?api_key=96aef73142a3bf028320faa7a7476a67&search_type=ngram&query=${query}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        localStorage.setItem("personQueryList", JSON.stringify(data.results));
+
+        setPersonQueryList(data.results);
+      });
+    setQuery(null);
+    setSearchToggle(false);
+    history.push("/search");
   };
 
   const movieClickHandler = (id) => {
@@ -87,6 +149,15 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  const movieToggleHandler = () => {
+    setSearchToggle(false);
+  };
+
+  const peopleToggleHandler = () => {
+    setSearchToggle(true);
+    // setSearchToggle(false);
+  };
+
   const getLocalMovie = () => {
     return JSON.parse(localStorage.getItem("movie", JSON.stringify(movie)));
   };
@@ -104,6 +175,18 @@ export const AuthProvider = ({ children }) => {
   const getLocalrelatedMovieList = () => {
     return JSON.parse(
       localStorage.getItem("relatedMovieList", JSON.stringify(relatedMovieList))
+    );
+  };
+
+  const getLocalMovieQueryList = () => {
+    return JSON.parse(
+      localStorage.getItem("movieQueryList", JSON.stringify(movieQueryList))
+    );
+  };
+
+  const getLocalPersonQueryList = () => {
+    return JSON.parse(
+      localStorage.getItem("personQueryList", JSON.stringify(personQueryList))
     );
   };
 
@@ -130,7 +213,18 @@ export const AuthProvider = ({ children }) => {
     relatedMovieList,
     setRelatedMovieList,
     getLocalrelatedMovieList,
-    homepageRender,
+    popularMovies,
+    upcomingMovies,
+    personQueryList,
+    setPersonQueryList,
+    getLocalMovieQueryList,
+    getLocalPersonQueryList,
+    getDay,
+    addDays,
+    movieToggleHandler,
+    peopleToggleHandler,
+    searchToggle,
+    formatDate,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

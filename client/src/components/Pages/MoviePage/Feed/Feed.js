@@ -21,16 +21,19 @@ const Feed = () => {
   const crew = getLocalCrew();
 
   const mappedCrewList = crew.cast.map((crew) => (
-    <Link to={`/person/${crew.id}`} style={{ textDecoration: "none" }}>
+    <Link
+      to={`/person/${crew.id}`}
+      key={crew.id}
+      style={{ textDecoration: "none" }}
+    >
       <Card
-        key={crew.id}
         className={classes.castCard}
         elevation={4}
         onClick={() => personClickHandler(crew.id)}
       >
         <CardMedia
           className={classes.cardMedia}
-          image={`https://image.tmdb.org/t/p/w500${crew.profile_path}`}
+          image={`https://image.tmdb.org/t/p/h632${crew.profile_path}`}
           title={crew.name}
         />
         <CardContent className={classes.cardContent}>
@@ -47,9 +50,10 @@ const Feed = () => {
 
   return (
     <div className={classes.rootDiv}>
-      <Typography variant='h6'>Cast and Crew</Typography>
       <Grid container spacing={4} style={{ marginBottom: "200px" }}>
-        <Grid item xs={12} md={8}>
+        <Sidebar />
+        <Grid item xs={12} lg={9}>
+          <Typography variant='h6'>Cast</Typography>
           <Grid container className={classes.castGridContainer} spacing={2}>
             <Grid item className={classes.castGridItem}>
               <ImageList className={classes.imageList} cols={2.5}>
@@ -57,10 +61,8 @@ const Feed = () => {
               </ImageList>
             </Grid>
           </Grid>
-
           <Reviews />
         </Grid>
-        <Sidebar />
       </Grid>
     </div>
   );

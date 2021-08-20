@@ -1,13 +1,33 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme) => ({
-  div: {},
+  container: { margin: "auto", maxWidth: "1600px" },
+  toggleContainer: {
+    marginTop: "15px",
+    marginBottom: "15px",
+    margin: "auto",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    verticalAlign: "center",
+  },
   card: {
     height: "100%",
+    width: "100%",
+
     display: "flex",
     flexDirection: "column",
     cursor: "pointer",
+    boxShadow: "10px 5px 5px rgba(0, 0, 0, .2)",
   },
-  cardMedia: { paddingTop: "56.25%", height: 225 },
+  cardMedia: {
+    paddingTop: "56.25%",
+    height: "250px",
+    [theme.breakpoints.down("sm")]: {
+      height: "450px",
+    },
+  },
   cardContent: { flexGrow: "1", height: 60, underline: "none" },
+  popularButton: { width: "165px", marginRight: "5px" },
+  upcomingButton: { marginLeft: "10px" },
 }));

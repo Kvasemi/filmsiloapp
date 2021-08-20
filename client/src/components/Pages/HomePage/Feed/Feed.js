@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../../../../context/AuthContext";
-
 import {
+  Button,
   Card,
   CardContent,
   CardMedia,
@@ -10,10 +9,17 @@ import {
   Typography,
 } from "@material-ui/core";
 
+import { useAuth } from "../../../../context/AuthContext";
 import useStyles from "./styles";
 
 const Feed = () => {
-  const { movieList, movieClickHandler } = useAuth();
+  const {
+    formatDate,
+    movieClickHandler,
+    movieList,
+    popularMovies,
+    upcomingMovies,
+  } = useAuth();
 
   const classes = useStyles();
 
@@ -27,7 +33,7 @@ const Feed = () => {
         >
           <CardMedia
             className={classes.cardMedia}
-            image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
             title={movie.title}
           />
           <CardContent className={classes.cardContent}>
@@ -35,7 +41,7 @@ const Feed = () => {
               {movie.title}
             </Typography>
             <Typography variant='body2' gutterBottom>
-              {movie.release_date}
+              {formatDate(movie.release_date)}
             </Typography>
           </CardContent>
         </Card>
@@ -45,6 +51,24 @@ const Feed = () => {
 
   return (
     <div className={classes.container}>
+      <div className={classes.toggleContainer}>
+        <Button
+          className={classes.popularButton}
+          variant='contained'
+          color='primary'
+          onClick={popularMovies}
+        >
+          POPULAR MOVIES
+        </Button>
+        <Button
+          className={classes.upcomingButton}
+          variant='contained'
+          color='primary'
+          onClick={upcomingMovies}
+        >
+          UPCOMING MOVIES
+        </Button>
+      </div>
       <Container className={classes.cardGrid} maxWidth='xl'>
         <Grid container spacing={4}>
           {mappedMovieList}
