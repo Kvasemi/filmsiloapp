@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
   mainContainer: {
     margin: "auto",
     width: "80vw",
@@ -29,6 +29,12 @@ export default makeStyles(() => ({
     verticalAlign: "center",
   },
   paragraph: { marginTop: "20px" },
-  moviesButton: { marginRight: "5px" },
-  peopleButton: { marginLeft: "5px" },
+  moviesButton: {
+    padding: "15px",
+    fontWeight: "bold",
+  },
+  peopleButton: {
+    padding: "15px",
+    fontWeight: "bold",
+  },
 }));

@@ -28,6 +28,6 @@ export default makeStyles((theme) => ({
     },
   },
   cardContent: { flexGrow: "1", height: 60, underline: "none" },
-  popularButton: { width: "165px", marginRight: "5px" },
-  upcomingButton: { marginLeft: "10px" },
+  popularButton: { padding: "15px", fontWeight: "bold" },
+  upcomingButton: { padding: "15px", fontWeight: "bold" },
 }));

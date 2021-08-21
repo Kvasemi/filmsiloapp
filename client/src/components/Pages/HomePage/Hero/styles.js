@@ -13,7 +13,6 @@ export default makeStyles((theme) => ({
     height: "400px",
   },
   outerLayer: {
-    // backgroundColor: "rgba(0, 229, 255, 0.5)",
     backgroundImage:
       "linear-gradient(to right, rgba(4, 59, 86, 0.3) , rgba(22, 172, 220, 0.3))",
     boxShadow: "inset 0px 30px 100px #000000, inset 0px -30px 100px #000000",

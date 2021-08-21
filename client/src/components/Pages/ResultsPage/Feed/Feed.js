@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import {
-  Button,
   Card,
   CardContent,
   CardMedia,
@@ -8,6 +7,7 @@ import {
   Hidden,
   Typography,
 } from "@material-ui/core";
+import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 
 import { useAuth } from "../../../../context/AuthContext";
 import useStyles from "./styles";
@@ -95,24 +95,20 @@ const Feed = () => {
 
   return (
     <Grid container className={classes.mainContainer}>
-      <div className={classes.toggleContainer}>
-        <Button
+      <ToggleButtonGroup exclusive className={classes.toggleContainer}>
+        <ToggleButton
           className={classes.moviesButton}
-          variant='contained'
-          color='primary'
           onClick={movieToggleHandler}
         >
           MOVIES
-        </Button>
-        <Button
+        </ToggleButton>
+        <ToggleButton
           className={classes.peopleButton}
-          variant='contained'
-          color='primary'
           onClick={peopleToggleHandler}
         >
           PEOPLE
-        </Button>
-      </div>
+        </ToggleButton>
+      </ToggleButtonGroup>
       {!searchToggle && movies.length > 0
         ? mappedMovieResults
         : mappedPeopleResults}
