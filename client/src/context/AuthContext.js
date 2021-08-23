@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
     return newDate;
   };
 
-  const numOfDays = 15;
+  const numOfDays = 30;
 
   const formatDate = (date) => {
     const newArray = date.split("-");
@@ -69,7 +69,8 @@ export const AuthProvider = ({ children }) => {
       .then((data) => {
         setMovieList(data.results);
         setRandMovie(randMoviePicker(data.results));
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   const upcomingMovies = () => {
@@ -83,7 +84,8 @@ export const AuthProvider = ({ children }) => {
       .then((data) => {
         setMovieList(data.results);
         setRandMovie(randMoviePicker(data.results));
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   const submitHandler = async (e) => {
@@ -127,7 +129,8 @@ export const AuthProvider = ({ children }) => {
       .then((data) => {
         localStorage.setItem("movie", JSON.stringify(data));
         setMovie(data);
-      });
+      })
+      .catch((err) => console.log(err));
     fetch(
       `https://api.themoviedb.org/3/movie/${id}/credits?api_key=96aef73142a3bf028320faa7a7476a67`
     )
@@ -135,7 +138,8 @@ export const AuthProvider = ({ children }) => {
       .then((data) => {
         localStorage.setItem("crewList", JSON.stringify(data));
         setCrewList(data);
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   const personClickHandler = (id) => {
@@ -146,7 +150,8 @@ export const AuthProvider = ({ children }) => {
       .then((data) => {
         localStorage.setItem("person", JSON.stringify(data));
         setPerson(data);
-      });
+      })
+      .catch((err) => console.log(err));
     fetch(
       `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=96aef73142a3bf028320faa7a7476a67`
     )
@@ -154,7 +159,8 @@ export const AuthProvider = ({ children }) => {
       .then((data) => {
         localStorage.setItem("relatedMovieList", JSON.stringify(data));
         setRelatedMovieList(data);
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   const movieToggleHandler = () => {

@@ -20,7 +20,6 @@ const Feed = () => {
     popularMovies,
     upcomingMovies,
   } = useAuth();
-
   const classes = useStyles();
 
   const mappedMovieList = movieList.map((movie) => (
@@ -52,11 +51,16 @@ const Feed = () => {
   return (
     <div className={classes.container}>
       <ToggleButtonGroup exclusive className={classes.toggleContainer}>
-        <ToggleButton className={classes.popularButton} onClick={popularMovies}>
+        <ToggleButton
+          className={classes.popularButton}
+          value='POPULAR MOVIES'
+          onClick={popularMovies}
+        >
           POPULAR MOVIES
         </ToggleButton>
         <ToggleButton
           className={classes.upcomingButton}
+          value='UPCOMING MOVIES'
           onClick={upcomingMovies}
         >
           UPCOMING MOVIES

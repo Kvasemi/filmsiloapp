@@ -10,6 +10,7 @@ const HomePage = () => {
   const { popularMovies } = useAuth();
 
   useEffect(() => {
+    console.log("useEffect triggered");
     popularMovies();
   }, []);
 

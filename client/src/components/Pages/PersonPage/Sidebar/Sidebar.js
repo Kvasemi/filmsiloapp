@@ -33,7 +33,7 @@ const Sidebar = () => {
             <strong>Birthday</strong>
           </Typography>
           <Typography variant='body1' className={classes.body}>
-            {formatDate(person.birthday)}
+            {person.birthday && formatDate(person.birthday)}
           </Typography>
           <Typography variant='subtitle1' className={classes.subtitle}>
             <strong>Place Of Birth</strong>
