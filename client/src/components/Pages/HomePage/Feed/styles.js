@@ -3,9 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 export default makeStyles((theme) => ({
   container: { margin: "auto", maxWidth: "1600px" },
   toggleContainer: {
-    marginTop: "15px",
-    marginBottom: "15px",
-    margin: "auto",
+    margin: "15px 0px 15px 10px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
