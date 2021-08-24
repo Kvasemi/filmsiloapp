@@ -10,12 +10,13 @@ import {
 } from "@material-ui/core";
 import StarRatings from "react-star-ratings";
 
+import { REVIEWONE, REVIEWTWO } from "../../../Constants/constants";
 import { useAuth } from "../../../../context/AuthContext";
 import useStyles from "./styles";
 
 const Reviews = () => {
   const classes = useStyles();
-  const { showComponent } = useAuth();
+  const { changeRatingHandler, showComponent, starRating } = useAuth();
 
   return (
     <Grid container className={classes.mainContainer}>
@@ -28,9 +29,11 @@ const Reviews = () => {
                 Write a Review
               </Typography>
               <StarRatings
-                rating={2.403}
+                rating={starRating}
+                starRatedColor='blue'
+                changeRating={changeRatingHandler}
                 starDimension='30px'
-                starSpacing='15px'
+                starSpacing='10px'
               />
               <form className={classes.form} noValidate>
                 <TextField
@@ -73,13 +76,20 @@ const Reviews = () => {
               <div className={classes.cardDetails}>
                 <CardContent>
                   <Typography component='h2' variant='h5' gutterBottom>
-                    REVIEW TITLE
+                    {REVIEWONE.review_title}
                   </Typography>
                   <Typography variant='subtitle1' color='textSecondary'>
-                    STARS
+                    <StarRatings
+                      rating={REVIEWONE.num_stars}
+                      starRatedColor='blue'
+                      numberOfStars={5}
+                      name='rating'
+                      starDimension='30px'
+                      starSpacing='10px'
+                    />
                   </Typography>
                   <Typography variant='subtitle1' paragraph>
-                    REVIEW OVERVIEW
+                    {REVIEWONE.review_body}
                   </Typography>
                 </CardContent>
               </div>
@@ -88,13 +98,20 @@ const Reviews = () => {
               <div className={classes.cardDetails}>
                 <CardContent>
                   <Typography component='h2' variant='h5' gutterBottom>
-                    REVIEW TITLE
+                    {REVIEWTWO.review_title}
                   </Typography>
                   <Typography variant='subtitle1' color='textSecondary'>
-                    STARS
+                    <StarRatings
+                      rating={REVIEWTWO.num_stars}
+                      starRatedColor='blue'
+                      numberOfStars={5}
+                      name='rating'
+                      starDimension='30px'
+                      starSpacing='10px'
+                    />
                   </Typography>
                   <Typography variant='subtitle1' paragraph>
-                    REVIEW OVERVIEW
+                    {REVIEWTWO.review_body}
                   </Typography>
                 </CardContent>
               </div>

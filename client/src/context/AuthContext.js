@@ -20,6 +20,17 @@ export const AuthProvider = ({ children }) => {
   const [searchToggle, setSearchToggle] = useState(false);
   const [showToggle, setShowToggle] = useState(false);
   const [showComponent, setShowComponent] = useState(false);
+  const [starRating, setStarRating] = useState(0);
+  const [review, setReview] = useState({
+    review_id: "",
+    movie_id: "",
+    user_id: "",
+    movie_name: "",
+    date_created: "",
+    num_stars: "",
+    review_title: "",
+    review_body: "",
+  });
 
   const history = useHistory();
 
@@ -68,6 +79,10 @@ export const AuthProvider = ({ children }) => {
 
   const toggleFormHandler = () => {
     setShowComponent(true);
+  };
+
+  const changeRatingHandler = (newRating) => {
+    setStarRating(newRating);
   };
 
   const popularMovies = () => {
@@ -253,6 +268,10 @@ export const AuthProvider = ({ children }) => {
     setShowComponent,
     toggleReviewHandler,
     toggleFormHandler,
+    review,
+    setReview,
+    starRating,
+    changeRatingHandler,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
