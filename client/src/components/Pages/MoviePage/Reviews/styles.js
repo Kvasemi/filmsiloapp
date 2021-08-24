@@ -8,8 +8,13 @@ export default makeStyles((theme) => ({
   item: { width: "100%" },
   card: {
     display: "flex",
-    margin: "20px 10px 20px 10px",
-    height: "200px",
+    margin: "auto",
+    marginTop: "20px",
+    marginBottom: "20px",
+    height: "300px",
+    width: "50%",
+    borderRadius: "10px",
+    boxShadow: "10px 5px 5px rgba(0, 0, 0, .2)",
   },
   cardDetails: {
     flex: 1,
@@ -21,10 +26,6 @@ export default makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%",

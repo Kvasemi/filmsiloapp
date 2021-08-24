@@ -26,4 +26,13 @@ export default makeStyles(() => ({
     width: 145,
   },
   cardContent: { flexGrow: "1", height: 90 },
+  toggleContainer: {
+    margin: "15px 0px 15px 10px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    verticalAlign: "center",
+  },
+  reviewsButton: { padding: "15px", fontWeight: "bold", width: "145px" },
+  formButton: { padding: "15px", fontWeight: "bold" },
 }));

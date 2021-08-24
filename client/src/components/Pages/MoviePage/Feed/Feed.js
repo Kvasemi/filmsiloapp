@@ -3,10 +3,12 @@ import {
   Card,
   CardMedia,
   CardContent,
+  Divider,
   Grid,
   ImageList,
   Typography,
 } from "@material-ui/core";
+import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 
 import { useAuth } from "../../../../context/AuthContext";
 import Reviews from "../Reviews/Reviews";
@@ -16,7 +18,12 @@ import useStyles from "./styles";
 
 const Feed = () => {
   const classes = useStyles();
-  const { getLocalCrew, personClickHandler } = useAuth();
+  const {
+    getLocalCrew,
+    personClickHandler,
+    toggleReviewHandler,
+    toggleFormHandler,
+  } = useAuth();
 
   const crew = getLocalCrew();
 
@@ -61,6 +68,23 @@ const Feed = () => {
               </ImageList>
             </Grid>
           </Grid>
+          <Divider variant='middle' />
+          <ToggleButtonGroup exclusive className={classes.toggleContainer}>
+            <ToggleButton
+              className={classes.reviewsButton}
+              value='REVIEWS'
+              onClick={toggleReviewHandler}
+            >
+              REVIEWS
+            </ToggleButton>
+            <ToggleButton
+              className={classes.formButton}
+              value='WRITE A REVIEW'
+              onClick={toggleFormHandler}
+            >
+              WRITE A REVIEW
+            </ToggleButton>
+          </ToggleButtonGroup>
           <Reviews />
         </Grid>
       </Grid>

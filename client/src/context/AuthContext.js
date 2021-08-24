@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
   const [relatedMovieList, setRelatedMovieList] = useState([]);
   const [searchToggle, setSearchToggle] = useState(false);
   const [showToggle, setShowToggle] = useState(false);
+  const [showComponent, setShowComponent] = useState(false);
 
   const history = useHistory();
 
@@ -59,6 +60,14 @@ export const AuthProvider = ({ children }) => {
     const newArray = date.split("-");
     const newDate = `${newArray[1]}/${newArray[2]}/${newArray[0]}`;
     return newDate;
+  };
+
+  const toggleReviewHandler = () => {
+    setShowComponent(false);
+  };
+
+  const toggleFormHandler = () => {
+    setShowComponent(true);
   };
 
   const popularMovies = () => {
@@ -240,6 +249,10 @@ export const AuthProvider = ({ children }) => {
     formatDate,
     showToggle,
     setShowToggle,
+    showComponent,
+    setShowComponent,
+    toggleReviewHandler,
+    toggleFormHandler,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
