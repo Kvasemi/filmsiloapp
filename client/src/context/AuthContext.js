@@ -73,6 +73,7 @@ export const AuthProvider = ({ children }) => {
 
   const toggleFormHandler = () => {
     setShowComponent(true);
+    setStarRating(0);
   };
 
   const changeRatingHandler = (newRating) => {
