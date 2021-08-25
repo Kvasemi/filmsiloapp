@@ -232,6 +232,7 @@ export const AuthProvider = ({ children }) => {
       .then((data) => {
         localStorage.setItem("crewList", JSON.stringify(data));
         setCrewList(data);
+        history.push(`/movie/${id}`);
       })
       .catch((err) => console.log(err));
   };
@@ -253,6 +254,7 @@ export const AuthProvider = ({ children }) => {
       .then((data) => {
         localStorage.setItem("relatedMovieList", JSON.stringify(data));
         setRelatedMovieList(data);
+        history.push(`/person/${id}`);
       })
       .catch((err) => console.log(err));
   };

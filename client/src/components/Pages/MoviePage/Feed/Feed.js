@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
   Card,
   CardMedia,
@@ -28,31 +27,25 @@ const Feed = () => {
   const crew = getLocalCrew();
 
   const mappedCrewList = crew.cast.map((crew) => (
-    <Link
-      to={`/person/${crew.id}`}
-      key={crew.id}
-      style={{ textDecoration: "none" }}
+    <Card
+      className={classes.castCard}
+      elevation={4}
+      onClick={() => personClickHandler(crew.id)}
     >
-      <Card
-        className={classes.castCard}
-        elevation={4}
-        onClick={() => personClickHandler(crew.id)}
-      >
-        <CardMedia
-          className={classes.cardMedia}
-          image={`https://image.tmdb.org/t/p/h632${crew.profile_path}`}
-          title={crew.name}
-        />
-        <CardContent className={classes.cardContent}>
-          <Typography variant='subtitle2' gutterBottom>
-            {crew.name}
-          </Typography>
-          <Typography variant='body2' gutterBottom>
-            {crew.character}
-          </Typography>
-        </CardContent>
-      </Card>
-    </Link>
+      <CardMedia
+        className={classes.cardMedia}
+        image={`https://image.tmdb.org/t/p/h632${crew.profile_path}`}
+        title={crew.name}
+      />
+      <CardContent className={classes.cardContent}>
+        <Typography variant='subtitle2' gutterBottom>
+          {crew.name}
+        </Typography>
+        <Typography variant='body2' gutterBottom>
+          {crew.character}
+        </Typography>
+      </CardContent>
+    </Card>
   ));
 
   return (

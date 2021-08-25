@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -24,27 +23,25 @@ const Feed = () => {
 
   const mappedMovieList = movieList.map((movie) => (
     <Grid item key={movie.id} xs={12} sm={6} md={3} lg={2}>
-      <Link to={`/movie/${movie.id}`} style={{ textDecoration: "none" }}>
-        <Card
-          className={classes.card}
-          elevation={4}
-          onClick={() => movieClickHandler(movie.id)}
-        >
-          <CardMedia
-            className={classes.cardMedia}
-            image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
-            title={movie.title}
-          />
-          <CardContent className={classes.cardContent}>
-            <Typography variant='subtitle2' gutterBottom>
-              {movie.title}
-            </Typography>
-            <Typography variant='body2' gutterBottom>
-              {formatDate(movie.release_date)}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Link>
+      <Card
+        className={classes.card}
+        elevation={4}
+        onClick={() => movieClickHandler(movie.id)}
+      >
+        <CardMedia
+          className={classes.cardMedia}
+          image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+          title={movie.title}
+        />
+        <CardContent className={classes.cardContent}>
+          <Typography variant='subtitle2' gutterBottom>
+            {movie.title}
+          </Typography>
+          <Typography variant='body2' gutterBottom>
+            {formatDate(movie.release_date)}
+          </Typography>
+        </CardContent>
+      </Card>
     </Grid>
   ));
 
