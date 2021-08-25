@@ -16,7 +16,11 @@ const Sidebar = () => {
   };
 
   const companies = movie.production_companies.map((comp) => (
-    <Typography variant='body1' className={classes.companies_body}>
+    <Typography
+      key={comp.id}
+      variant='body1'
+      className={classes.companies_body}
+    >
       {comp.name}
     </Typography>
   ));

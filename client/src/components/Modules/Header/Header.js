@@ -17,12 +17,22 @@ import PersonIcon from "@material-ui/icons/Person";
 
 import useStyles from "./styles";
 import logo from "../../../images/theslidestack.png";
+import { useAuth } from "../../../context/AuthContext";
 
 const Header = () => {
   const classes = useStyles();
-
+  const {
+    confirmPasswordHandler,
+    emailHandler,
+    emailRef,
+    passwordHandler,
+    passwordRef,
+    signInHandler,
+    signInUpHandler,
+    signUpHandler,
+    toggleSignInUp,
+  } = useAuth();
   const [state, setState] = useState(false);
-  const [toggleSignInUp, setToggleSignInUp] = useState(false);
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -33,10 +43,6 @@ const Header = () => {
     }
 
     setState(open);
-  };
-
-  const signInUpHandler = () => {
-    setToggleSignInUp(!toggleSignInUp);
   };
 
   return (
@@ -64,6 +70,7 @@ const Header = () => {
                       </Typography>
                       <form className={classes.form} noValidate>
                         <TextField
+                          inputRef={emailRef}
                           variant='outlined'
                           margin='normal'
                           required
@@ -73,8 +80,10 @@ const Header = () => {
                           name='email'
                           autoComplete='email'
                           autoFocus
+                          onChange={emailHandler}
                         />
                         <TextField
+                          inputRef={passwordRef}
                           variant='outlined'
                           margin='normal'
                           required
@@ -84,6 +93,7 @@ const Header = () => {
                           type='password'
                           id='password'
                           autoComplete='current-password'
+                          onChange={passwordHandler}
                         />
                         <FormControlLabel
                           control={
@@ -97,12 +107,17 @@ const Header = () => {
                           variant='contained'
                           color='primary'
                           className={classes.submit}
+                          onClick={(e) => signInHandler(e)}
                         >
                           Sign In
                         </Button>
                         <Grid container>
                           <Grid item style={{ margin: "auto" }}>
-                            <Link onClick={signInUpHandler} variant='body2'>
+                            <Link
+                              to='#'
+                              onClick={signInUpHandler}
+                              variant='body2'
+                            >
                               {"Don't have an account? Sign Up"}
                             </Link>
                           </Grid>
@@ -116,6 +131,7 @@ const Header = () => {
                       </Typography>
                       <form className={classes.form} noValidate>
                         <TextField
+                          inputRef={emailRef}
                           variant='outlined'
                           margin='normal'
                           required
@@ -125,8 +141,10 @@ const Header = () => {
                           name='email'
                           autoComplete='email'
                           autoFocus
+                          onChange={emailHandler}
                         />
                         <TextField
+                          inputRef={passwordRef}
                           variant='outlined'
                           margin='normal'
                           required
@@ -135,6 +153,7 @@ const Header = () => {
                           label='Password'
                           type='password'
                           id='password'
+                          onChange={passwordHandler}
                         />
                         <TextField
                           variant='outlined'
@@ -145,6 +164,7 @@ const Header = () => {
                           label='Confirm Password'
                           type='confirm-password'
                           id='confirm-password'
+                          onChange={confirmPasswordHandler}
                         />
                         <Button
                           type='submit'
@@ -152,12 +172,17 @@ const Header = () => {
                           variant='contained'
                           color='primary'
                           className={classes.submit}
+                          onClick={(e) => signUpHandler(e)}
                         >
                           Sign Up
                         </Button>
                         <Grid container>
                           <Grid item style={{ margin: "auto" }}>
-                            <Link onClick={signInUpHandler} variant='body2'>
+                            <Link
+                              to='#'
+                              onClick={signInUpHandler}
+                              variant='body2'
+                            >
                               {"Already have an account? Sign In"}
                             </Link>
                           </Grid>

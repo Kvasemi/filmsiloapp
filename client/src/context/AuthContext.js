@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 const AuthContext = React.createContext();
@@ -8,6 +8,24 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
+  const reviewInitialState = {
+    review_id: "",
+    movie_id: "",
+    user_id: "",
+    movie_name: "",
+    date_created: "",
+    num_stars: 0,
+    review_title: "",
+    review_body: "",
+  };
+  const userInitialState = {
+    user_id: "",
+    email: "",
+    password: "",
+    reviews: [""], //list of review_id's
+  };
+  const userLoginInitialState = { email: "", password: "" };
+
   const [movieQueryList, setMovieQueryList] = useState([]);
   const [personQueryList, setPersonQueryList] = useState([]);
   const [movieList, setMovieList] = useState([]);
@@ -21,23 +39,86 @@ export const AuthProvider = ({ children }) => {
   const [showToggle, setShowToggle] = useState(false);
   const [showComponent, setShowComponent] = useState(false);
   const [starRating, setStarRating] = useState(0);
-  const [review, setReview] = useState({
-    review_id: "",
-    movie_id: "",
-    user_id: "",
-    movie_name: "",
-    date_created: "",
-    num_stars: "",
-    review_title: "",
-    review_body: "",
-  });
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState(null);
+  const [toggleSignInUp, setToggleSignInUp] = useState(false);
+  const [review, setReview] = useState(reviewInitialState);
+  const [user, setUser] = useState(userInitialState);
+  const [userLogin, setUserLogin] = useState(userLoginInitialState);
+  const [textField, setTextField] = useState("");
+
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
   const history = useHistory();
 
-  const inputHandler = (e) => {
+  const searchInputHandler = (e) => {
     e.preventDefault();
 
     setQuery(e.target.value);
+  };
+
+  const reviewBodyHandler = (e) => {
+    setReview({ ...review, review_body: e.target.value });
+  };
+
+  const reviewTitleHandler = (e) => {
+    setReview({ ...review, review_title: e.target.value });
+  };
+
+  const toggleReviewHandler = () => {
+    setShowComponent(false);
+  };
+
+  const toggleFormHandler = () => {
+    setShowComponent(true);
+  };
+
+  const changeRatingHandler = (newRating) => {
+    setStarRating(newRating);
+  };
+
+  const reviewSubmitHandler = (e) => {
+    e.preventDefault();
+
+    setReview({ ...review, num_stars: starRating });
+    // must send the review through the api
+    // must add instructions to reset the state after submit
+  };
+
+  const emailHandler = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const passwordHandler = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const confirmPasswordHandler = (e) => {
+    setConfirmPassword(e.target.value);
+  };
+
+  const signInHandler = (e) => {
+    e.preventDefault();
+
+    setUserLogin({ email, password });
+    // must send the sign in details through the api
+    // must add instructions to reset the state after submit
+  };
+
+  const signUpHandler = (e) => {
+    e.preventDefault();
+
+    setUser({ email, password });
+    // must send the sign up details through the api
+    // must add instructions to reset the state after submit
+  };
+
+  const signInUpHandler = () => {
+    setToggleSignInUp(!toggleSignInUp);
+    emailRef.current.value = "";
+    passwordRef.current.value = "";
   };
 
   const randMoviePicker = (fetchedMovieList) => {
@@ -73,18 +154,6 @@ export const AuthProvider = ({ children }) => {
     return newDate;
   };
 
-  const toggleReviewHandler = () => {
-    setShowComponent(false);
-  };
-
-  const toggleFormHandler = () => {
-    setShowComponent(true);
-  };
-
-  const changeRatingHandler = (newRating) => {
-    setStarRating(newRating);
-  };
-
   const popularMovies = () => {
     fetch(
       "https://api.themoviedb.org/3/movie/popular?api_key=96aef73142a3bf028320faa7a7476a67"
@@ -112,7 +181,7 @@ export const AuthProvider = ({ children }) => {
       .catch((err) => console.log(err));
   };
 
-  const submitHandler = async (e) => {
+  const searchSubmitHandler = async (e) => {
     e.preventDefault();
 
     if (!query) {
@@ -235,8 +304,8 @@ export const AuthProvider = ({ children }) => {
     movie,
     setMovie,
     movieClickHandler,
-    submitHandler,
-    inputHandler,
+    searchSubmitHandler,
+    searchInputHandler,
     getLocalMovie,
     getLocalCrew,
     randMovie,
@@ -272,6 +341,25 @@ export const AuthProvider = ({ children }) => {
     setReview,
     starRating,
     changeRatingHandler,
+    user,
+    setUser,
+    userLogin,
+    setUserLogin,
+    reviewBodyHandler,
+    reviewTitleHandler,
+    reviewSubmitHandler,
+    emailHandler,
+    passwordHandler,
+    signInHandler,
+    signUpHandler,
+    confirmPasswordHandler,
+    signInUpHandler,
+    toggleSignInUp,
+    setToggleSignInUp,
+    textField,
+    setTextField,
+    emailRef,
+    passwordRef,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -16,7 +16,14 @@ import useStyles from "./styles";
 
 const Reviews = () => {
   const classes = useStyles();
-  const { changeRatingHandler, showComponent, starRating } = useAuth();
+  const {
+    changeRatingHandler,
+    reviewBodyHandler,
+    reviewSubmitHandler,
+    reviewTitleHandler,
+    showComponent,
+    starRating,
+  } = useAuth();
 
   return (
     <Grid container className={classes.mainContainer}>
@@ -45,6 +52,7 @@ const Reviews = () => {
                   label='Review Title'
                   name='title'
                   autoComplete='title'
+                  onChange={reviewTitleHandler}
                 />
                 <TextField
                   multiline={true}
@@ -57,6 +65,7 @@ const Reviews = () => {
                   label='Review'
                   type='review'
                   id='review'
+                  onChange={reviewBodyHandler}
                 />
                 <Button
                   type='submit'
@@ -64,6 +73,7 @@ const Reviews = () => {
                   variant='contained'
                   color='primary'
                   className={classes.submit}
+                  onClick={(e) => reviewSubmitHandler(e)}
                 >
                   Submit Review
                 </Button>

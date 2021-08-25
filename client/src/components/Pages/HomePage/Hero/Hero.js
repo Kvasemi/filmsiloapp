@@ -12,7 +12,7 @@ import { useAuth } from "../../../../context/AuthContext";
 
 const Hero = () => {
   const classes = useStyles();
-  const { inputHandler, randMovie, submitHandler } = useAuth();
+  const { randMovie, searchInputHandler, searchSubmitHandler } = useAuth();
 
   return (
     <Container className={classes.container} direction='column'>
@@ -57,7 +57,7 @@ const Hero = () => {
                   autoFocus={true}
                   fullWidth={true}
                   placeholder='Search movies, actors, directors..'
-                  onChange={inputHandler}
+                  onChange={searchInputHandler}
                   required
                 />
                 <Button
@@ -65,7 +65,7 @@ const Hero = () => {
                   type='submit'
                   variant='contained'
                   color='primary'
-                  onClick={(e) => submitHandler(e)}
+                  onClick={(e) => searchSubmitHandler(e)}
                 >
                   Search
                 </Button>

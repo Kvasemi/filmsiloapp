@@ -20,10 +20,13 @@ const Hero = () => {
     return roleFinder(role).map(
       (crew) =>
         crew && (
-          <Link to={`/person/${crew.id}`} style={{ textDecoration: "none" }}>
+          <Link
+            key={crew.id}
+            to={`/person/${crew.id}`}
+            style={{ textDecoration: "none" }}
+          >
             <Typography
               style={{ display: "inline-block", marginRight: "20px" }}
-              key={crew.id}
               className={classes.text_names}
               variant='body1'
               onClick={() => personClickHandler(crew.id)}
