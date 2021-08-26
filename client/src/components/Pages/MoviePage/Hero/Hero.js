@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { CardMedia, Container, Typography } from "@material-ui/core";
 
 import useStyles from "./styles";
@@ -17,15 +16,13 @@ const Hero = () => {
   };
 
   const mappedCrewList = (role) => {
-    return roleFinder(role).map(
-      (crew) =>
-        crew && (
-          <Link
-            key={crew.id}
-            to={`/person/${crew.id}`}
-            style={{ textDecoration: "none" }}
-          >
+    return roleFinder(role)
+      .slice(0, 5)
+      .map(
+        (crew) =>
+          crew && (
             <Typography
+              key={crew.id}
               style={{ display: "inline-block", marginRight: "20px" }}
               className={classes.text_names}
               variant='body1'
@@ -33,9 +30,8 @@ const Hero = () => {
             >
               <strong>{crew.name}</strong>
             </Typography>
-          </Link>
-        )
-    );
+          )
+      );
   };
 
   return (
@@ -64,7 +60,7 @@ const Hero = () => {
               variant='body1'
               gutterBottom
             >
-              {formatDate(movie.release_date)}
+              {movie.release_date && formatDate(movie.release_date)}
             </Typography>
             <Typography
               className={classes.movieDetails}

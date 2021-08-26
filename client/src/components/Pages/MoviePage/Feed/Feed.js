@@ -27,25 +27,27 @@ const Feed = () => {
   const crew = getLocalCrew();
 
   const mappedCrewList = crew.cast.map((crew) => (
-    <Card
-      className={classes.castCard}
-      elevation={4}
-      onClick={() => personClickHandler(crew.id)}
-    >
-      <CardMedia
-        className={classes.cardMedia}
-        image={`https://image.tmdb.org/t/p/h632${crew.profile_path}`}
-        title={crew.name}
-      />
-      <CardContent className={classes.cardContent}>
-        <Typography variant='subtitle2' gutterBottom>
-          {crew.name}
-        </Typography>
-        <Typography variant='body2' gutterBottom>
-          {crew.character}
-        </Typography>
-      </CardContent>
-    </Card>
+    <div className={classes.linkContainer} key={crew.id}>
+      <Card
+        className={classes.castCard}
+        elevation={4}
+        onClick={() => personClickHandler(crew.id)}
+      >
+        <CardMedia
+          className={classes.cardMedia}
+          image={`https://image.tmdb.org/t/p/h632${crew.profile_path}`}
+          title={crew.name}
+        />
+        <CardContent className={classes.cardContent}>
+          <Typography variant='subtitle2' gutterBottom>
+            {crew.name}
+          </Typography>
+          <Typography variant='body2' gutterBottom>
+            {crew.character}
+          </Typography>
+        </CardContent>
+      </Card>
+    </div>
   ));
 
   return (

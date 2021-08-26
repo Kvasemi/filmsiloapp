@@ -23,13 +23,15 @@ const Header = () => {
   const classes = useStyles();
   const {
     confirmPasswordHandler,
-    emailHandler,
     emailRef,
-    passwordHandler,
     passwordRef,
+    signInEmailHandler,
     signInHandler,
+    signInPasswordHandler,
     signInUpHandler,
+    signUpEmailHandler,
     signUpHandler,
+    signUpPasswordHandler,
     toggleSignInUp,
   } = useAuth();
   const [state, setState] = useState(false);
@@ -80,7 +82,7 @@ const Header = () => {
                           name='email'
                           autoComplete='email'
                           autoFocus
-                          onChange={emailHandler}
+                          onChange={signInEmailHandler}
                         />
                         <TextField
                           inputRef={passwordRef}
@@ -93,7 +95,7 @@ const Header = () => {
                           type='password'
                           id='password'
                           autoComplete='current-password'
-                          onChange={passwordHandler}
+                          onChange={signInPasswordHandler}
                         />
                         <FormControlLabel
                           control={
@@ -141,7 +143,7 @@ const Header = () => {
                           name='email'
                           autoComplete='email'
                           autoFocus
-                          onChange={emailHandler}
+                          onChange={signUpEmailHandler}
                         />
                         <TextField
                           inputRef={passwordRef}
@@ -153,7 +155,7 @@ const Header = () => {
                           label='Password'
                           type='password'
                           id='password'
-                          onChange={passwordHandler}
+                          onChange={signUpPasswordHandler}
                         />
                         <TextField
                           variant='outlined'

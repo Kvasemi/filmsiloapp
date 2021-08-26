@@ -9,12 +9,14 @@ export default makeStyles(() => ({
   castGridItem: {
     overflow: "hidden",
   },
-  heading: { marginTop: "30px", marginBottom: "10px" },
-  linkContainer: { textDecoration: "none", maxWidth: "175px" },
   imageList: {
     flexWrap: "nowrap",
     transform: "translateZ(0)",
     height: "350px",
+  },
+  linkContainer: {
+    textDecoration: "none",
+    maxWidth: "175px",
   },
   castCard: {
     margin: "10px 10px",
@@ -27,5 +29,12 @@ export default makeStyles(() => ({
     height: 230,
     width: 145,
   },
-  cardContent: { height: 90 },
+  cardContent: {
+    flexGrow: "1",
+    height: 90,
+  },
+  heading: {
+    marginTop: "30px",
+    marginBottom: "10px",
+  },
 }));

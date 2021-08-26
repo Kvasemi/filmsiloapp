@@ -12,7 +12,8 @@ import { useAuth } from "../../../../context/AuthContext";
 
 const Hero = () => {
   const classes = useStyles();
-  const { randMovie, searchInputHandler, searchSubmitHandler } = useAuth();
+  const { randMovie, searchInputHandler, searchSubmitHandler, query } =
+    useAuth();
 
   return (
     <Container className={classes.container} direction='column'>
@@ -49,6 +50,7 @@ const Hero = () => {
               <form className={classes.form} noValidate autoComplete='off'>
                 <TextField
                   type='text'
+                  value={query}
                   InputProps={{
                     className: classes.input,
                     disableUnderline: true,

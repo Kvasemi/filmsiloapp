@@ -38,10 +38,8 @@ export const AuthProvider = ({ children }) => {
   const [searchToggle, setSearchToggle] = useState(false);
   const [showToggle, setShowToggle] = useState(false);
   const [showComponent, setShowComponent] = useState(false);
-  const [starRating, setStarRating] = useState(0);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
+  const [starRating, setStarRating] = useState(0);
   const [toggleSignInUp, setToggleSignInUp] = useState(false);
   const [review, setReview] = useState(reviewInitialState);
   const [user, setUser] = useState(userInitialState);
@@ -88,30 +86,36 @@ export const AuthProvider = ({ children }) => {
     // must add instructions to reset the state after submit
   };
 
-  const emailHandler = (e) => {
-    setEmail(e.target.value);
+  const signInEmailHandler = (e) => {
+    setUserLogin({ ...userLogin, email: e.target.value });
   };
 
-  const passwordHandler = (e) => {
-    setPassword(e.target.value);
+  const signInPasswordHandler = (e) => {
+    setUserLogin({ ...userLogin, password: e.target.value });
+  };
+
+  const signInHandler = (e) => {
+    e.preventDefault();
+
+    // must send the sign in details through the api
+    // must add instructions to reset the state after submit
+  };
+
+  const signUpEmailHandler = (e) => {
+    setUser({ ...user, email: e.target.value });
+  };
+
+  const signUpPasswordHandler = (e) => {
+    setUser({ ...user, password: e.target.value });
   };
 
   const confirmPasswordHandler = (e) => {
     setConfirmPassword(e.target.value);
   };
 
-  const signInHandler = (e) => {
-    e.preventDefault();
-
-    setUserLogin({ email, password });
-    // must send the sign in details through the api
-    // must add instructions to reset the state after submit
-  };
-
   const signUpHandler = (e) => {
     e.preventDefault();
 
-    setUser({ email, password });
     // must send the sign up details through the api
     // must add instructions to reset the state after submit
   };
@@ -351,10 +355,12 @@ export const AuthProvider = ({ children }) => {
     reviewBodyHandler,
     reviewTitleHandler,
     reviewSubmitHandler,
-    emailHandler,
-    passwordHandler,
+    signInEmailHandler,
+    signInPasswordHandler,
     signInHandler,
     signUpHandler,
+    signUpEmailHandler,
+    signUpPasswordHandler,
     confirmPasswordHandler,
     signInUpHandler,
     toggleSignInUp,

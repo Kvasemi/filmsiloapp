@@ -7,17 +7,21 @@ export default makeStyles(() => ({
     marginBottom: "20px",
   },
   castGridItem: {
-    display: "flex",
     overflow: "hidden",
   },
   imageList: {
     flexWrap: "nowrap",
     transform: "translateZ(0)",
+    height: "350px",
+  },
+  linkContainer: {
+    textDecoration: "none",
+    maxWidth: "175px",
   },
   castCard: {
     margin: "10px 10px",
-    minWidth: "150px",
-    maxHeight: "500px",
+    width: "150px",
+    height: "320px",
   },
   cardMedia: {
     margin: "auto",
@@ -25,7 +29,10 @@ export default makeStyles(() => ({
     height: 230,
     width: 145,
   },
-  cardContent: { flexGrow: "1", height: 90 },
+  cardContent: {
+    flexGrow: "1",
+    height: 90,
+  },
   toggleContainer: {
     margin: "15px 0px 15px 10px",
     display: "flex",
@@ -33,6 +40,13 @@ export default makeStyles(() => ({
     alignItems: "center",
     verticalAlign: "center",
   },
-  reviewsButton: { padding: "15px", fontWeight: "bold", width: "145px" },
-  formButton: { padding: "15px", fontWeight: "bold" },
+  reviewsButton: {
+    padding: "15px",
+    fontWeight: "bold",
+    width: "145px",
+  },
+  formButton: {
+    padding: "15px",
+    fontWeight: "bold",
+  },
 }));

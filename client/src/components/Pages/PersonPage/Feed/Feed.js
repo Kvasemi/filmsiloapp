@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
   Card,
   CardMedia,
@@ -19,12 +18,18 @@ const Feed = () => {
 
   const relatedMovieList = getLocalrelatedMovieList();
 
-  const mappedRelatedMovieList = relatedMovieList.cast.map((movie) => (
-    <Link
-      to={`/movie/${movie.id}`}
-      className={classes.linkContainer}
-      key={movie.id}
-    >
+  const sortedActedInList = relatedMovieList.cast.sort((a, b) => {
+    if (a.release_date && b.release_date) {
+      if (a.release_date.slice(0, 4) > b.release_date.slice(0, 4)) return -1;
+      else if (a.release_date.slice(0, 4) < b.release_date.slice(0, 4))
+        return 1;
+      else return 0;
+    }
+    return 1;
+  });
+
+  const mappedRelatedMovieList = sortedActedInList.map((movie) => (
+    <div className={classes.linkContainer} key={movie.id}>
       <Card
         className={classes.castCard}
         elevation={4}
@@ -44,55 +49,101 @@ const Feed = () => {
           </Typography>
         </CardContent>
       </Card>
-    </Link>
+    </div>
   ));
 
   const filterByDirectingWorks = relatedMovieList.crew.filter(
     (movie) => movie.job === "Director"
   );
 
+  const sortedDirectedList = filterByDirectingWorks.sort((a, b) => {
+    if (a.release_date && b.release_date) {
+      if (a.release_date.slice(0, 4) > b.release_date.slice(0, 4)) return -1;
+      else if (a.release_date.slice(0, 4) < b.release_date.slice(0, 4))
+        return 1;
+      else return 0;
+    }
+    return 1;
+  });
+
+  const mappedRelatedDirectedList = sortedDirectedList.map((movie) => (
+    <div className={classes.linkContainer} key={movie.id}>
+      <Card
+        className={classes.castCard}
+        elevation={4}
+        onClick={() => movieClickHandler(movie.id)}
+      >
+        <CardMedia
+          className={classes.cardMedia}
+          image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+          title={movie.title}
+        />
+        <CardContent className={classes.cardContent}>
+          <Typography variant='subtitle2' gutterBottom>
+            {movie.title}
+          </Typography>
+          <Typography variant='body2' gutterBottom>
+            {movie.release_date && formatDate(movie.release_date)}
+          </Typography>
+        </CardContent>
+      </Card>
+    </div>
+  ));
+
   const filterByWritingWorks = relatedMovieList.crew.filter(
     (movie) => movie.job === "Screenplay" || movie.job === "Writer"
   );
+
+  const sortedWrittenForList = filterByWritingWorks.sort((a, b) => {
+    if (a.release_date && b.release_date) {
+      if (a.release_date.slice(0, 4) > b.release_date.slice(0, 4)) return -1;
+      else if (a.release_date.slice(0, 4) < b.release_date.slice(0, 4))
+        return 1;
+      else return 0;
+    }
+    return 1;
+  });
+
+  const mappedRelatedScreenplayList = sortedWrittenForList.map((movie) => (
+    <div className={classes.linkContainer} key={movie.id}>
+      <Card
+        className={classes.castCard}
+        elevation={4}
+        onClick={() => movieClickHandler(movie.id)}
+      >
+        <CardMedia
+          className={classes.cardMedia}
+          image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+          title={movie.title}
+        />
+        <CardContent className={classes.cardContent}>
+          <Typography variant='subtitle2' gutterBottom>
+            {movie.title}
+          </Typography>
+          <Typography variant='body2' gutterBottom>
+            {movie.release_date && formatDate(movie.release_date)}
+          </Typography>
+        </CardContent>
+      </Card>
+    </div>
+  ));
 
   const filterByProducingWorks = relatedMovieList.crew.filter((movie) =>
     movie.job.includes("Producer")
   );
 
-  const mappedRelatedDirectedList = filterByDirectingWorks.map((movie) => (
-    <Link
-      to={`/movie/${movie.id}`}
-      className={classes.linkContainer}
-      key={movie.id}
-    >
-      <Card
-        className={classes.castCard}
-        elevation={4}
-        onClick={() => movieClickHandler(movie.id)}
-      >
-        <CardMedia
-          className={classes.cardMedia}
-          image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
-          title={movie.title}
-        />
-        <CardContent className={classes.cardContent}>
-          <Typography variant='subtitle2' gutterBottom>
-            {movie.title}
-          </Typography>
-          <Typography variant='body2' gutterBottom>
-            {movie.release_date && formatDate(movie.release_date)}
-          </Typography>
-        </CardContent>
-      </Card>
-    </Link>
-  ));
+  const sortedProducedList = filterByProducingWorks.sort((a, b) => {
+    if (a.release_date && b.release_date) {
+      if (a.release_date.slice(0, 4) > b.release_date.slice(0, 4)) return -1;
+      else if (a.release_date.slice(0, 4) < b.release_date.slice(0, 4))
+        return 1;
+      else return 0;
+    }
+    return 1;
+  });
 
-  const mappedRelatedScreenplayList = filterByWritingWorks.map((movie) => (
-    <Link
-      to={`/movie/${movie.id}`}
-      className={classes.linkContainer}
-      key={movie.id}
-    >
+  const mappedRelatedProducedList = sortedProducedList.map((movie) => (
+    <div className={classes.linkContainer} key={movie.id}>
       <Card
         className={classes.castCard}
         elevation={4}
@@ -112,35 +163,7 @@ const Feed = () => {
           </Typography>
         </CardContent>
       </Card>
-    </Link>
-  ));
-
-  const mappedRelatedProducedList = filterByProducingWorks.map((movie) => (
-    <Link
-      to={`/movie/${movie.id}`}
-      className={classes.linkContainer}
-      key={movie.id}
-    >
-      <Card
-        className={classes.castCard}
-        elevation={4}
-        onClick={() => movieClickHandler(movie.id)}
-      >
-        <CardMedia
-          className={classes.cardMedia}
-          image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
-          title={movie.title}
-        />
-        <CardContent className={classes.cardContent}>
-          <Typography variant='subtitle2' gutterBottom>
-            {movie.title}
-          </Typography>
-          <Typography variant='body2' gutterBottom>
-            {movie.release_date && formatDate(movie.release_date)}
-          </Typography>
-        </CardContent>
-      </Card>
-    </Link>
+    </div>
   ));
 
   return (

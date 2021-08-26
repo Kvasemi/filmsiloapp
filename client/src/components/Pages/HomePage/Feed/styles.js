@@ -9,11 +9,10 @@ export default makeStyles((theme) => ({
     alignItems: "center",
     verticalAlign: "center",
   },
-  card: {
+  castCard: {
     height: "100%",
     width: "100%",
-
-    display: "flex",
+    // display: "flex",
     flexDirection: "column",
     cursor: "pointer",
     boxShadow: "10px 5px 5px rgba(0, 0, 0, .2)",
@@ -25,7 +24,17 @@ export default makeStyles((theme) => ({
       height: "450px",
     },
   },
-  cardContent: { flexGrow: "1", height: 60, underline: "none" },
-  popularButton: { padding: "15px", fontWeight: "bold" },
-  upcomingButton: { padding: "15px", fontWeight: "bold" },
+  cardContent: {
+    flexGrow: "0",
+    height: 60,
+    underline: "none",
+  },
+  popularButton: {
+    padding: "15px",
+    fontWeight: "bold",
+  },
+  upcomingButton: {
+    padding: "15px",
+    fontWeight: "bold",
+  },
 }));

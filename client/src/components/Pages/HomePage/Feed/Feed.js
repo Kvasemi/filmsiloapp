@@ -24,7 +24,7 @@ const Feed = () => {
   const mappedMovieList = movieList.map((movie) => (
     <Grid item key={movie.id} xs={12} sm={6} md={3} lg={2}>
       <Card
-        className={classes.card}
+        className={classes.castCard}
         elevation={4}
         onClick={() => movieClickHandler(movie.id)}
       >
