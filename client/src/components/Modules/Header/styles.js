@@ -9,6 +9,7 @@ export default makeStyles((theme) => ({
   headerContainer: { display: "flex", justifyContent: "space-between" },
   image: {
     marginLeft: "15px",
+    marginTop: "20px",
   },
   loginIcon: { marginRight: "20px" },
   list: {

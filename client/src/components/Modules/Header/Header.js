@@ -16,7 +16,7 @@ import {
 import PersonIcon from "@material-ui/icons/Person";
 
 import useStyles from "./styles";
-import logo from "../../../images/theslidestack.png";
+import logo from "../../../images/filmsilo.png";
 import { useAuth } from "../../../context/AuthContext";
 
 const Header = () => {
