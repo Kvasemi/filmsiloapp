@@ -3,18 +3,23 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 
+import userRoutes from "./routes/users.js";
+
 const app = express();
-const PORT = process.env.PORT || 5000;
-const CONNECTION_URL =
-  "mongodb+srv://filmsiloadmin:filmsiloansong@cluster0.k4kpb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
+app.use("/users", userRoutes);
+
 app.get("/", (req, res) => {
   res.send("Welcome to Film Silo!");
 });
+
+const PORT = process.env.PORT || 5000;
+const CONNECTION_URL =
+  "mongodb+srv://filmsiloadmin:filmsiloansong@cluster0.k4kpb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 mongoose
   .connect(CONNECTION_URL, {

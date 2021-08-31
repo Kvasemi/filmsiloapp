@@ -18,12 +18,15 @@ const Reviews = () => {
   const classes = useStyles();
   const {
     changeRatingHandler,
+    getLocalMovie,
+    review,
     reviewBodyHandler,
     reviewSubmitHandler,
     reviewTitleHandler,
     showComponent,
-    starRating,
   } = useAuth();
+
+  const movie = getLocalMovie();
 
   return (
     <Grid container className={classes.mainContainer}>
@@ -36,7 +39,7 @@ const Reviews = () => {
                 Write a Review
               </Typography>
               <StarRatings
-                rating={starRating}
+                rating={review.num_stars}
                 starRatedColor='blue'
                 changeRating={changeRatingHandler}
                 starDimension='30px'
@@ -73,7 +76,7 @@ const Reviews = () => {
                   variant='contained'
                   color='primary'
                   className={classes.submit}
-                  onClick={(e) => reviewSubmitHandler(e)}
+                  onClick={(e) => reviewSubmitHandler(e, movie)}
                 >
                   Submit Review
                 </Button>

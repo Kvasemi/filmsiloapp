@@ -1,5 +1,8 @@
 import React, { useContext, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+
+import { createUser, getUser } from "../actions/users";
 
 const AuthContext = React.createContext();
 
@@ -18,14 +21,18 @@ export const AuthProvider = ({ children }) => {
     review_title: "",
     review_body: "",
   };
+
+  // state to send to backend when creating user's mongodb
   const userInitialState = {
-    user_id: "",
     email: "",
     password: "",
-    reviews: [""], //list of review_id's
+    reviews: [""], // list of review_id's of reviews that user made
   };
+
+  // state to grab form info to send via fetch api to mongodb for authentication
   const userLoginInitialState = { email: "", password: "" };
 
+  const [currentUser, setCurrentUser] = useState(userInitialState);
   const [movieQueryList, setMovieQueryList] = useState([]);
   const [personQueryList, setPersonQueryList] = useState([]);
   const [movieList, setMovieList] = useState([]);
@@ -39,12 +46,15 @@ export const AuthProvider = ({ children }) => {
   const [showToggle, setShowToggle] = useState(false);
   const [showComponent, setShowComponent] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState(null);
-  const [starRating, setStarRating] = useState(0);
   const [toggleSignInUp, setToggleSignInUp] = useState(false);
+  const [drawerState, setDrawerState] = useState(false);
   const [review, setReview] = useState(reviewInitialState);
   const [user, setUser] = useState(userInitialState);
   const [userLogin, setUserLogin] = useState(userLoginInitialState);
   const [textField, setTextField] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // const [user, dispatch] = useReducer(userReducer, userInitialState);
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -65,23 +75,15 @@ export const AuthProvider = ({ children }) => {
     setReview({ ...review, review_title: e.target.value });
   };
 
-  const toggleReviewHandler = () => {
-    setShowComponent(false);
-  };
-
-  const toggleFormHandler = () => {
-    setShowComponent(true);
-    setStarRating(0);
-  };
-
   const changeRatingHandler = (newRating) => {
-    setStarRating(newRating);
+    setReview({ ...review, num_stars: newRating });
   };
 
-  const reviewSubmitHandler = (e) => {
+  const reviewSubmitHandler = (e, movie) => {
     e.preventDefault();
 
-    setReview({ ...review, num_stars: starRating });
+    setReview({ ...review, date_created: new Date() });
+
     // must send the review through the api
     // must add instructions to reset the state after submit
   };
@@ -94,18 +96,28 @@ export const AuthProvider = ({ children }) => {
     setUserLogin({ ...userLogin, password: e.target.value });
   };
 
-  const signInHandler = (e) => {
+  const signInHandler = async (e) => {
     e.preventDefault();
 
     // must send the sign in details through the api
     // must add instructions to reset the state after submit
+    const res = await getUser(userLogin);
+    if (!("message" in res)) {
+      setCurrentUser({ ...currentUser, ...res });
+      setDrawerState(false);
+      setIsLoggedIn(true);
+    } else {
+      console.log("Log in was unsuccessful..");
+    }
   };
 
   const signUpEmailHandler = (e) => {
+    // dispatch({ type: CREATE, payload: { email: e.target.value } });
     setUser({ ...user, email: e.target.value });
   };
 
   const signUpPasswordHandler = (e) => {
+    // dispatch({ type: CREATE, payload: { password: e.target.value } });
     setUser({ ...user, password: e.target.value });
   };
 
@@ -113,15 +125,49 @@ export const AuthProvider = ({ children }) => {
     setConfirmPassword(e.target.value);
   };
 
-  const signUpHandler = (e) => {
+  const signUpHandler = async (e) => {
     e.preventDefault();
 
-    // must send the sign up details through the api
-    // must add instructions to reset the state after submit
+    if (confirmPassword === user.password) {
+      const res = await createUser(user);
+      if (res) {
+        setCurrentUser({ ...currentUser, ...res });
+        setDrawerState(false);
+        setIsLoggedIn(true);
+      } else {
+        console.log("Register was unsuccessful..");
+      }
+    }
+  };
+
+  const movieToggleHandler = () => {
+    setSearchToggle(false);
+  };
+
+  const peopleToggleHandler = () => {
+    setSearchToggle(true);
+  };
+
+  const toggleReviewHandler = () => {
+    setShowComponent(false);
+    setReview(reviewInitialState);
+  };
+
+  // this is entry point where review data should be populated into state
+  const toggleFormHandler = () => {
+    setShowComponent(true);
+    setReview({
+      ...review,
+      review_id: uuidv4(),
+      // user_id: propUser.user_id,
+      movie_id: getLocalMovie().id,
+      movie_name: getLocalMovie().title,
+    });
   };
 
   const signInUpHandler = () => {
     setToggleSignInUp(!toggleSignInUp);
+    setUser(userInitialState);
     emailRef.current.value = "";
     passwordRef.current.value = "";
   };
@@ -263,14 +309,6 @@ export const AuthProvider = ({ children }) => {
       .catch((err) => console.log(err));
   };
 
-  const movieToggleHandler = () => {
-    setSearchToggle(false);
-  };
-
-  const peopleToggleHandler = () => {
-    setSearchToggle(true);
-  };
-
   const getLocalMovie = () => {
     return JSON.parse(localStorage.getItem("movie", JSON.stringify(movie)));
   };
@@ -346,7 +384,6 @@ export const AuthProvider = ({ children }) => {
     toggleFormHandler,
     review,
     setReview,
-    starRating,
     changeRatingHandler,
     user,
     setUser,
@@ -369,6 +406,11 @@ export const AuthProvider = ({ children }) => {
     setTextField,
     emailRef,
     passwordRef,
+    currentUser,
+    setCurrentUser,
+    isLoggedIn,
+    drawerState,
+    setDrawerState,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

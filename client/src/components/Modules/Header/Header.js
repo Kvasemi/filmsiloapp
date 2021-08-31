@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   AppBar,
@@ -23,8 +22,12 @@ const Header = () => {
   const classes = useStyles();
   const {
     confirmPasswordHandler,
+    currentUser,
+    drawerState,
     emailRef,
+    isLoggedIn,
     passwordRef,
+    setDrawerState,
     signInEmailHandler,
     signInHandler,
     signInPasswordHandler,
@@ -34,7 +37,6 @@ const Header = () => {
     signUpPasswordHandler,
     toggleSignInUp,
   } = useAuth();
-  const [state, setState] = useState(false);
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -44,7 +46,7 @@ const Header = () => {
       return;
     }
 
-    setState(open);
+    setDrawerState(open);
   };
 
   return (
@@ -55,13 +57,22 @@ const Header = () => {
             <img className={classes.image} src={logo} alt='logo' height='175' />
           </Link>
           <div>
+            {isLoggedIn && (
+              <Typography component='h1' variant='h5'>
+                {currentUser.email}
+              </Typography>
+            )}
             <Button onClick={toggleDrawer(true)}>
               <PersonIcon
                 className={classes.loginIcon}
                 fontSize='large'
               ></PersonIcon>
             </Button>
-            <Drawer anchor='right' open={state} onClose={toggleDrawer(false)}>
+            <Drawer
+              anchor='right'
+              open={drawerState}
+              onClose={toggleDrawer(false)}
+            >
               <div role='presentation'>
                 <Container component='main' maxWidth='xs'>
                   <CssBaseline />
@@ -164,7 +175,7 @@ const Header = () => {
                           fullWidth
                           name='confirm-password'
                           label='Confirm Password'
-                          type='confirm-password'
+                          type='password'
                           id='confirm-password'
                           onChange={confirmPasswordHandler}
                         />
