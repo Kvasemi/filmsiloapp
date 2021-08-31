@@ -17,6 +17,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import useStyles from "./styles";
 import logo from "../../../images/filmsilo.png";
 import { useAuth } from "../../../context/AuthContext";
+import CustomizedSnackbars from "../../Modules/Snackbar/Snackbar";
 
 const Header = () => {
   const classes = useStyles();
@@ -26,26 +27,33 @@ const Header = () => {
     drawerState,
     emailRef,
     isLoggedIn,
+    logOutHandler,
+    nameRef,
     passwordRef,
     setDrawerState,
     signInEmailHandler,
     signInHandler,
+    signInNameHandler,
     signInPasswordHandler,
     signInUpHandler,
     signUpEmailHandler,
     signUpHandler,
     signUpPasswordHandler,
     toggleSignInUp,
+    setToggleSignInUp,
   } = useAuth();
 
   const toggleDrawer = (open) => (event) => {
+    if (isLoggedIn) {
+      return;
+    }
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
     ) {
       return;
     }
-
+    setToggleSignInUp(false);
     setDrawerState(open);
   };
 
@@ -56,15 +64,34 @@ const Header = () => {
           <Link to='/'>
             <img className={classes.image} src={logo} alt='logo' height='175' />
           </Link>
+          <CustomizedSnackbars />
           <div>
             {isLoggedIn && (
-              <Typography component='h1' variant='h5'>
-                {currentUser.email}
-              </Typography>
+              <>
+                <Typography
+                  component='h1'
+                  variant='h6'
+                  className={classes.loggedInName}
+                >
+                  {currentUser.name}
+                </Typography>
+                <Button onClick={logOutHandler}>
+                  <Typography
+                    component='h1'
+                    variant='h6'
+                    className={classes.logOutButton}
+                    style={{ textTransform: "none" }}
+                  >
+                    Log Out
+                  </Typography>
+                </Button>
+              </>
             )}
             <Button onClick={toggleDrawer(true)}>
               <PersonIcon
-                className={classes.loginIcon}
+                className={
+                  isLoggedIn ? classes.loginIconLoggedIn : classes.loginIcon
+                }
                 fontSize='large'
               ></PersonIcon>
             </Button>
@@ -144,6 +171,19 @@ const Header = () => {
                       </Typography>
                       <form className={classes.form} noValidate>
                         <TextField
+                          inputRef={nameRef}
+                          variant='outlined'
+                          margin='normal'
+                          required
+                          fullWidth
+                          id='name'
+                          label='Name'
+                          name='name'
+                          autoComplete='name'
+                          autoFocus
+                          onChange={signInNameHandler}
+                        />
+                        <TextField
                           inputRef={emailRef}
                           variant='outlined'
                           margin='normal'
@@ -153,7 +193,6 @@ const Header = () => {
                           label='Email Address'
                           name='email'
                           autoComplete='email'
-                          autoFocus
                           onChange={signUpEmailHandler}
                         />
                         <TextField

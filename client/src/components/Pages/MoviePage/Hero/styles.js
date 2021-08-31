@@ -34,5 +34,6 @@ export default makeStyles(() => ({
     "&:hover": {
       color: "rgba(223, 234, 255, 0.9)",
     },
+    cursor: "pointer",
   },
 }));

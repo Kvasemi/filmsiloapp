@@ -6,6 +6,7 @@ export const getUser = async (user) => {
     return data;
   } catch (error) {
     console.log(error + ": triggered in client actions getUser");
+    return false;
   }
 };
 
@@ -16,5 +17,6 @@ export const createUser = async (user) => {
     return data;
   } catch (error) {
     console.log(error + ": triggered in client actions createUser");
+    return false;
   }
 };

@@ -22,6 +22,7 @@ export default makeStyles(() => ({
     margin: "10px 10px",
     width: "150px",
     height: "320px",
+    cursor: "pointer",
   },
   cardMedia: {
     margin: "auto",

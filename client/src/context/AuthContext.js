@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
 
   // state to send to backend when creating user's mongodb
   const userInitialState = {
+    name: "",
     email: "",
     password: "",
     reviews: [""], // list of review_id's of reviews that user made
@@ -31,6 +32,13 @@ export const AuthProvider = ({ children }) => {
 
   // state to grab form info to send via fetch api to mongodb for authentication
   const userLoginInitialState = { email: "", password: "" };
+
+  // const alertInitialState = {
+  //   searchbarAttempt: "",
+  //   loginAttempt: "",
+  //   signupAttempt: "",
+  //   writeReviewAttempt: "",
+  // };
 
   const [currentUser, setCurrentUser] = useState(userInitialState);
   const [movieQueryList, setMovieQueryList] = useState([]);
@@ -53,9 +61,12 @@ export const AuthProvider = ({ children }) => {
   const [userLogin, setUserLogin] = useState(userLoginInitialState);
   const [textField, setTextField] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [alerts, setAlerts] = useState("");
 
   // const [user, dispatch] = useReducer(userReducer, userInitialState);
 
+  const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -98,17 +109,26 @@ export const AuthProvider = ({ children }) => {
 
   const signInHandler = async (e) => {
     e.preventDefault();
+    setAlerts("");
 
     // must send the sign in details through the api
     // must add instructions to reset the state after submit
     const res = await getUser(userLogin);
-    if (!("message" in res)) {
+    if (res && !("message" in res)) {
       setCurrentUser({ ...currentUser, ...res });
       setDrawerState(false);
       setIsLoggedIn(true);
+      setAlerts("success");
+      setSnackbarOpen(true);
     } else {
-      console.log("Log in was unsuccessful..");
+      setAlerts("error");
+      setSnackbarOpen(true);
     }
+  };
+
+  const signInNameHandler = (e) => {
+    // dispatch({ type: CREATE, payload: { email: e.target.value } });
+    setUser({ ...user, name: e.target.value });
   };
 
   const signUpEmailHandler = (e) => {
@@ -127,17 +147,30 @@ export const AuthProvider = ({ children }) => {
 
   const signUpHandler = async (e) => {
     e.preventDefault();
+    setAlerts("");
 
     if (confirmPassword === user.password) {
       const res = await createUser(user);
       if (res) {
+        console.log("res");
         setCurrentUser({ ...currentUser, ...res });
         setDrawerState(false);
         setIsLoggedIn(true);
+        setAlerts("success");
+        setSnackbarOpen(true);
       } else {
-        console.log("Register was unsuccessful..");
+        setAlerts("error");
+        setSnackbarOpen(true);
       }
+    } else {
+      setAlerts("error");
+      setSnackbarOpen(true);
     }
+  };
+
+  const logOutHandler = () => {
+    setCurrentUser(userInitialState);
+    setIsLoggedIn(false);
   };
 
   const movieToggleHandler = () => {
@@ -170,6 +203,14 @@ export const AuthProvider = ({ children }) => {
     setUser(userInitialState);
     emailRef.current.value = "";
     passwordRef.current.value = "";
+  };
+
+  const snackbarCloseHandler = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackbarOpen(false);
   };
 
   const randMoviePicker = (fetchedMovieList) => {
@@ -392,6 +433,7 @@ export const AuthProvider = ({ children }) => {
     reviewBodyHandler,
     reviewTitleHandler,
     reviewSubmitHandler,
+    signInNameHandler,
     signInEmailHandler,
     signInPasswordHandler,
     signInHandler,
@@ -404,6 +446,7 @@ export const AuthProvider = ({ children }) => {
     setToggleSignInUp,
     textField,
     setTextField,
+    nameRef,
     emailRef,
     passwordRef,
     currentUser,
@@ -411,6 +454,13 @@ export const AuthProvider = ({ children }) => {
     isLoggedIn,
     drawerState,
     setDrawerState,
+    logOutHandler,
+    snackbarOpen,
+    setSnackbarOpen,
+    // snackbarClickHandler,
+    snackbarCloseHandler,
+    alerts,
+    setAlerts,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

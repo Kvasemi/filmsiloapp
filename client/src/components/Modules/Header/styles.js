@@ -11,7 +11,23 @@ export default makeStyles((theme) => ({
     marginLeft: "15px",
     marginTop: "20px",
   },
-  loginIcon: { marginRight: "20px" },
+  loggedInName: {
+    display: "inline-block",
+    marginTop: "20px",
+    marginRight: "20px",
+  },
+  logOutButton: {
+    display: "inline-block",
+    color: "white",
+    marginBottom: "8px",
+    marginRight: "20px",
+  },
+  loginIcon: { marginRight: "0px", marginBottom: "10px" },
+  loginIconLoggedIn: {
+    marginRight: "0px",
+    marginBottom: "10px",
+    color: "blue",
+  },
   list: {
     width: 450,
   },

@@ -23,7 +23,9 @@ export const getUser = async (req, res) => {
       });
     }
   } else {
-    console.log("there is no such user.");
+    res.status(404).json({
+      message: "there is no such user.",
+    });
   }
 };
 
