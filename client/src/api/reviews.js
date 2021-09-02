@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const url = "localhost:5000";
+const url = "http://localhost:5000/reviews";
 
-export const fetchReviews = () => axios.get(url);
-export const createReview = (newReview) => axios.post(url, newReview);
-export const updateReview = (id, updatedReview) =>
+export const getReviewsAPI = () => axios.get(url);
+export const createReviewAPI = (newReview) => axios.post(url, newReview);
+export const updateReviewAPI = (id, updatedReview) =>
   axios.patch(`${url}/${id}`, updatedReview);
-export const deleteReview = (id) => axios.delete(`${url}/${id}`);
+export const deleteReviewAPI = (id) => axios.delete(`${url}/${id}`);

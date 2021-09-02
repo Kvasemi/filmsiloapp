@@ -10,7 +10,6 @@ import {
 } from "@material-ui/core";
 import StarRatings from "react-star-ratings";
 
-import { REVIEWONE, REVIEWTWO } from "../../../Constants/constants";
 import { useAuth } from "../../../../context/AuthContext";
 import useStyles from "./styles";
 
@@ -18,7 +17,7 @@ const Reviews = () => {
   const classes = useStyles();
   const {
     changeRatingHandler,
-    getLocalMovie,
+    getLocalReviewCollectionList,
     review,
     reviewBodyHandler,
     reviewSubmitHandler,
@@ -26,7 +25,32 @@ const Reviews = () => {
     showComponent,
   } = useAuth();
 
-  const movie = getLocalMovie();
+  const reviews = getLocalReviewCollectionList();
+
+  const mappedReviews = reviews.map((review) => (
+    <Card className={classes.card}>
+      <div className={classes.cardDetails}>
+        <CardContent>
+          <Typography component='h2' variant='h5' gutterBottom>
+            {review.review_title}
+          </Typography>
+          <Typography variant='subtitle1' color='textSecondary'>
+            <StarRatings
+              rating={review.num_stars}
+              starRatedColor='blue'
+              numberOfStars={5}
+              name='rating'
+              starDimension='30px'
+              starSpacing='10px'
+            />
+          </Typography>
+          <Typography variant='subtitle1' paragraph>
+            {review.review_body}
+          </Typography>
+        </CardContent>
+      </div>
+    </Card>
+  ));
 
   return (
     <Grid container className={classes.mainContainer}>
@@ -76,7 +100,7 @@ const Reviews = () => {
                   variant='contained'
                   color='primary'
                   className={classes.submit}
-                  onClick={(e) => reviewSubmitHandler(e, movie)}
+                  onClick={reviewSubmitHandler}
                 >
                   Submit Review
                 </Button>
@@ -84,52 +108,7 @@ const Reviews = () => {
             </div>
           </Container>
         ) : (
-          <>
-            <Card className={classes.card}>
-              <div className={classes.cardDetails}>
-                <CardContent>
-                  <Typography component='h2' variant='h5' gutterBottom>
-                    {REVIEWONE.review_title}
-                  </Typography>
-                  <Typography variant='subtitle1' color='textSecondary'>
-                    <StarRatings
-                      rating={REVIEWONE.num_stars}
-                      starRatedColor='blue'
-                      numberOfStars={5}
-                      name='rating'
-                      starDimension='30px'
-                      starSpacing='10px'
-                    />
-                  </Typography>
-                  <Typography variant='subtitle1' paragraph>
-                    {REVIEWONE.review_body}
-                  </Typography>
-                </CardContent>
-              </div>
-            </Card>
-            <Card className={classes.card}>
-              <div className={classes.cardDetails}>
-                <CardContent>
-                  <Typography component='h2' variant='h5' gutterBottom>
-                    {REVIEWTWO.review_title}
-                  </Typography>
-                  <Typography variant='subtitle1' color='textSecondary'>
-                    <StarRatings
-                      rating={REVIEWTWO.num_stars}
-                      starRatedColor='blue'
-                      numberOfStars={5}
-                      name='rating'
-                      starDimension='30px'
-                      starSpacing='10px'
-                    />
-                  </Typography>
-                  <Typography variant='subtitle1' paragraph>
-                    {REVIEWTWO.review_body}
-                  </Typography>
-                </CardContent>
-              </div>
-            </Card>
-          </>
+          <>{reviews.length > 0 && mappedReviews}</>
         )}
       </Grid>
     </Grid>

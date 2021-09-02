@@ -78,7 +78,7 @@ const Header = () => {
                 <Button onClick={logOutHandler}>
                   <Typography
                     component='h1'
-                    variant='h6'
+                    variant='body1'
                     className={classes.logOutButton}
                     style={{ textTransform: "none" }}
                   >

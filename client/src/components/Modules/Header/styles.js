@@ -19,7 +19,7 @@ export default makeStyles((theme) => ({
   logOutButton: {
     display: "inline-block",
     color: "white",
-    marginBottom: "8px",
+    marginBottom: "5px",
     marginRight: "20px",
   },
   loginIcon: { marginRight: "0px", marginBottom: "10px" },

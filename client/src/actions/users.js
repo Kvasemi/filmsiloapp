@@ -13,10 +13,19 @@ export const getUser = async (user) => {
 export const createUser = async (user) => {
   try {
     const { data } = await api.createUserAPI(user);
-    console.log("New user successfully created!");
     return data;
   } catch (error) {
     console.log(error + ": triggered in client actions createUser");
+    return false;
+  }
+};
+
+export const updateUser = async (id, user) => {
+  try {
+    const { data } = await api.updateUserAPI(id, user);
+    return data;
+  } catch (error) {
+    console.log(error + ": triggered in client actions updateUser");
     return false;
   }
 };

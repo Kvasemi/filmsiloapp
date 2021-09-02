@@ -19,6 +19,7 @@ const Feed = () => {
   const classes = useStyles();
   const {
     getLocalCrew,
+    isLoggedIn,
     personClickHandler,
     toggleReviewHandler,
     toggleFormHandler,
@@ -64,22 +65,24 @@ const Feed = () => {
             </Grid>
           </Grid>
           <Divider variant='middle' />
-          <ToggleButtonGroup exclusive className={classes.toggleContainer}>
-            <ToggleButton
-              className={classes.reviewsButton}
-              value='REVIEWS'
-              onClick={toggleReviewHandler}
-            >
-              REVIEWS
-            </ToggleButton>
-            <ToggleButton
-              className={classes.formButton}
-              value='WRITE A REVIEW'
-              onClick={toggleFormHandler}
-            >
-              WRITE A REVIEW
-            </ToggleButton>
-          </ToggleButtonGroup>
+          {isLoggedIn && (
+            <ToggleButtonGroup exclusive className={classes.toggleContainer}>
+              <ToggleButton
+                className={classes.reviewsButton}
+                value='REVIEWS'
+                onClick={toggleReviewHandler}
+              >
+                REVIEWS
+              </ToggleButton>
+              <ToggleButton
+                className={classes.formButton}
+                value='WRITE A REVIEW'
+                onClick={toggleFormHandler}
+              >
+                WRITE A REVIEW
+              </ToggleButton>
+            </ToggleButtonGroup>
+          )}
           <Reviews />
         </Grid>
       </Grid>

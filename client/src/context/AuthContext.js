@@ -1,8 +1,8 @@
 import React, { useContext, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 
-import { createUser, getUser } from "../actions/users";
+import { getUser, createUser, updateUser } from "../actions/users";
+import { createReview, getReviews } from "../actions/reviews";
 
 const AuthContext = React.createContext();
 
@@ -12,7 +12,6 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const reviewInitialState = {
-    review_id: "",
     movie_id: "",
     user_id: "",
     movie_name: "",
@@ -27,18 +26,11 @@ export const AuthProvider = ({ children }) => {
     name: "",
     email: "",
     password: "",
-    reviews: [""], // list of review_id's of reviews that user made
+    reviews: [],
   };
 
   // state to grab form info to send via fetch api to mongodb for authentication
   const userLoginInitialState = { email: "", password: "" };
-
-  // const alertInitialState = {
-  //   searchbarAttempt: "",
-  //   loginAttempt: "",
-  //   signupAttempt: "",
-  //   writeReviewAttempt: "",
-  // };
 
   const [currentUser, setCurrentUser] = useState(userInitialState);
   const [movieQueryList, setMovieQueryList] = useState([]);
@@ -63,8 +55,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [alerts, setAlerts] = useState("");
-
-  // const [user, dispatch] = useReducer(userReducer, userInitialState);
+  const [reviewCollection, setReviewCollection] = useState([]);
 
   const nameRef = useRef();
   const emailRef = useRef();
@@ -72,33 +63,22 @@ export const AuthProvider = ({ children }) => {
 
   const history = useHistory();
 
+  // SEARCH
   const searchInputHandler = (e) => {
     e.preventDefault();
 
     setQuery(e.target.value);
   };
 
-  const reviewBodyHandler = (e) => {
-    setReview({ ...review, review_body: e.target.value });
+  const movieToggleHandler = () => {
+    setSearchToggle(false);
   };
 
-  const reviewTitleHandler = (e) => {
-    setReview({ ...review, review_title: e.target.value });
+  const peopleToggleHandler = () => {
+    setSearchToggle(true);
   };
 
-  const changeRatingHandler = (newRating) => {
-    setReview({ ...review, num_stars: newRating });
-  };
-
-  const reviewSubmitHandler = (e, movie) => {
-    e.preventDefault();
-
-    setReview({ ...review, date_created: new Date() });
-
-    // must send the review through the api
-    // must add instructions to reset the state after submit
-  };
-
+  // SIGN IN / SIGN UP
   const signInEmailHandler = (e) => {
     setUserLogin({ ...userLogin, email: e.target.value });
   };
@@ -111,13 +91,12 @@ export const AuthProvider = ({ children }) => {
     e.preventDefault();
     setAlerts("");
 
-    // must send the sign in details through the api
-    // must add instructions to reset the state after submit
     const res = await getUser(userLogin);
     if (res && !("message" in res)) {
-      setCurrentUser({ ...currentUser, ...res });
+      setCurrentUser({ ...currentUser, ...res.res });
       setDrawerState(false);
       setIsLoggedIn(true);
+      setUserLogin(userLoginInitialState);
       setAlerts("success");
       setSnackbarOpen(true);
     } else {
@@ -127,17 +106,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signInNameHandler = (e) => {
-    // dispatch({ type: CREATE, payload: { email: e.target.value } });
     setUser({ ...user, name: e.target.value });
   };
 
   const signUpEmailHandler = (e) => {
-    // dispatch({ type: CREATE, payload: { email: e.target.value } });
     setUser({ ...user, email: e.target.value });
   };
 
   const signUpPasswordHandler = (e) => {
-    // dispatch({ type: CREATE, payload: { password: e.target.value } });
     setUser({ ...user, password: e.target.value });
   };
 
@@ -152,8 +128,7 @@ export const AuthProvider = ({ children }) => {
     if (confirmPassword === user.password) {
       const res = await createUser(user);
       if (res) {
-        console.log("res");
-        setCurrentUser({ ...currentUser, ...res });
+        setCurrentUser({ ...currentUser, ...res.res });
         setDrawerState(false);
         setIsLoggedIn(true);
         setAlerts("success");
@@ -168,36 +143,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logOutHandler = () => {
-    setCurrentUser(userInitialState);
-    setIsLoggedIn(false);
-  };
-
-  const movieToggleHandler = () => {
-    setSearchToggle(false);
-  };
-
-  const peopleToggleHandler = () => {
-    setSearchToggle(true);
-  };
-
-  const toggleReviewHandler = () => {
-    setShowComponent(false);
-    setReview(reviewInitialState);
-  };
-
-  // this is entry point where review data should be populated into state
-  const toggleFormHandler = () => {
-    setShowComponent(true);
-    setReview({
-      ...review,
-      review_id: uuidv4(),
-      // user_id: propUser.user_id,
-      movie_id: getLocalMovie().id,
-      movie_name: getLocalMovie().title,
-    });
-  };
-
   const signInUpHandler = () => {
     setToggleSignInUp(!toggleSignInUp);
     setUser(userInitialState);
@@ -205,6 +150,61 @@ export const AuthProvider = ({ children }) => {
     passwordRef.current.value = "";
   };
 
+  const logOutHandler = () => {
+    setCurrentUser(userInitialState);
+    setIsLoggedIn(false);
+    setShowComponent(false);
+  };
+
+  // REVIEWS
+  const reviewBodyHandler = (e) => {
+    setReview({ ...review, review_body: e.target.value });
+  };
+
+  const reviewTitleHandler = (e) => {
+    setReview({ ...review, review_title: e.target.value });
+  };
+
+  const changeRatingHandler = (newRating) => {
+    setReview({ ...review, num_stars: newRating });
+  };
+
+  const reviewSubmitHandler = async (e) => {
+    e.preventDefault();
+    setAlerts("");
+
+    const res = await createReview(review);
+    currentUser.reviews.push(res._id);
+    setCurrentUser({ ...currentUser, reviews: currentUser.reviews });
+    const response = await updateUser(currentUser._id, currentUser);
+    if (response.message) {
+      setReview(reviewInitialState);
+      setShowComponent(false);
+      setAlerts("success");
+      setSnackbarOpen(true);
+    } else {
+      setAlerts("error");
+      setSnackbarOpen(true);
+    }
+  };
+
+  const toggleReviewHandler = () => {
+    setShowComponent(false);
+    setReview(reviewInitialState);
+  };
+
+  const toggleFormHandler = () => {
+    setShowComponent(true);
+    setReview({
+      ...review,
+      user_id: currentUser._id,
+      date_created: new Date(),
+      movie_id: getLocalMovie().id,
+      movie_name: getLocalMovie().title,
+    });
+  };
+
+  // SNACKBAR
   const snackbarCloseHandler = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -213,6 +213,7 @@ export const AuthProvider = ({ children }) => {
     setSnackbarOpen(false);
   };
 
+  // UTILITY FUNCS
   const randMoviePicker = (fetchedMovieList) => {
     const rand = (max, min) => Math.random() * (max - min) + min;
     return fetchedMovieList[Math.round(rand(fetchedMovieList.length - 1, 0))];
@@ -246,6 +247,7 @@ export const AuthProvider = ({ children }) => {
     return newDate;
   };
 
+  // FETCH
   const popularMovies = () => {
     fetch(
       "https://api.themoviedb.org/3/movie/popular?api_key=96aef73142a3bf028320faa7a7476a67"
@@ -306,26 +308,56 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const movieClickHandler = (id) => {
-    fetch(
+  // const movieClickHandler = (id) => {
+  //   fetch(
+  //     `https://api.themoviedb.org/3/movie/${id}?api_key=96aef73142a3bf028320faa7a7476a67`
+  //   )
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       localStorage.setItem("movie", JSON.stringify(data));
+  //       setMovie(data);
+  //     })
+  //     .catch((err) => console.log(err));
+  //   fetch(
+  //     `https://api.themoviedb.org/3/movie/${id}/credits?api_key=96aef73142a3bf028320faa7a7476a67`
+  //   )
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       localStorage.setItem("crewList", JSON.stringify(data));
+  //       setCrewList(data);
+  //       history.push(`/movie/${id}`);
+  //     })
+  //     .catch((err) => console.log(err));
+  //   // const res = getReviews();
+  //   // console.log(res);
+  //   // const collection = res.filter((review) => {
+  //   //   return review.movie_id === movie.id;
+  //   // });
+  //   // setReviewCollection(collection);
+  //   toggleReviewHandler();
+  // };
+
+  const movieClickHandler = async (id) => {
+    const movieResponse = await fetch(
       `https://api.themoviedb.org/3/movie/${id}?api_key=96aef73142a3bf028320faa7a7476a67`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        localStorage.setItem("movie", JSON.stringify(data));
-        setMovie(data);
-      })
-      .catch((err) => console.log(err));
-    fetch(
+    );
+    const movieData = await movieResponse.json();
+    localStorage.setItem("movie", JSON.stringify(movieData));
+    setMovie(movieData);
+    const crewResponse = await fetch(
       `https://api.themoviedb.org/3/movie/${id}/credits?api_key=96aef73142a3bf028320faa7a7476a67`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        localStorage.setItem("crewList", JSON.stringify(data));
-        setCrewList(data);
-        history.push(`/movie/${id}`);
-      })
-      .catch((err) => console.log(err));
+    );
+    const crewData = await crewResponse.json();
+    localStorage.setItem("crewList", JSON.stringify(crewData));
+    setCrewList(crewData);
+    history.push(`/movie/${id}`);
+    const res = await getReviews();
+    const collection = res.filter((review) => {
+      return review.movie_id === id;
+    });
+    localStorage.setItem("reviewCollection", JSON.stringify(collection));
+    setReviewCollection(collection);
+    toggleReviewHandler();
   };
 
   const personClickHandler = (id) => {
@@ -350,6 +382,7 @@ export const AuthProvider = ({ children }) => {
       .catch((err) => console.log(err));
   };
 
+  // LOCALSTORAGE
   const getLocalMovie = () => {
     return JSON.parse(localStorage.getItem("movie", JSON.stringify(movie)));
   };
@@ -382,6 +415,13 @@ export const AuthProvider = ({ children }) => {
     );
   };
 
+  const getLocalReviewCollectionList = () => {
+    return JSON.parse(
+      localStorage.getItem("reviewCollection", JSON.stringify(reviewCollection))
+    );
+  };
+
+  // CONTEXT VALUES
   const value = {
     movieList,
     setMovieList,
@@ -461,6 +501,7 @@ export const AuthProvider = ({ children }) => {
     snackbarCloseHandler,
     alerts,
     setAlerts,
+    getLocalReviewCollectionList,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

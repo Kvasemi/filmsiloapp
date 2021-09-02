@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 import userRoutes from "./routes/users.js";
+import reviewRoutes from "./routes/reviews.js";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
 app.use("/users", userRoutes);
+app.use("/reviews", reviewRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to Film Silo!");
@@ -32,5 +34,3 @@ mongoose
     )
   )
   .catch((error) => console.log(`${error} did not connect`));
-
-// mongoose.set("useFindAndModify", false);
