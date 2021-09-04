@@ -21,6 +21,7 @@ const Feed = () => {
     getLocalCrew,
     isLoggedIn,
     personClickHandler,
+    reviewWritten,
     toggleReviewHandler,
     toggleFormHandler,
   } = useAuth();
@@ -65,7 +66,7 @@ const Feed = () => {
             </Grid>
           </Grid>
           <Divider variant='middle' />
-          {isLoggedIn && (
+          {isLoggedIn && !reviewWritten && (
             <ToggleButtonGroup exclusive className={classes.toggleContainer}>
               <ToggleButton
                 className={classes.reviewsButton}

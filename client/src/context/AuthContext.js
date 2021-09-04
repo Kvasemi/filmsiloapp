@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [alerts, setAlerts] = useState("");
   const [reviewCollection, setReviewCollection] = useState([]);
+  const [reviewWritten, setReviewWritten] = useState(false);
 
   const nameRef = useRef();
   const emailRef = useRef();
@@ -78,7 +79,11 @@ export const AuthProvider = ({ children }) => {
     setSearchToggle(true);
   };
 
-  // SIGN IN / SIGN UP
+  // SIGN IN
+  const signInNameHandler = (e) => {
+    setUser({ ...user, name: e.target.value });
+  };
+
   const signInEmailHandler = (e) => {
     setUserLogin({ ...userLogin, email: e.target.value });
   };
@@ -105,10 +110,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signInNameHandler = (e) => {
-    setUser({ ...user, name: e.target.value });
-  };
-
+  // SIGN UP
   const signUpEmailHandler = (e) => {
     setUser({ ...user, email: e.target.value });
   };
@@ -175,11 +177,14 @@ export const AuthProvider = ({ children }) => {
 
     const res = await createReview(review);
     currentUser.reviews.push(res._id);
+    setReviewCollection([...reviewCollection, res]);
+    localStorage.setItem("reviewCollection", JSON.stringify(reviewCollection));
     setCurrentUser({ ...currentUser, reviews: currentUser.reviews });
     const response = await updateUser(currentUser._id, currentUser);
     if (response.message) {
       setReview(reviewInitialState);
       setShowComponent(false);
+      setReviewWritten(true);
       setAlerts("success");
       setSnackbarOpen(true);
     } else {
@@ -247,6 +252,23 @@ export const AuthProvider = ({ children }) => {
     return newDate;
   };
 
+  const sortByNestedKey = (array) => {
+    let sorted = array.sort(
+      (a, b) => new Date(b.date_created) - new Date(a.date_created)
+    );
+    return sorted;
+  };
+
+  const checkIfReviewWritten = (reviews) => {
+    for (let rev of reviews) {
+      if (currentUser.reviews.includes(rev._id)) {
+        setReviewWritten(true);
+        return;
+      }
+    }
+    setReviewWritten(false);
+  };
+
   // FETCH
   const popularMovies = () => {
     fetch(
@@ -308,35 +330,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // const movieClickHandler = (id) => {
-  //   fetch(
-  //     `https://api.themoviedb.org/3/movie/${id}?api_key=96aef73142a3bf028320faa7a7476a67`
-  //   )
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       localStorage.setItem("movie", JSON.stringify(data));
-  //       setMovie(data);
-  //     })
-  //     .catch((err) => console.log(err));
-  //   fetch(
-  //     `https://api.themoviedb.org/3/movie/${id}/credits?api_key=96aef73142a3bf028320faa7a7476a67`
-  //   )
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       localStorage.setItem("crewList", JSON.stringify(data));
-  //       setCrewList(data);
-  //       history.push(`/movie/${id}`);
-  //     })
-  //     .catch((err) => console.log(err));
-  //   // const res = getReviews();
-  //   // console.log(res);
-  //   // const collection = res.filter((review) => {
-  //   //   return review.movie_id === movie.id;
-  //   // });
-  //   // setReviewCollection(collection);
-  //   toggleReviewHandler();
-  // };
-
   const movieClickHandler = async (id) => {
     const movieResponse = await fetch(
       `https://api.themoviedb.org/3/movie/${id}?api_key=96aef73142a3bf028320faa7a7476a67`
@@ -350,13 +343,21 @@ export const AuthProvider = ({ children }) => {
     const crewData = await crewResponse.json();
     localStorage.setItem("crewList", JSON.stringify(crewData));
     setCrewList(crewData);
-    history.push(`/movie/${id}`);
-    const res = await getReviews();
-    const collection = res.filter((review) => {
-      return review.movie_id === id;
+    const reviewResponse = await getReviews();
+    const reviewData = reviewResponse.filter((review) => {
+      return review.movie_id === movieData.id;
     });
-    localStorage.setItem("reviewCollection", JSON.stringify(collection));
-    setReviewCollection(collection);
+    if (reviewData.length > 0) {
+      checkIfReviewWritten(reviewData);
+      const sortedReviews = sortByNestedKey(reviewData);
+      setReviewCollection(sortedReviews);
+      localStorage.setItem("reviewCollection", JSON.stringify(sortedReviews));
+    } else {
+      setReviewCollection(reviewData);
+      localStorage.setItem("reviewCollection", JSON.stringify(reviewData));
+      setReviewWritten(false);
+    }
+    history.push(`/movie/${id}`);
     toggleReviewHandler();
   };
 
@@ -380,6 +381,7 @@ export const AuthProvider = ({ children }) => {
         history.push(`/person/${id}`);
       })
       .catch((err) => console.log(err));
+    setReviewWritten(false);
   };
 
   // LOCALSTORAGE
@@ -497,11 +499,15 @@ export const AuthProvider = ({ children }) => {
     logOutHandler,
     snackbarOpen,
     setSnackbarOpen,
-    // snackbarClickHandler,
     snackbarCloseHandler,
     alerts,
     setAlerts,
     getLocalReviewCollectionList,
+    reviewWritten,
+    setReviewWritten,
+    reviewCollection,
+    setReviewCollection,
+    sortByNestedKey,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

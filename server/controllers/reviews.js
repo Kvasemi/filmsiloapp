@@ -13,8 +13,6 @@ export const getReviews = async (req, res) => {
 
 export const createReview = async (req, res) => {
   try {
-    console.log("createreview controller fired");
-
     const review = req.body;
     const newReview = new Review(review);
     const result = await newReview.save();
