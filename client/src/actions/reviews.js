@@ -11,7 +11,6 @@ export const getReviews = async () => {
 
 export const createReview = async (review) => {
   try {
-    console.log("actions fired");
     const { data } = await api.createReviewAPI(review);
     return data;
   } catch (error) {

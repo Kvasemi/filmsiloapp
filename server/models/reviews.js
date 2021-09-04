@@ -9,6 +9,10 @@ const reviewSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  username: {
+    type: String,
+    required: true,
+  },
   movie_name: {
     type: String,
     required: true,

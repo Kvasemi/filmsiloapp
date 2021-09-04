@@ -31,13 +31,13 @@ export const updateReview = async (req, res) => {
 
   const updatedReview = await Review.findByIdAndUpdate(
     _id,
-    { ...review, _id },
-    {
-      new: true,
+    { ...review },
+    { new: true },
+    (err, result) => {
+      if (err) return res.status(500).send(`Unable to update. Error: ${err}`);
+      return res.status(200).send({ message: "Successfully updated!" });
     }
   );
-
-  res.json(updatedReview);
 };
 
 export const deleteReview = async (req, res) => {

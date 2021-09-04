@@ -34,4 +34,31 @@ export default makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  no_reviews: {
+    marginTop: "30px",
+    textAlign: "center",
+    fontSize: "18px",
+    fontWeight: "bold",
+  },
+  toggleContainer: {
+    margin: "15px 0px 0px 10px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    verticalAlign: "center",
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  editButton: {
+    padding: "15px",
+    marginBottom: "0px",
+    fontWeight: "bold",
+    width: "145px",
+  },
+  deleteButton: {
+    padding: "15px",
+    fontWeight: "bold",
+    marginBottom: "0px",
+  },
 }));

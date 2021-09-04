@@ -8,6 +8,7 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
+import { ToggleButtonGroup } from "@material-ui/lab";
 import StarRatings from "react-star-ratings";
 
 import { useAuth } from "../../../../context/AuthContext";
@@ -17,6 +18,10 @@ const Reviews = () => {
   const classes = useStyles();
   const {
     changeRatingHandler,
+    currentUser,
+    deleteReviewHandler,
+    editReviewHandler,
+    formatDate,
     getLocalReviewCollectionList,
     review,
     reviewBodyHandler,
@@ -31,22 +36,48 @@ const Reviews = () => {
     <Card className={classes.card}>
       <div className={classes.cardDetails}>
         <CardContent>
-          <Typography component='h2' variant='h5' gutterBottom>
-            {review.review_title}
-          </Typography>
           <Typography variant='subtitle1' color='textSecondary'>
             <StarRatings
               rating={review.num_stars}
               starRatedColor='blue'
               numberOfStars={5}
               name='rating'
-              starDimension='30px'
+              starDimension='20px'
               starSpacing='10px'
             />
           </Typography>
-          <Typography variant='subtitle1' paragraph>
+          <Typography component='h2' variant='h5' gutterBottom>
+            {review.review_title}
+          </Typography>
+          <Typography component='h2' variant='subtitle1'>
+            by: {review.username}
+          </Typography>
+          <Typography component='h2' variant='subtitle1' gutterBottom>
+            {formatDate(review.date_created.slice(0, 10))}
+          </Typography>
+          <Typography component='h2' variant='h6' paragraph>
             {review.review_body}
           </Typography>
+          {currentUser._id === review.user_id && (
+            <ToggleButtonGroup exclusive className={classes.toggleContainer}>
+              <Button
+                variant='contained'
+                color='primary'
+                className={classes.editButton}
+                onClick={editReviewHandler}
+              >
+                EDIT REVIEW
+              </Button>
+              <Button
+                variant='contained'
+                color='primary'
+                className={classes.deleteButton}
+                onClick={() => deleteReviewHandler(review._id)}
+              >
+                DELETE REVIEW
+              </Button>
+            </ToggleButtonGroup>
+          )}
         </CardContent>
       </div>
     </Card>
@@ -108,7 +139,13 @@ const Reviews = () => {
             </div>
           </Container>
         ) : (
-          <>{reviews.length > 0 && mappedReviews}</>
+          <>
+            {reviews.length > 0 ? (
+              mappedReviews
+            ) : (
+              <p className={classes.no_reviews}>NO REVIEWS YET</p>
+            )}
+          </>
         )}
       </Grid>
     </Grid>

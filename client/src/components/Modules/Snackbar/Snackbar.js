@@ -22,7 +22,7 @@ export default function CustomizedSnackbars() {
           className={classes.snackbar}
         >
           <Alert onClose={snackbarCloseHandler} severity='success'>
-            This is a success message!
+            Success!
           </Alert>
         </Snackbar>
       ) : (
@@ -33,7 +33,7 @@ export default function CustomizedSnackbars() {
           className={classes.snackbar}
         >
           <Alert onClose={snackbarCloseHandler} severity='error'>
-            This is an error message!
+            There was an error!
           </Alert>
         </Snackbar>
       )}

@@ -2,7 +2,12 @@ import React, { useContext, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import { getUser, createUser, updateUser } from "../actions/users";
-import { createReview, getReviews } from "../actions/reviews";
+import {
+  getReviews,
+  createReview,
+  updateReview,
+  deleteReview,
+} from "../actions/reviews";
 
 const AuthContext = React.createContext();
 
@@ -14,6 +19,7 @@ export const AuthProvider = ({ children }) => {
   const reviewInitialState = {
     movie_id: "",
     user_id: "",
+    username: "",
     movie_name: "",
     date_created: "",
     num_stars: 0,
@@ -182,9 +188,16 @@ export const AuthProvider = ({ children }) => {
     setCurrentUser({ ...currentUser, reviews: currentUser.reviews });
     const response = await updateUser(currentUser._id, currentUser);
     if (response.message) {
+      const reviewResponse = await getReviews();
+      const reviewData = reviewResponse.filter((fetchedReview) => {
+        return fetchedReview.movie_id === review.movie_id;
+      });
+      const sortedReviews = sortByNestedKey(reviewData);
+      setReviewCollection(sortedReviews);
+      localStorage.setItem("reviewCollection", JSON.stringify(sortedReviews));
+      setReviewWritten(true);
       setReview(reviewInitialState);
       setShowComponent(false);
-      setReviewWritten(true);
       setAlerts("success");
       setSnackbarOpen(true);
     } else {
@@ -203,10 +216,55 @@ export const AuthProvider = ({ children }) => {
     setReview({
       ...review,
       user_id: currentUser._id,
+      username: currentUser.name,
       date_created: new Date(),
       movie_id: getLocalMovie().id,
       movie_name: getLocalMovie().title,
     });
+  };
+
+  // const editReviewHandler = async () => {
+  //   const res = await updateReview(id, review);
+  // }
+
+  // the problem is the state is being updated but the currentUser being sent to updateUser is stale state
+  const deleteReviewHandler = async (id) => {
+    try {
+      const res = await deleteReview(id);
+      const remainingReviews = currentUser.reviews.filter(
+        (review) => review !== id
+      );
+      setCurrentUser({ ...currentUser, reviews: remainingReviews });
+      const response = await updateUser(currentUser._id, {
+        ...currentUser,
+        reviews: remainingReviews,
+      });
+      if (res && response.message && reviewCollection.length > 1) {
+        const reviewResponse = await getReviews();
+        const reviewData = reviewResponse.filter((fetchedReview) => {
+          return fetchedReview.movie_id === review.movie_id;
+        });
+        const sortedReviews = sortByNestedKey(reviewData);
+        setReviewCollection(sortedReviews);
+        localStorage.setItem("reviewCollection", JSON.stringify(sortedReviews));
+        setReviewWritten(false);
+        setReview(reviewInitialState);
+        setShowComponent(false);
+        setAlerts("success");
+        setSnackbarOpen(true);
+      } else {
+        setReviewCollection([]);
+        localStorage.setItem("reviewCollection", JSON.stringify([]));
+        setReviewWritten(false);
+        setReview(reviewInitialState);
+        setShowComponent(false);
+        setAlerts("success");
+        setSnackbarOpen(true);
+      }
+    } catch (error) {
+      setAlerts("error");
+      setSnackbarOpen(true);
+    }
   };
 
   // SNACKBAR
@@ -508,6 +566,8 @@ export const AuthProvider = ({ children }) => {
     reviewCollection,
     setReviewCollection,
     sortByNestedKey,
+    deleteReviewHandler,
+    // editReviewHandler,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
