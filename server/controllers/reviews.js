@@ -26,18 +26,24 @@ export const updateReview = async (req, res) => {
   const { id: _id } = req.params;
   const review = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(_id))
+  if (!mongoose.Types.ObjectId.isValid(review._id))
     return res.status(404).send("No review with id: ${id}");
-
-  const updatedReview = await Review.findByIdAndUpdate(
-    _id,
-    { ...review },
-    { new: true },
-    (err, result) => {
-      if (err) return res.status(500).send(`Unable to update. Error: ${err}`);
-      return res.status(200).send({ message: "Successfully updated!" });
-    }
-  );
+  try {
+    const updatedReview = Review.findByIdAndUpdate(
+      _id,
+      { ...review },
+      { new: true },
+      (err, result) => {
+        if (err)
+          return res
+            .status(500)
+            .send({ message: `Unable to update. Error: ${err}` });
+        return res.status(200).send({ message: "Successfully updated!" });
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const deleteReview = async (req, res) => {

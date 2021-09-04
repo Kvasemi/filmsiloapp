@@ -27,7 +27,7 @@ export const updateReview = async (id, review) => {
   }
 };
 
-export const deleteReview = async (id) => {
+export const deleteReview = async (id, review) => {
   try {
     const res = await api.deleteReviewAPI(id);
     return res;

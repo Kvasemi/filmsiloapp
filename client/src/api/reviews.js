@@ -6,4 +6,4 @@ export const getReviewsAPI = () => axios.get(url);
 export const createReviewAPI = (newReview) => axios.post(url, newReview);
 export const updateReviewAPI = (id, updatedReview) =>
   axios.patch(`${url}/${id}`, updatedReview);
-export const deleteReviewAPI = (id) => axios.delete(`${url}/${id}`);
+export const deleteReviewAPI = (id, review) => axios.delete(`${url}/${id}`);

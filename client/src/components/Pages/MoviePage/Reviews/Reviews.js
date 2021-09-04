@@ -21,6 +21,7 @@ const Reviews = () => {
     currentUser,
     deleteReviewHandler,
     editReviewHandler,
+    editReviewSubmitHandler,
     formatDate,
     getLocalReviewCollectionList,
     review,
@@ -28,6 +29,7 @@ const Reviews = () => {
     reviewSubmitHandler,
     reviewTitleHandler,
     showComponent,
+    showEditComponent,
   } = useAuth();
 
   const reviews = getLocalReviewCollectionList();
@@ -64,7 +66,7 @@ const Reviews = () => {
                 variant='contained'
                 color='primary'
                 className={classes.editButton}
-                onClick={editReviewHandler}
+                onClick={() => editReviewHandler(review)}
               >
                 EDIT REVIEW
               </Button>
@@ -72,7 +74,7 @@ const Reviews = () => {
                 variant='contained'
                 color='primary'
                 className={classes.deleteButton}
-                onClick={() => deleteReviewHandler(review._id)}
+                onClick={() => deleteReviewHandler(review._id, review)}
               >
                 DELETE REVIEW
               </Button>
@@ -87,57 +89,115 @@ const Reviews = () => {
     <Grid container className={classes.mainContainer}>
       <Grid item className={classes.item}>
         {showComponent ? (
-          <Container component='main' maxWidth='xs'>
-            <CssBaseline />
-            <div className={classes.paper}>
-              <Typography component='h1' variant='h5' gutterBottom>
-                Write a Review
-              </Typography>
-              <StarRatings
-                rating={review.num_stars}
-                starRatedColor='blue'
-                changeRating={changeRatingHandler}
-                starDimension='30px'
-                starSpacing='10px'
-              />
-              <form className={classes.form} noValidate>
-                <TextField
-                  variant='outlined'
-                  margin='normal'
-                  required
-                  fullWidth
-                  id='title'
-                  label='Review Title'
-                  name='title'
-                  autoComplete='title'
-                  onChange={reviewTitleHandler}
+          showEditComponent ? (
+            <Container component='main' maxWidth='xs'>
+              <CssBaseline />
+              <div className={classes.paper}>
+                <Typography component='h1' variant='h5' gutterBottom>
+                  Edit Your Review
+                </Typography>
+                <StarRatings
+                  rating={review.num_stars}
+                  starRatedColor='blue'
+                  changeRating={changeRatingHandler}
+                  starDimension='30px'
+                  starSpacing='10px'
                 />
-                <TextField
-                  multiline={true}
-                  minRows='5'
-                  variant='outlined'
-                  margin='normal'
-                  required
-                  fullWidth
-                  name='review'
-                  label='Review'
-                  type='review'
-                  id='review'
-                  onChange={reviewBodyHandler}
+                <form className={classes.form} noValidate>
+                  <TextField
+                    variant='outlined'
+                    margin='normal'
+                    required
+                    fullWidth
+                    id='title'
+                    label='Review Title'
+                    name='title'
+                    autoComplete='title'
+                    value={review.review_title}
+                    onChange={reviewTitleHandler}
+                  />
+                  <TextField
+                    multiline={true}
+                    minRows='5'
+                    variant='outlined'
+                    margin='normal'
+                    required
+                    fullWidth
+                    name='review'
+                    label='Review'
+                    type='review'
+                    id='review'
+                    value={review.review_body}
+                    onChange={reviewBodyHandler}
+                  />
+                  <Button
+                    type='submit'
+                    fullWidth
+                    variant='contained'
+                    color='primary'
+                    className={classes.submit}
+                    onClick={(e) =>
+                      editReviewSubmitHandler(e, review._id, review)
+                    }
+                  >
+                    Edit Review
+                  </Button>
+                </form>
+              </div>
+            </Container>
+          ) : (
+            <Container component='main' maxWidth='xs'>
+              <CssBaseline />
+              <div className={classes.paper}>
+                <Typography component='h1' variant='h5' gutterBottom>
+                  Write a Review
+                </Typography>
+                <StarRatings
+                  rating={review.num_stars}
+                  starRatedColor='blue'
+                  changeRating={changeRatingHandler}
+                  starDimension='30px'
+                  starSpacing='10px'
                 />
-                <Button
-                  type='submit'
-                  fullWidth
-                  variant='contained'
-                  color='primary'
-                  className={classes.submit}
-                  onClick={reviewSubmitHandler}
-                >
-                  Submit Review
-                </Button>
-              </form>
-            </div>
-          </Container>
+                <form className={classes.form} noValidate>
+                  <TextField
+                    variant='outlined'
+                    margin='normal'
+                    required
+                    fullWidth
+                    id='title'
+                    label='Review Title'
+                    name='title'
+                    autoComplete='title'
+                    onChange={reviewTitleHandler}
+                  />
+                  <TextField
+                    multiline={true}
+                    minRows='5'
+                    variant='outlined'
+                    margin='normal'
+                    required
+                    fullWidth
+                    name='review'
+                    label='Review'
+                    type='review'
+                    id='review'
+                    onChange={reviewBodyHandler}
+                  />
+                  <Button
+                    type='submit'
+                    fullWidth
+                    variant='contained'
+                    color='primary'
+                    className={classes.submit}
+                    onClick={reviewSubmitHandler}
+                  >
+                    Submit Review
+                  </Button>
+                </form>
+              </div>
+            </Container>
+          )
         ) : (
           <>
             {reviews.length > 0 ? (

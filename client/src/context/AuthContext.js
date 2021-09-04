@@ -51,6 +51,7 @@ export const AuthProvider = ({ children }) => {
   const [searchToggle, setSearchToggle] = useState(false);
   const [showToggle, setShowToggle] = useState(false);
   const [showComponent, setShowComponent] = useState(false);
+  const [showEditComponent, setShowEditComponent] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [toggleSignInUp, setToggleSignInUp] = useState(false);
   const [drawerState, setDrawerState] = useState(false);
@@ -105,6 +106,19 @@ export const AuthProvider = ({ children }) => {
     const res = await getUser(userLogin);
     if (res && !("message" in res)) {
       setCurrentUser({ ...currentUser, ...res.res });
+      if (reviewCollection.length > 0) {
+        const isWritten = () => {
+          for (let rev of reviewCollection) {
+            if (res.res.reviews.includes(rev._id)) {
+              return true;
+            }
+          }
+          return false;
+        };
+        if (isWritten()) {
+          setReviewWritten(true);
+        }
+      }
       setDrawerState(false);
       setIsLoggedIn(true);
       setUserLogin(userLoginInitialState);
@@ -223,12 +237,37 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  // const editReviewHandler = async () => {
-  //   const res = await updateReview(id, review);
-  // }
+  const editReviewHandler = async (reviewProp) => {
+    setShowEditComponent(true);
+    setShowComponent(true);
+    setReview(reviewProp);
+  };
 
-  // the problem is the state is being updated but the currentUser being sent to updateUser is stale state
-  const deleteReviewHandler = async (id) => {
+  const editReviewSubmitHandler = async (e, id, updatedReview) => {
+    e.preventDefault();
+    setAlerts("");
+
+    const res = await updateReview(id, updatedReview);
+    if (res.message) {
+      const reviewResponse = await getReviews();
+      const reviewData = reviewResponse.filter((review) => {
+        return review.movie_id === updatedReview.movie_id;
+      });
+      const sortedReviews = sortByNestedKey(reviewData);
+      setReviewCollection(sortedReviews);
+      localStorage.setItem("reviewCollection", JSON.stringify(sortedReviews));
+      setReview(reviewInitialState);
+      setShowComponent(false);
+      setShowEditComponent(false);
+      setAlerts("success");
+      setSnackbarOpen(true);
+    } else {
+      setAlerts("error");
+      setSnackbarOpen(true);
+    }
+  };
+
+  const deleteReviewHandler = async (id, reviewProp) => {
     try {
       const res = await deleteReview(id);
       const remainingReviews = currentUser.reviews.filter(
@@ -239,10 +278,10 @@ export const AuthProvider = ({ children }) => {
         ...currentUser,
         reviews: remainingReviews,
       });
-      if (res && response.message && reviewCollection.length > 1) {
+      if (reviewCollection.length > 1) {
         const reviewResponse = await getReviews();
         const reviewData = reviewResponse.filter((fetchedReview) => {
-          return fetchedReview.movie_id === review.movie_id;
+          return fetchedReview.movie_id === reviewProp.movie_id;
         });
         const sortedReviews = sortByNestedKey(reviewData);
         setReviewCollection(sortedReviews);
@@ -402,17 +441,17 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("crewList", JSON.stringify(crewData));
     setCrewList(crewData);
     const reviewResponse = await getReviews();
-    const reviewData = reviewResponse.filter((review) => {
-      return review.movie_id === movieData.id;
-    });
-    if (reviewData.length > 0) {
+    if (reviewResponse.length > 0) {
+      const reviewData = reviewResponse.filter((review) => {
+        return review.movie_id === movieData.id;
+      });
       checkIfReviewWritten(reviewData);
       const sortedReviews = sortByNestedKey(reviewData);
       setReviewCollection(sortedReviews);
       localStorage.setItem("reviewCollection", JSON.stringify(sortedReviews));
     } else {
-      setReviewCollection(reviewData);
-      localStorage.setItem("reviewCollection", JSON.stringify(reviewData));
+      setReviewCollection(reviewResponse);
+      localStorage.setItem("reviewCollection", JSON.stringify(reviewResponse));
       setReviewWritten(false);
     }
     history.push(`/movie/${id}`);
@@ -567,7 +606,9 @@ export const AuthProvider = ({ children }) => {
     setReviewCollection,
     sortByNestedKey,
     deleteReviewHandler,
-    // editReviewHandler,
+    editReviewHandler,
+    showEditComponent,
+    editReviewSubmitHandler,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
