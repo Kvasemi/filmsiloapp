@@ -11,12 +11,14 @@ const Hero = () => {
   const movie = getLocalMovie();
   const crew = getLocalCrew();
 
-  const roleFinder = (role) => {
-    return crew.crew.filter((crew) => crew.job.includes(role));
+  const roleFinder = (department, job) => {
+    return crew.crew.filter(
+      (crew) => crew.department === department && crew.job === job
+    );
   };
 
-  const mappedCrewList = (role) => {
-    return roleFinder(role)
+  const mappedCrewList = (department, job) => {
+    return roleFinder(department, job)
       .slice(0, 5)
       .map(
         (crew) =>
@@ -72,7 +74,7 @@ const Hero = () => {
             <Typography className={classes.movieDetails} variant='body1'>
               {movie.overview}
             </Typography>
-            {mappedCrewList("Director").length > 0 && (
+            {mappedCrewList("Directing", "Director").length > 0 && (
               <div className={classes.text_container}>
                 <Typography
                   className={classes.text}
@@ -81,10 +83,10 @@ const Hero = () => {
                 >
                   <strong>Director</strong>
                 </Typography>
-                {mappedCrewList("Director")}
+                {mappedCrewList("Directing", "Director")}
               </div>
             )}
-            {mappedCrewList("Screenplay").length > 0 && (
+            {mappedCrewList("Writing", "Screenplay").length > 0 && (
               <div className={classes.text_container}>
                 <Typography
                   className={classes.text}
@@ -93,10 +95,10 @@ const Hero = () => {
                 >
                   Screenwriter
                 </Typography>
-                {mappedCrewList("Screenplay")}
+                {mappedCrewList("Writing", "Screenplay")}
               </div>
             )}
-            {mappedCrewList("Producer").length > 0 && (
+            {mappedCrewList("Production", "Producer").length > 0 && (
               <div className={classes.text_container}>
                 <Typography
                   className={classes.text}
@@ -105,7 +107,7 @@ const Hero = () => {
                 >
                   Producer
                 </Typography>
-                {mappedCrewList("Producer")}
+                {mappedCrewList("Production", "Producer")}
               </div>
             )}
           </div>

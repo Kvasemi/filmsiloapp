@@ -12,7 +12,7 @@ import { useAuth } from "../../../../context/AuthContext";
 
 const Hero = () => {
   const classes = useStyles();
-  const { randMovie, searchInputHandler, searchSubmitHandler, query } =
+  const { query, randMovie, searchInputHandler, searchSubmitHandler } =
     useAuth();
 
   return (
@@ -24,12 +24,12 @@ const Hero = () => {
         <div className={classes.outerLayer}>
           <Typography
             className={classes.heroTextTitle}
-            variant='h2'
+            variant='h1'
             align='center'
             color='textPrimary'
             gutterBottom
           >
-            Movie Data Finder
+            <strong>The Film Silo</strong>
           </Typography>
           <Typography
             variant='h5'
@@ -69,7 +69,7 @@ const Hero = () => {
                   color='primary'
                   onClick={(e) => searchSubmitHandler(e)}
                 >
-                  Search
+                  Go!
                 </Button>
               </form>
             </Grid>

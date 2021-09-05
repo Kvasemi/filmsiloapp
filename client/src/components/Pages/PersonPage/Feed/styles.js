@@ -38,4 +38,5 @@ export default makeStyles(() => ({
     marginTop: "30px",
     marginBottom: "10px",
   },
+  imagelistContainer: { minHeight: "600px" },
 }));

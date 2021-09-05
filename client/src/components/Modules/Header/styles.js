@@ -1,31 +1,32 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { alpha, makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme) => ({
   appBar: {
-    overflow: "hidden",
+    // overflow: "hidden",
     height: "70px",
-    backgroundColor: "rgba(3, 34, 56, 0.8)",
+    backgroundColor: "rgba(30, 34, 56, 0.8)",
   },
   headerContainer: { display: "flex", justifyContent: "space-between" },
+
   image: {
     marginLeft: "15px",
-    marginTop: "20px",
+    marginTop: "22px",
   },
   loggedInName: {
     display: "inline-block",
-    marginTop: "20px",
-    marginRight: "20px",
+    marginTop: "0px",
+    marginRight: "10px",
   },
   logOutButton: {
     display: "inline-block",
     color: "white",
-    marginBottom: "5px",
+    marginBottom: "0px",
     marginRight: "20px",
   },
-  loginIcon: { marginRight: "0px", marginBottom: "10px" },
+  loginIcon: { marginRight: "0px", marginBottom: "2px" },
   loginIconLoggedIn: {
     marginRight: "0px",
-    marginBottom: "10px",
+    marginBottom: "2px",
     color: "blue",
   },
   list: {
@@ -47,5 +48,44 @@ export default makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  search: {
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(1),
+      width: "auto",
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inputRoot: {
+    color: "inherit",
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
+      },
+    },
   },
 }));

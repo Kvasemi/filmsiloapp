@@ -4,6 +4,7 @@ export default makeStyles(() => ({
   container: {
     padding: "0",
     margin: "0",
+    marginTop: "70px",
     width: "100vw",
   },
   gridContainer: {

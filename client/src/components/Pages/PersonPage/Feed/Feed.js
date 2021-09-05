@@ -9,6 +9,7 @@ import {
 
 import { useAuth } from "../../../../context/AuthContext";
 import Sidebar from "../Sidebar/Sidebar";
+import Footer from "../../../Modules/Footer/Footer";
 
 import useStyles from "./styles";
 
@@ -53,7 +54,7 @@ const Feed = () => {
   ));
 
   const filterByDirectingWorks = relatedMovieList.crew.filter(
-    (movie) => movie.job === "Director"
+    (movie) => movie.department === "Directing" && movie.job === "Director"
   );
 
   const sortedDirectedList = filterByDirectingWorks.sort((a, b) => {
@@ -91,7 +92,7 @@ const Feed = () => {
   ));
 
   const filterByWritingWorks = relatedMovieList.crew.filter(
-    (movie) => movie.job === "Screenplay" || movie.job === "Writer"
+    (movie) => movie.department === "Writing" && movie.job === "Screenplay"
   );
 
   const sortedWrittenForList = filterByWritingWorks.sort((a, b) => {
@@ -128,8 +129,8 @@ const Feed = () => {
     </div>
   ));
 
-  const filterByProducingWorks = relatedMovieList.crew.filter((movie) =>
-    movie.job.includes("Producer")
+  const filterByProducingWorks = relatedMovieList.crew.filter(
+    (movie) => movie.department === "Production" && movie.job === "Producer"
   );
 
   const sortedProducedList = filterByProducingWorks.sort((a, b) => {
@@ -173,48 +174,53 @@ const Feed = () => {
         <Grid item xs={12} md={9}>
           <Grid container className={classes.castGridContainer} spacing={2}>
             <Grid item className={classes.castGridItem}>
-              {relatedMovieList.cast.length > 0 && (
-                <>
-                  <Typography variant='h6' className={classes.heading}>
-                    Movies Acted in
-                  </Typography>
+              <div className={classes.imagelistContainer}>
+                {relatedMovieList.cast.length > 0 && (
+                  <>
+                    <Typography variant='h6' className={classes.heading}>
+                      Movies Acted in
+                    </Typography>
 
-                  <ImageList className={classes.imageList} cols={3}>
-                    {mappedRelatedMovieList}
-                  </ImageList>
-                </>
-              )}
-              {filterByDirectingWorks.length > 0 && (
-                <>
-                  <Typography variant='h6' className={classes.heading}>
-                    Movies Directed
-                  </Typography>
+                    <ImageList className={classes.imageList} cols={3}>
+                      {mappedRelatedMovieList}
+                    </ImageList>
+                  </>
+                )}
+                {filterByDirectingWorks.length > 0 && (
+                  <>
+                    <Typography variant='h6' className={classes.heading}>
+                      Movies Directed
+                    </Typography>
 
-                  <ImageList className={classes.imageList} cols={3}>
-                    {mappedRelatedDirectedList}
-                  </ImageList>
-                </>
-              )}
-              {filterByWritingWorks.length > 0 && (
-                <>
-                  <Typography variant='h6' className={classes.heading}>
-                    Movies Written
-                  </Typography>
-                  <ImageList className={classes.imageList} cols={3}>
-                    {mappedRelatedScreenplayList}
-                  </ImageList>
-                </>
-              )}
-              {filterByProducingWorks.length > 0 && (
-                <>
-                  <Typography variant='h6' className={classes.heading}>
-                    Movies Produced
-                  </Typography>
-                  <ImageList className={classes.imageList} cols={3}>
-                    {mappedRelatedProducedList}
-                  </ImageList>
-                </>
-              )}
+                    <ImageList className={classes.imageList} cols={3}>
+                      {mappedRelatedDirectedList}
+                    </ImageList>
+                  </>
+                )}
+                {filterByWritingWorks.length > 0 && (
+                  <>
+                    <Typography variant='h6' className={classes.heading}>
+                      Movies Written
+                    </Typography>
+                    <ImageList className={classes.imageList} cols={3}>
+                      {mappedRelatedScreenplayList}
+                    </ImageList>
+                  </>
+                )}
+                {filterByProducingWorks.length > 0 && (
+                  <>
+                    <Typography variant='h6' className={classes.heading}>
+                      Movies Produced
+                    </Typography>
+                    <ImageList className={classes.imageList} cols={3}>
+                      {mappedRelatedProducedList}
+                    </ImageList>
+                  </>
+                )}
+              </div>
+              <div className={classes.footer}>
+                <Footer />
+              </div>
             </Grid>
           </Grid>
         </Grid>

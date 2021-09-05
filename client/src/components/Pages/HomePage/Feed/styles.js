@@ -19,7 +19,7 @@ export default makeStyles((theme) => ({
   },
   cardMedia: {
     paddingTop: "56.25%",
-    height: "250px",
+    height: "400px",
     [theme.breakpoints.down("sm")]: {
       height: "450px",
     },

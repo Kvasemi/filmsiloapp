@@ -50,4 +50,5 @@ export default makeStyles(() => ({
     padding: "15px",
     fontWeight: "bold",
   },
+  imagelistContainer: { minHeight: "600px" },
 }));

@@ -10,6 +10,7 @@ import {
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 
 import { useAuth } from "../../../../context/AuthContext";
+import Footer from "../../../Modules/Footer/Footer";
 import Reviews from "../Reviews/Reviews";
 import Sidebar from "../Sidebar/Sidebar";
 
@@ -54,37 +55,42 @@ const Feed = () => {
 
   return (
     <div className={classes.rootDiv}>
-      <Grid container spacing={4} style={{ marginBottom: "200px" }}>
+      <Grid container spacing={4}>
         <Sidebar />
-        <Grid item xs={12} lg={9}>
-          <Typography variant='h6'>Cast</Typography>
-          <Grid container className={classes.castGridContainer} spacing={2}>
-            <Grid item className={classes.castGridItem}>
-              <ImageList className={classes.imageList} cols={2.5}>
-                {mappedCrewList}
-              </ImageList>
+        <Grid item xs={12} lg={9} style={{ marginBottom: "0px" }}>
+          <div className={classes.imagelistContainer}>
+            <Typography variant='h6'>Cast</Typography>
+            <Grid container className={classes.castGridContainer} spacing={2}>
+              <Grid item className={classes.castGridItem}>
+                <ImageList className={classes.imageList} cols={2.5}>
+                  {mappedCrewList}
+                </ImageList>
+              </Grid>
             </Grid>
-          </Grid>
-          <Divider variant='middle' />
-          {isLoggedIn && !reviewWritten && (
-            <ToggleButtonGroup exclusive className={classes.toggleContainer}>
-              <ToggleButton
-                className={classes.reviewsButton}
-                value='REVIEWS'
-                onClick={toggleReviewHandler}
-              >
-                REVIEWS
-              </ToggleButton>
-              <ToggleButton
-                className={classes.formButton}
-                value='WRITE A REVIEW'
-                onClick={toggleFormHandler}
-              >
-                WRITE A REVIEW
-              </ToggleButton>
-            </ToggleButtonGroup>
-          )}
-          <Reviews />
+            <Divider variant='middle' />
+            {isLoggedIn && !reviewWritten && (
+              <ToggleButtonGroup exclusive className={classes.toggleContainer}>
+                <ToggleButton
+                  className={classes.reviewsButton}
+                  value='REVIEWS'
+                  onClick={toggleReviewHandler}
+                >
+                  REVIEWS
+                </ToggleButton>
+                <ToggleButton
+                  className={classes.formButton}
+                  value='WRITE A REVIEW'
+                  onClick={toggleFormHandler}
+                >
+                  WRITE A REVIEW
+                </ToggleButton>
+              </ToggleButtonGroup>
+            )}
+            <Reviews />
+          </div>
+          <div className={classes.footer}>
+            <Footer />
+          </div>
         </Grid>
       </Grid>
     </div>

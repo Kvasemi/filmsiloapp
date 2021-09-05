@@ -7,20 +7,19 @@ import Footer from "../../Modules/Footer/Footer";
 import { useAuth } from "../../../context/AuthContext";
 
 const HomePage = () => {
-  const { popularMovies } = useAuth();
+  const { setIsHomepage, popularMovies } = useAuth();
 
   useEffect(() => {
     console.log("useEffect triggered");
+    setIsHomepage(true);
     popularMovies();
   }, []);
 
   return (
     <>
       <Header />
-      <main>
-        <Hero />
-        <Feed />
-      </main>
+      <Hero />
+      <Feed />
       <Footer />
     </>
   );

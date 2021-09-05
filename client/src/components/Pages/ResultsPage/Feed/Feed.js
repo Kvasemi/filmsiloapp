@@ -11,6 +11,7 @@ import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 
 import { useAuth } from "../../../../context/AuthContext";
 import useStyles from "./styles";
+import Footer from "../../../Modules/Footer/Footer";
 
 const Feed = () => {
   const classes = useStyles();
@@ -95,6 +96,7 @@ const Feed = () => {
 
   return (
     <Grid container className={classes.mainContainer}>
+      {/* <div className={classes.imagelistContainer}> */}
       <ToggleButtonGroup exclusive className={classes.toggleContainer}>
         <ToggleButton
           className={classes.moviesButton}
@@ -112,6 +114,10 @@ const Feed = () => {
       {!searchToggle && movies.length > 0
         ? mappedMovieResults
         : mappedPeopleResults}
+      <div className={classes.footer}>
+        <Footer />
+      </div>
+      {/* </div> */}
     </Grid>
   );
 };
