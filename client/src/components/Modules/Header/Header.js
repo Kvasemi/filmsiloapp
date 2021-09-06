@@ -8,7 +8,6 @@ import {
   Drawer,
   FormControlLabel,
   Grid,
-  InputBase,
   Slide,
   TextField,
   Toolbar,
@@ -16,7 +15,6 @@ import {
   useScrollTrigger,
 } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
-import SearchIcon from "@material-ui/icons/Search";
 
 import useStyles from "./styles";
 import logo from "../../../images/filmsilo.png";
@@ -84,24 +82,7 @@ const Header = (props) => {
                 height='175'
               />
             </Link>
-            {!isHomepage && (
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <form onSubmit={(e) => searchSubmitHandler(e)}>
-                  <InputBase
-                    placeholder='Search…'
-                    classes={{
-                      root: classes.inputRoot,
-                      input: classes.inputInput,
-                    }}
-                    inputProps={{ "aria-label": "search" }}
-                    onChange={searchInputHandler}
-                  />
-                </form>
-              </div>
-            )}
+            {props.searchbar}
             <div>
               <Button onClick={toggleDrawer(true)}>
                 <PersonIcon

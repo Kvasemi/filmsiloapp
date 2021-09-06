@@ -62,7 +62,6 @@ export const AuthProvider = ({ children }) => {
   const [alerts, setAlerts] = useState("");
   const [reviewCollection, setReviewCollection] = useState([]);
   const [reviewWritten, setReviewWritten] = useState(false);
-  const [isHomepage, setIsHomepage] = useState(false);
 
   const nameRef = useRef();
   const emailRef = useRef();
@@ -420,7 +419,6 @@ export const AuthProvider = ({ children }) => {
       } else {
         history.push("/search");
       }
-      setIsHomepage(false);
       setQuery(null);
       setSearchToggle(false);
     }
@@ -457,7 +455,6 @@ export const AuthProvider = ({ children }) => {
     }
     history.push(`/movie/${id}`);
     toggleReviewHandler();
-    setIsHomepage(false);
   };
 
   const personClickHandler = (id) => {
@@ -481,7 +478,6 @@ export const AuthProvider = ({ children }) => {
       })
       .catch((err) => console.log(err));
     setReviewWritten(false);
-    setIsHomepage(false);
   };
 
   // LOCALSTORAGE
@@ -609,8 +605,6 @@ export const AuthProvider = ({ children }) => {
     editReviewHandler,
     showEditComponent,
     editReviewSubmitHandler,
-    isHomepage,
-    setIsHomepage,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

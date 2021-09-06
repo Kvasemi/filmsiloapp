@@ -7,11 +7,10 @@ import Footer from "../../Modules/Footer/Footer";
 import { useAuth } from "../../../context/AuthContext";
 
 const HomePage = () => {
-  const { setIsHomepage, popularMovies } = useAuth();
+  const { popularMovies } = useAuth();
 
   useEffect(() => {
     console.log("useEffect triggered");
-    setIsHomepage(true);
     popularMovies();
   }, []);
 

@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import Feed from "./Feed/Feed";
 import Hero from "./Hero/Hero";
 import Header from "../../Modules/Header/Header";
+import Searchbar from "../../Modules/Searchbar/Searchbar";
 
 const PersonPage = () => {
   useEffect(() => {
@@ -11,7 +12,7 @@ const PersonPage = () => {
 
   return (
     <>
-      <Header />
+      <Header searchbar={<Searchbar />} />
       <Hero />
       <Feed />
     </>
