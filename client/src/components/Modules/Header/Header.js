@@ -41,7 +41,6 @@ const Header = (props) => {
     drawerState,
     emailRef,
     isHomepage,
-    isLoggedIn,
     logOutHandler,
     nameRef,
     passwordRef,
@@ -50,7 +49,7 @@ const Header = (props) => {
     setDrawerState,
     signInEmailHandler,
     signInHandler,
-    signInNameHandler,
+    signUpNameHandler,
     signInPasswordHandler,
     signInUpHandler,
     signUpEmailHandler,
@@ -107,7 +106,7 @@ const Header = (props) => {
               <Button onClick={toggleDrawer(true)}>
                 <PersonIcon
                   className={
-                    isLoggedIn ? classes.loginIconLoggedIn : classes.loginIcon
+                    currentUser ? classes.loginIconLoggedIn : classes.loginIcon
                   }
                   fontSize='large'
                 ></PersonIcon>
@@ -121,7 +120,7 @@ const Header = (props) => {
                   <Container component='main' maxWidth='xs'>
                     <CssBaseline />
                     {!toggleSignInUp ? (
-                      !isLoggedIn ? (
+                      !currentUser ? (
                         <div className={classes.paper}>
                           <Typography component='h1' variant='h5'>
                             Sign in
@@ -216,7 +215,7 @@ const Header = (props) => {
                             name='name'
                             autoComplete='name'
                             autoFocus
-                            onChange={signInNameHandler}
+                            onChange={signUpNameHandler}
                           />
                           <TextField
                             inputRef={emailRef}

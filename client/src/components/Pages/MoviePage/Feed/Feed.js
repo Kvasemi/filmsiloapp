@@ -19,8 +19,8 @@ import useStyles from "./styles";
 const Feed = () => {
   const classes = useStyles();
   const {
+    currentUser,
     getLocalCrew,
-    isLoggedIn,
     personClickHandler,
     reviewWritten,
     toggleReviewHandler,
@@ -68,7 +68,7 @@ const Feed = () => {
               </Grid>
             </Grid>
             <Divider variant='middle' />
-            {isLoggedIn && !reviewWritten && (
+            {currentUser && !reviewWritten && (
               <ToggleButtonGroup exclusive className={classes.toggleContainer}>
                 <ToggleButton
                   className={classes.reviewsButton}

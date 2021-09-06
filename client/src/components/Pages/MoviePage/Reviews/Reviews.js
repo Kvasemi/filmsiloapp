@@ -60,7 +60,7 @@ const Reviews = () => {
           <Typography component='h2' variant='h6' paragraph>
             {review.review_body}
           </Typography>
-          {currentUser._id === review.user_id && (
+          {currentUser && currentUser._id === review.user_id && (
             <ToggleButtonGroup exclusive className={classes.toggleContainer}>
               <Button
                 variant='contained'

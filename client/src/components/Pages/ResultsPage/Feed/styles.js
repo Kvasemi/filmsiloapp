@@ -39,4 +39,5 @@ export default makeStyles((theme) => ({
     fontWeight: "bold",
   },
   footer: { width: "100vw" },
+  imagelistContainer: { minHeight: "550px" },
 }));

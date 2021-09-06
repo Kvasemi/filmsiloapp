@@ -95,30 +95,32 @@ const Feed = () => {
   ));
 
   return (
-    <Grid container className={classes.mainContainer}>
-      {/* <div className={classes.imagelistContainer}> */}
-      <ToggleButtonGroup exclusive className={classes.toggleContainer}>
-        <ToggleButton
-          className={classes.moviesButton}
-          onClick={movieToggleHandler}
-        >
-          MOVIES
-        </ToggleButton>
-        <ToggleButton
-          className={classes.peopleButton}
-          onClick={peopleToggleHandler}
-        >
-          PEOPLE
-        </ToggleButton>
-      </ToggleButtonGroup>
-      {!searchToggle && movies.length > 0
-        ? mappedMovieResults
-        : mappedPeopleResults}
+    <>
+      <div className={classes.imagelistContainer}>
+        <Grid container className={classes.mainContainer}>
+          <ToggleButtonGroup exclusive className={classes.toggleContainer}>
+            <ToggleButton
+              className={classes.moviesButton}
+              onClick={movieToggleHandler}
+            >
+              MOVIES
+            </ToggleButton>
+            <ToggleButton
+              className={classes.peopleButton}
+              onClick={peopleToggleHandler}
+            >
+              PEOPLE
+            </ToggleButton>
+          </ToggleButtonGroup>
+          {!searchToggle && movies.length > 0
+            ? mappedMovieResults
+            : mappedPeopleResults}
+        </Grid>
+      </div>
       <div className={classes.footer}>
         <Footer />
       </div>
-      {/* </div> */}
-    </Grid>
+    </>
   );
 };
 

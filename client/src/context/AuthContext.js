@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
   // state to grab form info to send via fetch api to mongodb for authentication
   const userLoginInitialState = { email: "", password: "" };
 
-  const [currentUser, setCurrentUser] = useState(userInitialState);
+  const [currentUser, setCurrentUser] = useState(null);
   const [movieQueryList, setMovieQueryList] = useState([]);
   const [personQueryList, setPersonQueryList] = useState([]);
   const [movieList, setMovieList] = useState([]);
@@ -58,8 +58,6 @@ export const AuthProvider = ({ children }) => {
   const [review, setReview] = useState(reviewInitialState);
   const [user, setUser] = useState(userInitialState);
   const [userLogin, setUserLogin] = useState(userLoginInitialState);
-  const [textField, setTextField] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [alerts, setAlerts] = useState("");
   const [reviewCollection, setReviewCollection] = useState([]);
@@ -88,10 +86,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   // SIGN IN
-  const signInNameHandler = (e) => {
-    setUser({ ...user, name: e.target.value });
-  };
-
   const signInEmailHandler = (e) => {
     setUserLogin({ ...userLogin, email: e.target.value });
   };
@@ -121,7 +115,6 @@ export const AuthProvider = ({ children }) => {
         }
       }
       setDrawerState(false);
-      setIsLoggedIn(true);
       setUserLogin(userLoginInitialState);
       setAlerts("success");
       setSnackbarOpen(true);
@@ -132,6 +125,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   // SIGN UP
+  const signUpNameHandler = (e) => {
+    setUser({ ...user, name: e.target.value });
+  };
+
   const signUpEmailHandler = (e) => {
     setUser({ ...user, email: e.target.value });
   };
@@ -153,7 +150,6 @@ export const AuthProvider = ({ children }) => {
       if (res) {
         setCurrentUser({ ...currentUser, ...res.res });
         setDrawerState(false);
-        setIsLoggedIn(true);
         setAlerts("success");
         setSnackbarOpen(true);
       } else {
@@ -174,8 +170,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logOutHandler = () => {
-    setCurrentUser(userInitialState);
-    setIsLoggedIn(false);
+    setDrawerState(false);
+    setCurrentUser(null);
     setShowComponent(false);
     setAlerts("success");
     setSnackbarOpen(true);
@@ -448,7 +444,9 @@ export const AuthProvider = ({ children }) => {
       const reviewData = reviewResponse.filter((review) => {
         return review.movie_id === movieData.id;
       });
-      checkIfReviewWritten(reviewData);
+      if (currentUser) {
+        checkIfReviewWritten(reviewData);
+      }
       const sortedReviews = sortByNestedKey(reviewData);
       setReviewCollection(sortedReviews);
       localStorage.setItem("reviewCollection", JSON.stringify(sortedReviews));
@@ -577,7 +575,7 @@ export const AuthProvider = ({ children }) => {
     reviewBodyHandler,
     reviewTitleHandler,
     reviewSubmitHandler,
-    signInNameHandler,
+    signUpNameHandler,
     signInEmailHandler,
     signInPasswordHandler,
     signInHandler,
@@ -588,14 +586,11 @@ export const AuthProvider = ({ children }) => {
     signInUpHandler,
     toggleSignInUp,
     setToggleSignInUp,
-    textField,
-    setTextField,
     nameRef,
     emailRef,
     passwordRef,
     currentUser,
     setCurrentUser,
-    isLoggedIn,
     drawerState,
     setDrawerState,
     logOutHandler,
