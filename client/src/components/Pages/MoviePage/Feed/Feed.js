@@ -13,6 +13,7 @@ import { useAuth } from "../../../../context/AuthContext";
 import Footer from "../../../Modules/Footer/Footer";
 import Reviews from "../Reviews/Reviews";
 import Sidebar from "../Sidebar/Sidebar";
+import missingPerson from "../../../../images/person.png";
 
 import useStyles from "./styles";
 
@@ -21,13 +22,32 @@ const Feed = () => {
   const {
     currentUser,
     getLocalCrew,
+    getLocalMovie,
     personClickHandler,
+    review,
     reviewWritten,
-    toggleReviewHandler,
-    toggleFormHandler,
+    setReview,
+    setShowComponent,
   } = useAuth();
 
   const crew = getLocalCrew();
+
+  const toggleReviewHandler = () => {
+    setShowComponent(false);
+    setReview(null); // changed from reviewinitialstate to null may cause error
+  };
+
+  const toggleFormHandler = () => {
+    setShowComponent(true);
+    setReview({
+      ...review,
+      user_id: currentUser._id,
+      username: currentUser.name,
+      date_created: new Date(),
+      movie_id: getLocalMovie().id,
+      movie_name: getLocalMovie().title,
+    });
+  };
 
   const mappedCrewList = crew.cast.map((crew) => (
     <div className={classes.linkContainer} key={crew.id}>
@@ -38,12 +58,16 @@ const Feed = () => {
       >
         <CardMedia
           className={classes.cardMedia}
-          image={`https://image.tmdb.org/t/p/h632${crew.profile_path}`}
+          image={
+            crew.profile_path
+              ? `https://image.tmdb.org/t/p/h632${crew.profile_path}`
+              : missingPerson
+          }
           title={crew.name}
         />
         <CardContent className={classes.cardContent}>
           <Typography variant='subtitle2' gutterBottom>
-            {crew.name}
+            <strong>{crew.name}</strong>
           </Typography>
           <Typography variant='body2' gutterBottom>
             {crew.character}

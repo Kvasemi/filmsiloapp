@@ -5,11 +5,24 @@ export default makeStyles((theme) => ({
     height: "70px",
     backgroundColor: "rgba(30, 34, 56, 0.8)",
   },
-  headerContainer: { display: "flex", justifyContent: "space-between" },
-
+  headerContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
   image: {
     marginLeft: "15px",
-    marginTop: "22px",
+    marginTop: "0px",
+    height: "70px",
+    width: "150px",
+    backgroundSize: "9600px 100%",
+    webkitFilter: "grayscale(100%)",
+    filter: "grayscale(100%)",
+    webkitTransition: ".3s ease-in-out",
+    transition: ".3s ease-in-out",
+    "&:hover": {
+      webkitFilter: "grayscale(0)",
+      filter: "grayscale(0)",
+    },
   },
   loggedInName: {
     display: "inline-block",

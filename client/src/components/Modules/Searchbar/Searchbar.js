@@ -7,7 +7,8 @@ import { useAuth } from "../../../context/AuthContext";
 const Searchbar = () => {
   const classes = useStyles();
 
-  const { searchInputHandler, searchSubmitHandler } = useAuth();
+  const { searchSubmitHandler, searchInputHandler } = useAuth();
+
   return (
     <div className={classes.search}>
       <div className={classes.searchIcon}>

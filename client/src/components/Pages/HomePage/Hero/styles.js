@@ -11,6 +11,7 @@ export default makeStyles((theme) => ({
     backgroundSize: "cover",
     backgroundAttachment: "fixed",
     height: "400px",
+    width: "100%",
   },
   outerLayer: {
     backgroundImage:
@@ -28,10 +29,6 @@ export default makeStyles((theme) => ({
     width: "100%",
     bottom: "50px",
   },
-  searchBar: {
-    flexDirection: "row",
-    margin: "auto",
-  },
   searchButton: {
     borderTopRightRadius: "5px",
     borderBottomRightRadius: "5px",
@@ -45,5 +42,9 @@ export default makeStyles((theme) => ({
     borderBottomLeftRadius: "5px",
     height: "36px",
     textDecoration: "none",
+  },
+  searchBar: {
+    flexDirection: "row",
+    margin: "auto",
   },
 }));

@@ -10,10 +10,9 @@ import {
 import useStyles from "./styles";
 import { useAuth } from "../../../../context/AuthContext";
 
-const Hero = () => {
+const Hero = ({ randMovie }) => {
   const classes = useStyles();
-  const { query, randMovie, searchInputHandler, searchSubmitHandler } =
-    useAuth();
+  const { query, searchInputHandler, searchSubmitHandler } = useAuth();
 
   return (
     <Container className={classes.container} direction='column'>

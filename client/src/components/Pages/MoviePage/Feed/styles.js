@@ -23,12 +23,13 @@ export default makeStyles(() => ({
     width: "150px",
     height: "320px",
     cursor: "pointer",
+    borderRadius: "7px",
   },
   cardMedia: {
     margin: "auto",
     padding: 57.5,
-    height: 230,
-    width: 145,
+    height: 210,
+    width: 150,
   },
   cardContent: {
     flexGrow: "1",

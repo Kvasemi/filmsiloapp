@@ -14,11 +14,8 @@ export default makeStyles((theme) => ({
     borderRadius: "10px",
     boxShadow: "10px 5px 5px rgba(0, 0, 0, .2)",
   },
-  // cardDetails: {
-  //   flex: 1,
-  // },
   cardMedia: {
-    width: "175px",
+    minWidth: "175px",
   },
   toggleContainer: {
     marginTop: "15px",

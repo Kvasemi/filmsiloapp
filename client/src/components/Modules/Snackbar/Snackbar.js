@@ -1,16 +1,19 @@
 import { Snackbar } from "@material-ui/core";
-import MuiAlert from "@material-ui/lab/Alert";
 
 import { useAuth } from "../../../context/AuthContext";
 import useStyles from "./styles";
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant='filled' {...props} />;
-}
+import Alert from "./Alert";
 
 export default function CustomizedSnackbars() {
   const classes = useStyles();
-  const { alerts, snackbarOpen, snackbarCloseHandler } = useAuth();
+  const { alerts, setSnackbarOpen, snackbarOpen } = useAuth();
+
+  const snackbarCloseHandler = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   return (
     <div className={classes.root}>

@@ -11,14 +11,8 @@ import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import { useAuth } from "../../../../context/AuthContext";
 import useStyles from "./styles";
 
-const Feed = () => {
-  const {
-    formatDate,
-    movieClickHandler,
-    movieList,
-    popularMovies,
-    upcomingMovies,
-  } = useAuth();
+const Feed = ({ popularMovies, upcomingMovies, movieList }) => {
+  const { formatDate, movieClickHandler } = useAuth();
   const classes = useStyles();
 
   const mappedMovieList = movieList.map((movie) => (

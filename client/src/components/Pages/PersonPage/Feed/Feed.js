@@ -10,6 +10,7 @@ import {
 import { useAuth } from "../../../../context/AuthContext";
 import Sidebar from "../Sidebar/Sidebar";
 import Footer from "../../../Modules/Footer/Footer";
+import missingMovie from "../../../../images/missing.png";
 
 import useStyles from "./styles";
 
@@ -38,12 +39,16 @@ const Feed = () => {
       >
         <CardMedia
           className={classes.cardMedia}
-          image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+          image={
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/w780${movie.poster_path}`
+              : missingMovie
+          }
           title={movie.title}
         />
         <CardContent className={classes.cardContent}>
           <Typography variant='subtitle2' gutterBottom>
-            {movie.title}
+            <strong>{movie.title}</strong>
           </Typography>
           <Typography variant='body2' gutterBottom>
             {movie.release_date && formatDate(movie.release_date)}
@@ -76,7 +81,11 @@ const Feed = () => {
       >
         <CardMedia
           className={classes.cardMedia}
-          image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+          image={
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/w780${movie.poster_path}`
+              : missingMovie
+          }
           title={movie.title}
         />
         <CardContent className={classes.cardContent}>
@@ -114,7 +123,11 @@ const Feed = () => {
       >
         <CardMedia
           className={classes.cardMedia}
-          image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+          image={
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/w780${movie.poster_path}`
+              : missingMovie
+          }
           title={movie.title}
         />
         <CardContent className={classes.cardContent}>
@@ -152,7 +165,11 @@ const Feed = () => {
       >
         <CardMedia
           className={classes.cardMedia}
-          image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+          image={
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/w780${movie.poster_path}`
+              : missingMovie
+          }
           title={movie.title}
         />
         <CardContent className={classes.cardContent}>

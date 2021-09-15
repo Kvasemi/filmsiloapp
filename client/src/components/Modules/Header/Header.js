@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   AppBar,
@@ -8,64 +9,139 @@ import {
   Drawer,
   FormControlLabel,
   Grid,
-  Slide,
   TextField,
   Toolbar,
   Typography,
-  useScrollTrigger,
 } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
 
 import useStyles from "./styles";
 import logo from "../../../images/filmsilo.png";
 import { useAuth } from "../../../context/AuthContext";
-
-function HideOnScroll(props) {
-  const { children, window } = props;
-  const trigger = useScrollTrigger({ target: window ? window() : undefined });
-
-  return (
-    <Slide appear={false} direction='down' in={!trigger}>
-      {children}
-    </Slide>
-  );
-}
+import HideOnScroll from "./HideOnScroll";
+import { createUser, getUser } from "../../../actions/users";
 
 const Header = (props) => {
   const classes = useStyles();
   const {
-    confirmPasswordHandler,
     currentUser,
     drawerState,
-    emailRef,
-    isHomepage,
-    logOutHandler,
-    nameRef,
-    passwordRef,
-    searchInputHandler,
-    searchSubmitHandler,
+    reviewCollection,
+    setAlerts,
+    setCurrentUser,
     setDrawerState,
-    signInEmailHandler,
-    signInHandler,
-    signUpNameHandler,
-    signInPasswordHandler,
-    signInUpHandler,
-    signUpEmailHandler,
-    signUpHandler,
-    signUpPasswordHandler,
-    toggleSignInUp,
-    setToggleSignInUp,
+    setReviewWritten,
+    setShowComponent,
+    setSnackbarOpen,
+    userLogInAndSignUpInitialState,
   } = useAuth();
 
-  const toggleDrawer = (open) => (event) => {
+  const [logInOrSignUp, setLogInOrSignUp] = useState(false); //
+  const [userLogInAndSignUp, setUserLogInAndSignUp] = useState(
+    userLogInAndSignUpInitialState
+  );
+
+  const drawerOpenHandler = (open) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
     ) {
       return;
     }
-    setToggleSignInUp(false);
+    setLogInOrSignUp(false);
     setDrawerState(open);
+  };
+
+  const logInEmailHandler = (e) => {
+    setUserLogInAndSignUp({ ...userLogInAndSignUp, email: e.target.value });
+  };
+
+  const logInPasswordHandler = (e) => {
+    setUserLogInAndSignUp({ ...userLogInAndSignUp, password: e.target.value });
+  };
+
+  const logInHandler = async (e) => {
+    e.preventDefault();
+    setAlerts("");
+
+    const res = await getUser(userLogInAndSignUp);
+    if (res && !("message" in res)) {
+      setCurrentUser({ ...currentUser, ...res.res });
+      if (reviewCollection.length > 0) {
+        const isWritten = () => {
+          for (let rev of reviewCollection) {
+            if (res.res.reviews.includes(rev._id)) {
+              return true;
+            }
+          }
+          return false;
+        };
+        if (isWritten()) {
+          setReviewWritten(true);
+        }
+      }
+      setDrawerState(false);
+      setUserLogInAndSignUp(userLogInAndSignUpInitialState);
+      setAlerts("success");
+      setSnackbarOpen(true);
+    } else {
+      setAlerts("error");
+      setSnackbarOpen(true);
+    }
+  };
+
+  // SIGN UP
+  const signUpNameHandler = (e) => {
+    setUserLogInAndSignUp({ ...userLogInAndSignUp, name: e.target.value });
+  };
+
+  const signUpEmailHandler = (e) => {
+    setUserLogInAndSignUp({ ...userLogInAndSignUp, email: e.target.value });
+  };
+
+  const signUpPasswordHandler = (e) => {
+    setUserLogInAndSignUp({ ...userLogInAndSignUp, password: e.target.value });
+  };
+
+  const signUpConfirmPasswordHandler = (e) => {
+    setUserLogInAndSignUp({
+      ...userLogInAndSignUp,
+      confirmPassword: e.target.value,
+    });
+  };
+
+  const signUpHandler = async (e) => {
+    e.preventDefault();
+    setAlerts("");
+
+    if (userLogInAndSignUp.confirmPassword === userLogInAndSignUp.password) {
+      const res = await createUser(userLogInAndSignUp);
+      if (res) {
+        setCurrentUser({ ...currentUser, ...res.res });
+        setDrawerState(false);
+        setAlerts("success");
+        setSnackbarOpen(true);
+      } else {
+        setAlerts("error");
+        setSnackbarOpen(true);
+      }
+    } else {
+      setAlerts("error");
+      setSnackbarOpen(true);
+    }
+  };
+
+  const LogInOrSignUpHandler = () => {
+    setLogInOrSignUp(!logInOrSignUp);
+    setUserLogInAndSignUp(userLogInAndSignUpInitialState);
+  };
+
+  const logOutHandler = () => {
+    setDrawerState(false);
+    setCurrentUser(null);
+    setShowComponent(false);
+    setAlerts("success");
+    setSnackbarOpen(true);
   };
 
   return (
@@ -84,7 +160,7 @@ const Header = (props) => {
             </Link>
             {props.searchbar}
             <div>
-              <Button onClick={toggleDrawer(true)}>
+              <Button onClick={drawerOpenHandler(true)}>
                 <PersonIcon
                   className={
                     currentUser ? classes.loginIconLoggedIn : classes.loginIcon
@@ -95,20 +171,21 @@ const Header = (props) => {
               <Drawer
                 anchor='right'
                 open={drawerState}
-                onClose={toggleDrawer(false)}
+                onClose={drawerOpenHandler(false)}
               >
                 <div role='presentation'>
                   <Container component='main' maxWidth='xs'>
                     <CssBaseline />
-                    {!toggleSignInUp ? (
+                    {!logInOrSignUp ? (
                       !currentUser ? (
                         <div className={classes.paper}>
                           <Typography component='h1' variant='h5'>
-                            Sign in
+                            Log in
                           </Typography>
                           <form className={classes.form} noValidate>
                             <TextField
-                              inputRef={emailRef}
+                              // inputRef={emailRef}
+                              value={userLogInAndSignUp.email}
                               variant='outlined'
                               margin='normal'
                               required
@@ -118,10 +195,11 @@ const Header = (props) => {
                               name='email'
                               autoComplete='email'
                               autoFocus
-                              onChange={signInEmailHandler}
+                              onChange={logInEmailHandler}
                             />
                             <TextField
-                              inputRef={passwordRef}
+                              // inputRef={passwordRef}
+                              value={userLogInAndSignUp.password}
                               variant='outlined'
                               margin='normal'
                               required
@@ -131,7 +209,7 @@ const Header = (props) => {
                               type='password'
                               id='password'
                               autoComplete='current-password'
-                              onChange={signInPasswordHandler}
+                              onChange={logInPasswordHandler}
                             />
                             <FormControlLabel
                               control={
@@ -145,7 +223,7 @@ const Header = (props) => {
                               variant='contained'
                               color='primary'
                               className={classes.submit}
-                              onClick={(e) => signInHandler(e)}
+                              onClick={(e) => logInHandler(e)}
                             >
                               Sign In
                             </Button>
@@ -153,7 +231,7 @@ const Header = (props) => {
                               <Grid item style={{ margin: "auto" }}>
                                 <Link
                                   to='#'
-                                  onClick={signInUpHandler}
+                                  onClick={LogInOrSignUpHandler}
                                   variant='body2'
                                 >
                                   {"Don't have an account? Sign Up"}
@@ -186,7 +264,8 @@ const Header = (props) => {
                         </Typography>
                         <form className={classes.form} noValidate>
                           <TextField
-                            inputRef={nameRef}
+                            value={userLogInAndSignUp.name}
+                            // inputRef={nameRef}
                             variant='outlined'
                             margin='normal'
                             required
@@ -199,7 +278,8 @@ const Header = (props) => {
                             onChange={signUpNameHandler}
                           />
                           <TextField
-                            inputRef={emailRef}
+                            value={userLogInAndSignUp.email}
+                            // inputRef={emailRef}
                             variant='outlined'
                             margin='normal'
                             required
@@ -211,7 +291,8 @@ const Header = (props) => {
                             onChange={signUpEmailHandler}
                           />
                           <TextField
-                            inputRef={passwordRef}
+                            value={userLogInAndSignUp.password}
+                            // inputRef={passwordRef}
                             variant='outlined'
                             margin='normal'
                             required
@@ -223,6 +304,7 @@ const Header = (props) => {
                             onChange={signUpPasswordHandler}
                           />
                           <TextField
+                            value={userLogInAndSignUp.confirmPassword}
                             variant='outlined'
                             margin='normal'
                             required
@@ -231,7 +313,7 @@ const Header = (props) => {
                             label='Confirm Password'
                             type='password'
                             id='confirm-password'
-                            onChange={confirmPasswordHandler}
+                            onChange={signUpConfirmPasswordHandler}
                           />
                           <Button
                             type='submit'
@@ -247,7 +329,7 @@ const Header = (props) => {
                             <Grid item style={{ margin: "auto" }}>
                               <Link
                                 to='#'
-                                onClick={signInUpHandler}
+                                onClick={LogInOrSignUpHandler}
                                 variant='body2'
                               >
                                 {"Already have an account? Sign In"}

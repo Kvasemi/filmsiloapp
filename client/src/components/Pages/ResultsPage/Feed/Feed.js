@@ -12,18 +12,20 @@ import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import { useAuth } from "../../../../context/AuthContext";
 import useStyles from "./styles";
 import Footer from "../../../Modules/Footer/Footer";
+import missingMovie from "../../../../images/missing.png";
+import missingPerson from "../../../../images/person.png";
 
 const Feed = () => {
   const classes = useStyles();
   const {
     getLocalMovieQueryList,
     getLocalPersonQueryList,
-    movieToggleHandler,
-    peopleToggleHandler,
-    searchToggle,
+    showMovieResultsHandler,
+    showPersonResultsHandler,
     movieClickHandler,
     personClickHandler,
     formatDate,
+    showMovieOrPersonResults,
   } = useAuth();
 
   const movies = getLocalMovieQueryList();
@@ -39,7 +41,11 @@ const Feed = () => {
           <Hidden xsDown>
             <CardMedia
               className={classes.cardMedia}
-              image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              image={
+                movie.poster_path
+                  ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                  : missingMovie
+              }
               title={movie.title}
             />
           </Hidden>
@@ -75,7 +81,11 @@ const Feed = () => {
           <Hidden xsDown>
             <CardMedia
               className={classes.cardMedia}
-              image={`https://image.tmdb.org/t/p/w500${person.profile_path}`}
+              image={
+                person.profile_path
+                  ? `https://image.tmdb.org/t/p/w500${person.profile_path}`
+                  : missingPerson
+              }
               title={person.name}
             />
           </Hidden>
@@ -101,18 +111,18 @@ const Feed = () => {
           <ToggleButtonGroup exclusive className={classes.toggleContainer}>
             <ToggleButton
               className={classes.moviesButton}
-              onClick={movieToggleHandler}
+              onClick={showMovieResultsHandler}
             >
               MOVIES
             </ToggleButton>
             <ToggleButton
               className={classes.peopleButton}
-              onClick={peopleToggleHandler}
+              onClick={showPersonResultsHandler}
             >
               PEOPLE
             </ToggleButton>
           </ToggleButtonGroup>
-          {!searchToggle && movies.length > 0
+          {!showMovieOrPersonResults && movies.length > 0
             ? mappedMovieResults
             : mappedPeopleResults}
         </Grid>

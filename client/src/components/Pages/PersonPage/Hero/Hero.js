@@ -1,11 +1,15 @@
+import { useState } from "react";
 import { Button, CardMedia, Container, Typography } from "@material-ui/core";
 
 import useStyles from "./styles";
 import { useAuth } from "../../../../context/AuthContext";
+import missingPerson from "../../../../images/person.png";
 
 const Hero = () => {
   const classes = useStyles();
-  const { getLocalPerson, setShowToggle, showToggle } = useAuth();
+  const { getLocalPerson } = useAuth();
+
+  const [readMore, setReadMore] = useState(false);
 
   const person = getLocalPerson();
 
@@ -14,10 +18,13 @@ const Hero = () => {
       return (
         <>
           <Typography className={classes.biographyDetails} variant='body1'>
-            {!showToggle ? person.biography.slice(0, num) : person.biography}
+            {!readMore ? person.biography.slice(0, num) : person.biography}
           </Typography>
-          <Button className={classes.showButton} onClick={readMoreHandler}>
-            {!showToggle ? "Read More..." : "Read Less..."}
+          <Button
+            className={classes.showButton}
+            onClick={() => setReadMore(!readMore)}
+          >
+            {!readMore ? "Read More..." : "Read Less..."}
           </Button>
         </>
       );
@@ -29,14 +36,15 @@ const Hero = () => {
       );
   };
 
-  const readMoreHandler = () => {
-    setShowToggle(!showToggle);
-  };
   return (
     <Container maxWidth={false} className={classes.container}>
       <CardMedia
         className={classes.image}
-        image={`https://image.tmdb.org/t/p/h632${person.profile_path}`}
+        image={
+          person.profile_path
+            ? `https://image.tmdb.org/t/p/h632${person.profile_path}`
+            : missingPerson
+        }
         alt={person.name}
       />
       <div className={classes.textDiv}>

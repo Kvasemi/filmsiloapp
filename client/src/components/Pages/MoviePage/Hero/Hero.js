@@ -2,6 +2,7 @@ import { CardMedia, Container, Typography } from "@material-ui/core";
 
 import useStyles from "./styles";
 import { useAuth } from "../../../../context/AuthContext";
+import missingMovie from "../../../../images/missing.png";
 
 const Hero = () => {
   const classes = useStyles();
@@ -50,7 +51,11 @@ const Hero = () => {
         <div className={classes.gridContainer}>
           <img
             className={classes.image}
-            src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+            src={
+              movie.poster_path
+                ? `https://image.tmdb.org/t/p/w780${movie.poster_path}`
+                : missingMovie
+            }
             alt={movie.title}
           />
           <div className={classes.textDiv}>
