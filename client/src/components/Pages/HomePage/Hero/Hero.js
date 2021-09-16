@@ -36,8 +36,7 @@ const Hero = ({ randMovie }) => {
             className={classes.heroTextSlogan}
             paragraph
           >
-            Search information about your favorites movies, actors, directors.
-            Read and write reviews about them!
+            Search your favorite movies, cast and crew.
           </Typography>
           <Grid
             container

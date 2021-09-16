@@ -11,15 +11,15 @@ const Searchbar = () => {
 
   return (
     <div className={classes.search}>
-      <div className={classes.searchIcon}>
+      <div className={classes.search_icon}>
         <SearchIcon />
       </div>
       <form onSubmit={(e) => searchSubmitHandler(e)}>
         <InputBase
           placeholder='Search…'
           classes={{
-            root: classes.inputRoot,
-            input: classes.inputInput,
+            root: classes.input_root,
+            input: classes.input_input,
           }}
           inputProps={{ "aria-label": "search" }}
           onChange={searchInputHandler}

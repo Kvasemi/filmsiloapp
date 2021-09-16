@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles(() => ({
-  rootDiv: { margin: "50px" },
+  rootDiv: { margin: "50px", marginBottom: "0px" },
   castGridContainer: {
     height: "350px",
     marginBottom: "20px",
@@ -51,5 +51,5 @@ export default makeStyles(() => ({
     padding: "15px",
     fontWeight: "bold",
   },
-  imagelistContainer: { minHeight: "600px" },
+  imagelistContainer: { minHeight: "650px" },
 }));

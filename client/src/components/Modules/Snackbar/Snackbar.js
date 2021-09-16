@@ -16,7 +16,7 @@ export default function CustomizedSnackbars() {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={classes.snackbar_container}>
       {alerts === "success" ? (
         <Snackbar
           open={snackbarOpen}

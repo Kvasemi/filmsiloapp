@@ -57,9 +57,28 @@ export const AuthProvider = ({ children }) => {
     setShowMovieOrPersonResults(true);
   };
 
+  const months = {
+    1: "January",
+    2: "February",
+    3: "March",
+    4: "April",
+    5: "May",
+    6: "June",
+    7: "July",
+    8: "August",
+    9: "September",
+    10: "October",
+    11: "November",
+    12: "December",
+  };
+
   const formatDate = (date) => {
     const newArray = date.split("-");
-    const newDate = `${newArray[1]}/${newArray[2]}/${newArray[0]}`;
+    const newDate = `${
+      months[
+        Object.keys(months).find((key) => Number(key) === Number(newArray[1]))
+      ]
+    } ${newArray[2]}, ${newArray[0]}`;
     return newDate;
   };
 

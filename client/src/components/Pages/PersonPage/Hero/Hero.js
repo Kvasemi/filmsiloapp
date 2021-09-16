@@ -48,17 +48,19 @@ const Hero = () => {
         alt={person.name}
       />
       <div className={classes.textDiv}>
-        <Typography className={classes.personDetails} variant='h2'>
+        <Typography className={classes.personDetails} variant='h4'>
           <strong>{person.name}</strong>
         </Typography>
         <Typography
           className={classes.biographyText}
-          variant='subtitle1'
+          variant='h6'
           style={{ marginTop: "50px" }}
         >
           <strong>Biography</strong>
         </Typography>
-        {personBiography(1250)}
+        {person.biography
+          ? personBiography(1250)
+          : `We don't have a biography for ${person.name}.`}
       </div>
     </Container>
   );

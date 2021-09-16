@@ -7,6 +7,15 @@ export default makeStyles(() => ({
     marginTop: "70px",
     width: "100vw",
   },
+  backgroundCard: {
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center center",
+    backgroundSize: "cover",
+    "&:before": {
+      position: "fixed",
+    },
+    webkitTransform: "translate3d(0,0,0)",
+  },
   gridContainer: {
     background: "rgba(0,0,0,0.8)",
     display: "flex",

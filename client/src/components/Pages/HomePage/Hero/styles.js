@@ -9,9 +9,12 @@ export default makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center center",
     backgroundSize: "cover",
-    backgroundAttachment: "fixed",
+    "&:before": {
+      position: "fixed",
+    },
     height: "400px",
     width: "100%",
+    webkitTransform: "translate3d(0,0,0)",
   },
   outerLayer: {
     backgroundImage:

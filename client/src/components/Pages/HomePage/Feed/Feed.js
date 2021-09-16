@@ -28,10 +28,10 @@ const Feed = ({ popularMovies, upcomingMovies, movieList }) => {
           title={movie.title}
         />
         <CardContent className={classes.cardContent}>
-          <Typography variant='subtitle2' gutterBottom>
-            {movie.title}
+          <Typography variant='subtitle2'>
+            <strong>{movie.title}</strong>
           </Typography>
-          <Typography variant='body2' gutterBottom>
+          <Typography variant='body2'>
             {formatDate(movie.release_date)}
           </Typography>
         </CardContent>

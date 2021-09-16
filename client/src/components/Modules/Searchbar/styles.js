@@ -15,7 +15,7 @@ export default makeStyles((theme) => ({
       width: "auto",
     },
   },
-  searchIcon: {
+  search_icon: {
     padding: theme.spacing(0, 2),
     height: "100%",
     position: "absolute",
@@ -24,10 +24,10 @@ export default makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
-  inputRoot: {
+  input_root: {
     color: "inherit",
   },
-  inputInput: {
+  input_input: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,

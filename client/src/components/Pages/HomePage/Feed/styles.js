@@ -12,21 +12,21 @@ export default makeStyles((theme) => ({
   castCard: {
     height: "100%",
     width: "100%",
-    // display: "flex",
     flexDirection: "column",
     cursor: "pointer",
     boxShadow: "10px 5px 5px rgba(0, 0, 0, .2)",
+    borderRadius: "7px",
   },
   cardMedia: {
     paddingTop: "56.25%",
-    height: "400px",
+    height: "350px",
     [theme.breakpoints.down("sm")]: {
       height: "450px",
     },
   },
   cardContent: {
     flexGrow: "0",
-    height: 60,
+    height: 85,
     underline: "none",
   },
   popularButton: {

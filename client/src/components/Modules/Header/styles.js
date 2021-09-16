@@ -1,11 +1,11 @@
 import { alpha, makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme) => ({
-  appBar: {
+  appbar: {
     height: "70px",
     backgroundColor: "rgba(30, 34, 56, 0.8)",
   },
-  headerContainer: {
+  toolbar: {
     display: "flex",
     justifyContent: "space-between",
   },
@@ -44,7 +44,7 @@ export default makeStyles((theme) => ({
   list: {
     width: 450,
   },
-  paper: {
+  drawer_container: {
     marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",

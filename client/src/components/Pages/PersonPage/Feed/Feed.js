@@ -11,12 +11,11 @@ import { useAuth } from "../../../../context/AuthContext";
 import Sidebar from "../Sidebar/Sidebar";
 import Footer from "../../../Modules/Footer/Footer";
 import missingMovie from "../../../../images/missing.png";
-
 import useStyles from "./styles";
 
 const Feed = () => {
   const classes = useStyles();
-  const { formatDate, getLocalrelatedMovieList, movieClickHandler } = useAuth();
+  const { getLocalrelatedMovieList, movieClickHandler } = useAuth();
 
   const relatedMovieList = getLocalrelatedMovieList();
 
@@ -49,9 +48,6 @@ const Feed = () => {
         <CardContent className={classes.cardContent}>
           <Typography variant='subtitle2' gutterBottom>
             <strong>{movie.title}</strong>
-          </Typography>
-          <Typography variant='body2' gutterBottom>
-            {movie.release_date && formatDate(movie.release_date)}
           </Typography>
         </CardContent>
       </Card>
@@ -92,9 +88,6 @@ const Feed = () => {
           <Typography variant='subtitle2' gutterBottom>
             {movie.title}
           </Typography>
-          <Typography variant='body2' gutterBottom>
-            {movie.release_date && formatDate(movie.release_date)}
-          </Typography>
         </CardContent>
       </Card>
     </div>
@@ -133,9 +126,6 @@ const Feed = () => {
         <CardContent className={classes.cardContent}>
           <Typography variant='subtitle2' gutterBottom>
             {movie.title}
-          </Typography>
-          <Typography variant='body2' gutterBottom>
-            {movie.release_date && formatDate(movie.release_date)}
           </Typography>
         </CardContent>
       </Card>
@@ -176,9 +166,6 @@ const Feed = () => {
           <Typography variant='subtitle2' gutterBottom>
             {movie.title}
           </Typography>
-          <Typography variant='body2' gutterBottom>
-            {movie.release_date && formatDate(movie.release_date)}
-          </Typography>
         </CardContent>
       </Card>
     </div>
@@ -194,8 +181,12 @@ const Feed = () => {
               <div className={classes.imagelistContainer}>
                 {relatedMovieList.cast.length > 0 && (
                   <>
-                    <Typography variant='h6' className={classes.heading}>
-                      Movies Acted in
+                    <Typography
+                      variant='h6'
+                      className={classes.heading}
+                      gutterBottom
+                    >
+                      Films Casted In
                     </Typography>
 
                     <ImageList className={classes.imageList} cols={3}>
@@ -205,8 +196,12 @@ const Feed = () => {
                 )}
                 {filterByDirectingWorks.length > 0 && (
                   <>
-                    <Typography variant='h6' className={classes.heading}>
-                      Movies Directed
+                    <Typography
+                      variant='h6'
+                      className={classes.heading}
+                      gutterBottom
+                    >
+                      Films Directed
                     </Typography>
 
                     <ImageList className={classes.imageList} cols={3}>
@@ -216,8 +211,12 @@ const Feed = () => {
                 )}
                 {filterByWritingWorks.length > 0 && (
                   <>
-                    <Typography variant='h6' className={classes.heading}>
-                      Movies Written
+                    <Typography
+                      variant='h6'
+                      className={classes.heading}
+                      gutterBottom
+                    >
+                      Films Written
                     </Typography>
                     <ImageList className={classes.imageList} cols={3}>
                       {mappedRelatedScreenplayList}
@@ -226,8 +225,12 @@ const Feed = () => {
                 )}
                 {filterByProducingWorks.length > 0 && (
                   <>
-                    <Typography variant='h6' className={classes.heading}>
-                      Movies Produced
+                    <Typography
+                      variant='h6'
+                      className={classes.heading}
+                      gutterBottom
+                    >
+                      Films Produced
                     </Typography>
                     <ImageList className={classes.imageList} cols={3}>
                       {mappedRelatedProducedList}

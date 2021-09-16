@@ -26,10 +26,15 @@ const Hero = () => {
           crew && (
             <Typography
               key={crew.id}
-              style={{ display: "inline-block", marginRight: "20px" }}
+              style={{
+                display: "inline-block",
+                marginRight: "20px",
+                marginBottom: "10px",
+              }}
               className={classes.text_names}
               variant='body1'
               onClick={() => personClickHandler(crew.id)}
+              gutterBottom
             >
               <strong>{crew.name}</strong>
             </Typography>
@@ -40,12 +45,7 @@ const Hero = () => {
   return (
     <Container maxWidth={false} className={classes.container}>
       <CardMedia
-        style={{
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center center",
-          backgroundSize: "cover",
-          backgroundAttachment: "fixed",
-        }}
+        className={classes.backgroundCard}
         image={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
       >
         <div className={classes.gridContainer}>
@@ -71,7 +71,7 @@ const Hero = () => {
             </Typography>
             <Typography
               className={classes.movieDetails}
-              variant='subtitle1'
+              variant='h6'
               style={{ marginTop: "50px" }}
             >
               <strong>Overview</strong>
@@ -86,7 +86,7 @@ const Hero = () => {
                   variant='subtitle2'
                   style={{ marginTop: "50px" }}
                 >
-                  <strong>Director</strong>
+                  Director
                 </Typography>
                 {mappedCrewList("Directing", "Director")}
               </div>
@@ -96,7 +96,7 @@ const Hero = () => {
                 <Typography
                   className={classes.text}
                   variant='subtitle2'
-                  style={{ marginTop: "50px" }}
+                  style={{ marginTop: "10px" }}
                 >
                   Screenwriter
                 </Typography>

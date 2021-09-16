@@ -34,7 +34,7 @@ const Feed = () => {
 
   const toggleReviewHandler = () => {
     setShowComponent(false);
-    setReview(null); // changed from reviewinitialstate to null may cause error
+    setReview(null);
   };
 
   const toggleFormHandler = () => {
@@ -47,6 +47,23 @@ const Feed = () => {
       movie_id: getLocalMovie().id,
       movie_name: getLocalMovie().title,
     });
+  };
+
+  const crewCharacter = (crewArray, num) => {
+    if (crewArray.character) {
+      if (crewArray.character.length > num) {
+        return (
+          <Typography className={classes.biographyDetails} variant='body2'>
+            {crewArray.character.slice(0, num)}...
+          </Typography>
+        );
+      } else
+        return (
+          <Typography variant='body2' gutterBottom>
+            {crewArray.character}
+          </Typography>
+        );
+    }
   };
 
   const mappedCrewList = crew.cast.map((crew) => (
@@ -69,9 +86,7 @@ const Feed = () => {
           <Typography variant='subtitle2' gutterBottom>
             <strong>{crew.name}</strong>
           </Typography>
-          <Typography variant='body2' gutterBottom>
-            {crew.character}
-          </Typography>
+          {crewCharacter(crew, 40)}
         </CardContent>
       </Card>
     </div>
@@ -83,7 +98,9 @@ const Feed = () => {
         <Sidebar />
         <Grid item xs={12} lg={9} style={{ marginBottom: "0px" }}>
           <div className={classes.imagelistContainer}>
-            <Typography variant='h6'>Cast</Typography>
+            <Typography variant='h6' gutterBottom>
+              Cast
+            </Typography>
             <Grid container className={classes.castGridContainer} spacing={2}>
               <Grid item className={classes.castGridItem}>
                 <ImageList className={classes.imageList} cols={2.5}>

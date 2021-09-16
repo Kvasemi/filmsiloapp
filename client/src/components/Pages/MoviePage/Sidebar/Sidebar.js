@@ -33,13 +33,13 @@ const Sidebar = () => {
             <strong>Status</strong>
           </Typography>
           <Typography variant='body1' className={classes.body}>
-            {movie.status}
+            {movie.status ? movie.status : "-"}
           </Typography>
           <Typography variant='subtitle1' className={classes.subtitle}>
             <strong>Original Language</strong>
           </Typography>
           <Typography variant='body1' className={classes.body}>
-            {movie.original_language}
+            {movie.original_language ? movie.original_language : "-"}
           </Typography>
           <Typography variant='subtitle1' className={classes.subtitle}>
             <strong>Budget</strong>
@@ -61,7 +61,7 @@ const Sidebar = () => {
             <strong>Runtime</strong>
           </Typography>
           <Typography variant='body1' className={classes.body}>
-            {movie.runtime}
+            {movie.runtime ? `${movie.runtime} minutes` : "-"}
           </Typography>
         </div>
       </Grid>

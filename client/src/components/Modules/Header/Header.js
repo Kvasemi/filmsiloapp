@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import {
   AppBar,
   Button,
-  Checkbox,
+  // Checkbox,
   Container,
   CssBaseline,
   Drawer,
-  FormControlLabel,
+  // FormControlLabel,
   Grid,
   TextField,
   Toolbar,
@@ -90,7 +90,6 @@ const Header = (props) => {
     }
   };
 
-  // SIGN UP
   const signUpNameHandler = (e) => {
     setUserLogInAndSignUp({ ...userLogInAndSignUp, name: e.target.value });
   };
@@ -148,8 +147,8 @@ const Header = (props) => {
     <>
       <CssBaseline />
       <HideOnScroll {...props}>
-        <AppBar className={classes.appBar}>
-          <Toolbar className={classes.headerContainer}>
+        <AppBar className={classes.appbar}>
+          <Toolbar className={classes.toolbar}>
             <Link to='/'>
               <img
                 className={classes.image}
@@ -178,13 +177,12 @@ const Header = (props) => {
                     <CssBaseline />
                     {!logInOrSignUp ? (
                       !currentUser ? (
-                        <div className={classes.paper}>
+                        <div className={classes.drawer_container}>
                           <Typography component='h1' variant='h5'>
                             Log in
                           </Typography>
                           <form className={classes.form} noValidate>
                             <TextField
-                              // inputRef={emailRef}
                               value={userLogInAndSignUp.email}
                               variant='outlined'
                               margin='normal'
@@ -198,7 +196,6 @@ const Header = (props) => {
                               onChange={logInEmailHandler}
                             />
                             <TextField
-                              // inputRef={passwordRef}
                               value={userLogInAndSignUp.password}
                               variant='outlined'
                               margin='normal'
@@ -211,12 +208,12 @@ const Header = (props) => {
                               autoComplete='current-password'
                               onChange={logInPasswordHandler}
                             />
-                            <FormControlLabel
+                            {/* <FormControlLabel
                               control={
                                 <Checkbox value='remember' color='primary' />
                               }
                               label='Remember me'
-                            />
+                            /> */}
                             <Button
                               type='submit'
                               fullWidth
@@ -241,7 +238,7 @@ const Header = (props) => {
                           </form>
                         </div>
                       ) : (
-                        <div className={classes.paper}>
+                        <div className={classes.drawer_container}>
                           <Typography component='h1' variant='h5'>
                             Welcome {currentUser.name}
                           </Typography>
@@ -258,14 +255,13 @@ const Header = (props) => {
                         </div>
                       )
                     ) : (
-                      <div className={classes.paper}>
+                      <div className={classes.drawer_container}>
                         <Typography component='h1' variant='h5'>
                           Sign Up
                         </Typography>
                         <form className={classes.form} noValidate>
                           <TextField
                             value={userLogInAndSignUp.name}
-                            // inputRef={nameRef}
                             variant='outlined'
                             margin='normal'
                             required
@@ -279,7 +275,6 @@ const Header = (props) => {
                           />
                           <TextField
                             value={userLogInAndSignUp.email}
-                            // inputRef={emailRef}
                             variant='outlined'
                             margin='normal'
                             required
@@ -292,7 +287,6 @@ const Header = (props) => {
                           />
                           <TextField
                             value={userLogInAndSignUp.password}
-                            // inputRef={passwordRef}
                             variant='outlined'
                             margin='normal'
                             required
