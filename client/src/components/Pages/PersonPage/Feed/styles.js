@@ -24,6 +24,10 @@ export default makeStyles(() => ({
     height: "290px",
     cursor: "pointer",
     borderRadius: "7px",
+    transition: "transform 250ms",
+    "&:hover": {
+      transform: "translateX(5px)",
+    },
   },
   cardMedia: {
     margin: "auto",

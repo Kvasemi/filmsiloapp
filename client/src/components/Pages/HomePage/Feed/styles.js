@@ -16,7 +16,12 @@ export default makeStyles((theme) => ({
     cursor: "pointer",
     boxShadow: "10px 5px 5px rgba(0, 0, 0, .2)",
     borderRadius: "7px",
+    transition: "transform 250ms",
+    "&:hover": {
+      transform: "translateX(5px)",
+    },
   },
+
   cardMedia: {
     paddingTop: "56.25%",
     height: "350px",
