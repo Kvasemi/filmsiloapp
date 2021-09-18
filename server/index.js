@@ -18,12 +18,10 @@ app.get("/", (req, res) => {
   res.send("Welcome to Film Silo!");
 });
 
-const PORT = process.env.PORT || 5000;
-const CONNECTION_URL =
-  "mongodb+srv://filmsiloadmin:filmsiloansong@cluster0.k4kpb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const PORT = process.env.PORT || 80;
 
 mongoose
-  .connect(CONNECTION_URL, {
+  .connect(process.env.CONNECTION_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
