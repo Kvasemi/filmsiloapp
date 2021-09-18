@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:5000/reviews";
+const url = "https://filmsilo.herokuapp.com/reviews";
 
 export const getReviewsAPI = () => axios.get(url);
 export const createReviewAPI = (newReview) => axios.post(url, newReview);
