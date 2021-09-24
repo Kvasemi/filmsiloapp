@@ -28,8 +28,17 @@ export default makeStyles((theme) => ({
   heroTextTitle: {
     color: "white",
     paddingTop: "50px",
+    "@media (max-width: 541px)": {
+      fontSize: "70px",
+    },
+    "@media (max-width: 415px)": {
+      fontSize: "60px",
+    },
     "@media (max-width: 376px)": {
       fontSize: "50px",
+    },
+    "@media (max-width: 321px)": {
+      fontSize: "40px",
     },
   },
   heroTextSlogan: {
@@ -38,7 +47,7 @@ export default makeStyles((theme) => ({
     "@media (max-width: 769px)": {
       fontSize: "30px",
     },
-    "@media (max-width: 376px)": {
+    "@media (max-width: 541px)": {
       fontSize: "20px",
     },
   },
@@ -46,11 +55,16 @@ export default makeStyles((theme) => ({
     position: "absolute",
     width: "100%",
     bottom: "50px",
+    "@media (max-width: 376px)": {
+      left: "60px",
+      width: "70%",
+    },
   },
-  searchButton: {
-    borderTopRightRadius: "5px",
-    borderBottomRightRadius: "5px",
+  searchBar: {
+    flexDirection: "row",
+    margin: "auto",
   },
+  form: {},
   input: {
     color: "grey",
     background: "rgb(232, 241, 250)",
@@ -60,9 +74,37 @@ export default makeStyles((theme) => ({
     borderBottomLeftRadius: "5px",
     height: "36px",
     textDecoration: "none",
+    width: "350px",
+    "@media (max-width: 415px)": {
+      width: "150px",
+      marginLeft: "20px",
+      display: "inline-block",
+      color: "rgb(232, 241, 250)",
+    },
+    "@media (max-width: 376px)": {
+      width: "150px",
+      marginLeft: "20px",
+      display: "inline-block",
+      color: "rgb(232, 241, 250)",
+    },
+    "@media (max-width: 321px)": {
+      width: "140px",
+      marginLeft: "0px",
+      display: "inline-block",
+      color: "rgb(232, 241, 250)",
+    },
+    "@media (max-width: 281px)": {
+      width: "100px",
+      marginLeft: "0px",
+      display: "inline-block",
+      color: "rgb(232, 241, 250)",
+    },
   },
-  searchBar: {
-    flexDirection: "row",
-    margin: "auto",
+  searchButton: {
+    borderTopRightRadius: "5px",
+    borderBottomRightRadius: "5px",
+    "@media (max-width: 412px)": {
+      display: "inline-block",
+    },
   },
 }));

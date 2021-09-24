@@ -53,9 +53,8 @@ const Hero = ({ randMovie }) => {
                     className: classes.input,
                     disableUnderline: true,
                   }}
-                  style={{ width: 350 }}
                   autoFocus={true}
-                  fullWidth={true}
+                  fullWidth={false}
                   placeholder='Search movies, actors, directors..'
                   onChange={searchInputHandler}
                   required
