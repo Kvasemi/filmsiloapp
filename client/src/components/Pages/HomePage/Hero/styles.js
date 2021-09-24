@@ -25,8 +25,23 @@ export default makeStyles((theme) => ({
     height: "400px",
     position: "relative",
   },
-  heroTextTitle: { color: "white", paddingTop: "50px" },
-  heroTextSlogan: { color: "white", margin: "15px 40px 15px 40px" },
+  heroTextTitle: {
+    color: "white",
+    paddingTop: "50px",
+    "@media (max-width: 376px)": {
+      fontSize: "50px",
+    },
+  },
+  heroTextSlogan: {
+    color: "white",
+    margin: "15px 40px 15px 40px",
+    "@media (max-width: 769px)": {
+      fontSize: "30px",
+    },
+    "@media (max-width: 376px)": {
+      fontSize: "20px",
+    },
+  },
   searchContainer: {
     position: "absolute",
     width: "100%",
