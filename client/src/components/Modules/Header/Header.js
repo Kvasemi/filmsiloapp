@@ -3,11 +3,9 @@ import { Link } from "react-router-dom";
 import {
   AppBar,
   Button,
-  // Checkbox,
   Container,
   CssBaseline,
   Drawer,
-  // FormControlLabel,
   Grid,
   TextField,
   Toolbar,
@@ -208,12 +206,6 @@ const Header = (props) => {
                               autoComplete='current-password'
                               onChange={logInPasswordHandler}
                             />
-                            {/* <FormControlLabel
-                              control={
-                                <Checkbox value='remember' color='primary' />
-                              }
-                              label='Remember me'
-                            /> */}
                             <Button
                               type='submit'
                               fullWidth
@@ -232,6 +224,17 @@ const Header = (props) => {
                                   variant='body2'
                                 >
                                   {"Don't have an account? Sign Up"}
+                                </Link>
+                              </Grid>
+                            </Grid>
+                            <Grid container>
+                              <Grid item style={{ margin: "auto" }}>
+                                <Link
+                                  to='#'
+                                  onClick={() => setDrawerState(false)}
+                                  variant='body2'
+                                >
+                                  {"Go Back"}
                                 </Link>
                               </Grid>
                             </Grid>
@@ -327,6 +330,17 @@ const Header = (props) => {
                                 variant='body2'
                               >
                                 {"Already have an account? Sign In"}
+                              </Link>
+                            </Grid>
+                          </Grid>
+                          <Grid container>
+                            <Grid item style={{ margin: "auto" }}>
+                              <Link
+                                to='#'
+                                onClick={() => setDrawerState(false)}
+                                variant='body2'
+                              >
+                                {"Go Back"}
                               </Link>
                             </Grid>
                           </Grid>
